@@ -34,6 +34,7 @@ import androidx.core.app.NotificationCompat;
 import com.hwangjr.rxbus.RxBus;
 import com.kunfei.bookshelf.MApplication;
 import com.kunfei.bookshelf.R;
+import com.kunfei.bookshelf.ReadViewExt;
 import com.kunfei.bookshelf.constant.RxBusTag;
 import com.kunfei.bookshelf.help.MediaManager;
 import com.kunfei.bookshelf.view.activity.ReadBookActivity;
@@ -191,6 +192,7 @@ public class ReadAloudService extends Service {
     public void onCreate() {
         super.onCreate();
         running = true;
+        ReadViewExt.getInstance().setReadAloudRunning(running);
         preference = MApplication.getConfigPreferences();
         audioFocusChangeListener = new AudioFocusChangeListener();
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
@@ -561,6 +563,7 @@ public class ReadAloudService extends Service {
     @Override
     public void onDestroy() {
         running = false;
+        ReadViewExt.getInstance().setReadAloudRunning(running);
         super.onDestroy();
         stopForeground(true);
         handler.removeCallbacks(dsRunnable);

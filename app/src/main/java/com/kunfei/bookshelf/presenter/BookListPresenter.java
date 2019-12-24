@@ -21,11 +21,12 @@ import com.kunfei.bookshelf.bean.DownloadBookBean;
 import com.kunfei.bookshelf.constant.RxBusTag;
 import com.kunfei.bookshelf.help.BookshelfHelp;
 import com.kunfei.bookshelf.model.WebBookModel;
-import com.kunfei.bookshelf.model.content.WebBook;
 import com.kunfei.bookshelf.presenter.contract.BookListContract;
 import com.kunfei.bookshelf.service.DownloadService;
+import com.kunfei.bookshelf.throwable.NoSourceThrowable;
 import com.kunfei.bookshelf.utils.NetworkUtils;
 import com.kunfei.bookshelf.utils.RxUtils;
+import com.kunfei.bookshelf.widget.page.webload.PageLoaderNet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,7 +97,9 @@ public class BookListPresenter extends BasePresenterImpl<BookListContract.View> 
                     List<BookChapterBean> chapterBeanList = BookshelfHelp.getChapterList(bookShelfBean.getNoteUrl());
                     if (chapterBeanList.size() >= bookShelfBean.getDurChapter()) {
                         for (int start = bookShelfBean.getDurChapter(); start < chapterBeanList.size(); start++) {
-                            if (!chapterBeanList.get(start).getHasCache(bookShelfBean.getBookInfoBean())) {
+
+                            boolean chapterCached = BookshelfHelp.isChapterCached(bookShelfBean.getBookInfoBean().getName(), chapterBeanList.get(start).getTag(), chapterBeanList.get(start), bookShelfBean.getBookInfoBean().isAudio());
+                            if (!chapterCached) {
                                 DownloadBookBean downloadBook = new DownloadBookBean();
                                 downloadBook.setName(bookShelfBean.getBookInfoBean().getName());
                                 downloadBook.setNoteUrl(bookShelfBean.getNoteUrl());
@@ -158,7 +161,7 @@ public class BookListPresenter extends BasePresenterImpl<BookListContract.View> 
 
                             @Override
                             public void onError(Throwable e) {
-                                if (!(e instanceof WebBook.NoSourceThrowable)) {
+                                if (!(e instanceof NoSourceThrowable)) {
                                     errBooks.add(bookShelfBean.getBookInfoBean().getName());
                                     bookShelfBean.setLoading(false);
                                     mView.refreshBook(bookShelfBean.getNoteUrl());

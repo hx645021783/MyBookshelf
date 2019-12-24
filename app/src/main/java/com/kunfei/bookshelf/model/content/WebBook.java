@@ -12,6 +12,7 @@ import com.kunfei.bookshelf.bean.SearchBookBean;
 import com.kunfei.bookshelf.model.BookSourceManager;
 import com.kunfei.bookshelf.model.analyzeRule.AnalyzeHeaders;
 import com.kunfei.bookshelf.model.analyzeRule.AnalyzeUrl;
+import com.kunfei.bookshelf.throwable.NoSourceThrowable;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -22,6 +23,9 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.functions.Function;
+import retrofit2.Response;
 
 import static android.text.TextUtils.isEmpty;
 import static com.kunfei.bookshelf.constant.AppConstant.JS_PATTERN;
@@ -126,6 +130,7 @@ public class WebBook extends BaseModelImpl {
         try {
             AnalyzeUrl analyzeUrl = new AnalyzeUrl(bookShelfBean.getBookInfoBean().getChapterUrl(), headerMap, bookShelfBean.getNoteUrl());
             return getResponseO(analyzeUrl)
+
                     .flatMap(response -> setCookie(response, tag))
                     .flatMap(response -> bookChapterList.analyzeChapterList(response.body(), bookShelfBean, headerMap));
         } catch (Exception e) {
@@ -183,11 +188,4 @@ public class WebBook extends BaseModelImpl {
             return Observable.error(new Throwable(String.format("url错误:%s", chapterBean.getDurChapterUrl())));
         }
     }
-
-    public class NoSourceThrowable extends Throwable {
-        NoSourceThrowable(String tag) {
-            super(String.format("%s没有找到书源配置", tag));
-        }
-    }
-
 }

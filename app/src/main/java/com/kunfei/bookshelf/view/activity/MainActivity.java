@@ -642,7 +642,7 @@ public class MainActivity extends BaseTabActivity<MainContract.Presenter> implem
         if (!isRecreate) {
             versionUpRun();
         }
-        if (!Objects.equals(MApplication.downloadPath, FileHelp.getFilesPath())) {
+        if (!Objects.equals(MApplication.downloadPath, FileHelp.getFilesPath(this))) {
             new PermissionsCompat.Builder(this)
                     .addPermissions(Permissions.READ_EXTERNAL_STORAGE, Permissions.WRITE_EXTERNAL_STORAGE)
                     .rationale(R.string.get_storage_per)

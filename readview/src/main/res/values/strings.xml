@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">ReadView</string>
+    <string name="page_mode_COVER">覆盖</string>
+    <string name="page_mode_SIMULATION">仿真</string>
+    <string name="page_mode_SLIDE">滑动</string>
+    <string name="page_mode_SCROLL">滚动</string>
+    <string name="page_mode_NONE">无动画</string>
+
+    <string name="load_error_msg">加載失敗\n%s</string>
+    <string name="loading">加載中…</string>
+    <string name="content_empty">文章內容為空</string>
+    <string name="chapter_list_empty">目錄列表為空</string>
+    <string name="on_change_source">正在換源請等待…</string>
+    <string name="pk_download_path">downloadPath</string>
+</resources>

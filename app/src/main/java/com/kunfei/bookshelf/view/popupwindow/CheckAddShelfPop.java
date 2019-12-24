@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 
 import com.kunfei.bookshelf.R;
 
+
 public class CheckAddShelfPop extends PopupWindow {
     private Context mContext;
     private View view;
@@ -36,7 +37,7 @@ public class CheckAddShelfPop extends PopupWindow {
 
     private void initView() {
         TextView tvBookName = view.findViewById(R.id.tv_msg);
-        tvBookName.setText(mContext.getString(R.string.check_add_bookshelf, bookName));
+        tvBookName.setText("是否将其放入书架");
         TextView tvExit = view.findViewById(R.id.tv_cancel);
         tvExit.setText("退出阅读");
         tvExit.setOnClickListener(v -> {

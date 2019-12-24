@@ -2,6 +2,7 @@
 package com.kunfei.bookshelf.model;
 
 import com.kunfei.bookshelf.DbHelper;
+import com.kunfei.bookshelf.MApplication;
 import com.kunfei.bookshelf.R;
 import com.kunfei.bookshelf.base.BaseModelImpl;
 import com.kunfei.bookshelf.bean.BookInfoBean;
@@ -13,7 +14,6 @@ import java.io.File;
 
 import io.reactivex.Observable;
 
-import static com.kunfei.bookshelf.utils.StringUtils.getString;
 
 public class ImportBookModel extends BaseModelImpl {
 
@@ -63,7 +63,7 @@ public class ImportBookModel extends BaseModelImpl {
                 bookInfoBean.setCoverUrl("");
                 bookInfoBean.setNoteUrl(file.getAbsolutePath());
                 bookInfoBean.setTag(BookShelfBean.LOCAL_TAG);
-                bookInfoBean.setOrigin(getString(R.string.local));
+                bookInfoBean.setOrigin(MApplication.getInstance().getString(R.string.local));
 
                 DbHelper.getDaoSession().getBookInfoBeanDao().insertOrReplace(bookInfoBean);
                 DbHelper.getDaoSession().getBookShelfBeanDao().insertOrReplace(bookShelfBean);

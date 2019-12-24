@@ -63,6 +63,9 @@ public class MApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+        ReadDataExt.getInstance().init(this);
+        UtilsExt.getInstance().init(this);
+        ReadViewExt.getInstance().init(this);
         CrashHandler.getInstance().init(this);
         RxJavaPlugins.setErrorHandler(Functions.emptyConsumer());
         try {
@@ -76,6 +79,7 @@ public class MApplication extends Application {
             createChannelId();
         }
         configPreferences = getSharedPreferences("CONFIG", 0);
+        ReadDataExt.getInstance().setConfigPreferences(configPreferences);
         downloadPath = configPreferences.getString(getString(R.string.pk_download_path), "");
         if (TextUtils.isEmpty(downloadPath) | Objects.equals(downloadPath, FileHelp.getCachePath())) {
             setDownloadPath(null);
@@ -140,11 +144,12 @@ public class MApplication extends Application {
      */
     public void setDownloadPath(String path) {
         if (TextUtils.isEmpty(path)) {
-            downloadPath = FileHelp.getFilesPath();
+            downloadPath = FileHelp.getFilesPath(this);
         } else {
             downloadPath = path;
         }
         AppConstant.BOOK_CACHE_PATH = downloadPath + File.separator + "book_cache" + File.separator;
+        ReadViewExt.getInstance().setBookCachePath(AppConstant.BOOK_CACHE_PATH);
         configPreferences.edit()
                 .putString(getString(R.string.pk_download_path), path)
                 .apply();

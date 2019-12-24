@@ -45,7 +45,9 @@ import com.kunfei.bookshelf.MApplication;
 import com.kunfei.bookshelf.R;
 import com.kunfei.bookshelf.base.MBaseActivity;
 import com.kunfei.bookshelf.base.observer.MySingleObserver;
+import com.kunfei.bookshelf.bean.BaseChapterBean;
 import com.kunfei.bookshelf.bean.BookChapterBean;
+import com.kunfei.bookshelf.bean.BookContentBean;
 import com.kunfei.bookshelf.bean.BookShelfBean;
 import com.kunfei.bookshelf.bean.BookmarkBean;
 import com.kunfei.bookshelf.bean.ReplaceRuleBean;
@@ -58,6 +60,7 @@ import com.kunfei.bookshelf.help.permission.Permissions;
 import com.kunfei.bookshelf.help.permission.PermissionsCompat;
 import com.kunfei.bookshelf.model.ReplaceRuleManager;
 import com.kunfei.bookshelf.model.TxtChapterRuleManager;
+import com.kunfei.bookshelf.model.WebBookModel;
 import com.kunfei.bookshelf.presenter.ReadBookPresenter;
 import com.kunfei.bookshelf.presenter.contract.ReadBookContract;
 import com.kunfei.bookshelf.service.ReadAloudService;
@@ -86,10 +89,10 @@ import com.kunfei.bookshelf.widget.modialog.InputDialog;
 import com.kunfei.bookshelf.widget.modialog.MoDialogHUD;
 import com.kunfei.bookshelf.widget.modialog.ReplaceRuleDialog;
 import com.kunfei.bookshelf.widget.page.PageLoader;
-import com.kunfei.bookshelf.widget.page.PageLoaderNet;
 import com.kunfei.bookshelf.widget.page.PageView;
 import com.kunfei.bookshelf.widget.page.TxtChapter;
 import com.kunfei.bookshelf.widget.page.animation.PageAnimation;
+import com.kunfei.bookshelf.widget.page.webload.PageLoaderNet;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -98,6 +101,8 @@ import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
 import kotlin.Unit;
 
 
@@ -806,11 +811,6 @@ public class ReadBookActivity extends MBaseActivity<ReadBookContract.Presenter> 
     private void initPageView() {
         mPageLoader = pageView.getPageLoader(this, mPresenter.getBookShelf(),
                 new PageLoader.Callback() {
-                    @Override
-                    public List<BookChapterBean> getChapterList() {
-                        return mPresenter.getChapterList();
-                    }
-
                     /**
                      * @param pos:切换章节的序号
                      */
@@ -932,7 +932,7 @@ public class ReadBookActivity extends MBaseActivity<ReadBookContract.Presenter> 
                                 },
                                 "关注公众号",
                                 (v) -> {
-                                    ClipboardManager clipboard = (ClipboardManager) ReadBookActivity.this.getSystemService(Context.CLIPBOARD_SERVICE);
+                                    ClipboardManager clipboard = (ClipboardManager) ReadBookActivity.this.getSystemService(CLIPBOARD_SERVICE);
                                     ClipData clipData = ClipData.newPlainText(null, "开源阅读软件");
                                     if (clipboard != null) {
                                         clipboard.setPrimaryClip(clipData);
@@ -946,6 +946,16 @@ public class ReadBookActivity extends MBaseActivity<ReadBookContract.Presenter> 
                                 },
                                 true);
                     }
+
+                    @Override
+                    public Observable<List<BookChapterBean>> getChapterList(BookShelfBean book) {
+                        return WebBookModel.getInstance().getChapterList(book);
+                    }
+
+                    @Override
+                    public ObservableSource<BookContentBean> getBookContent(BookShelfBean book, BookChapterBean bookChapterBean, BaseChapterBean nextChapterBean) {
+                        return WebBookModel.getInstance().getBookContent(book,bookChapterBean,nextChapterBean);
+                    }
                 }
         );
         mPageLoader.updateBattery(BatteryUtil.getLevel(this));
@@ -958,6 +968,11 @@ public class ReadBookActivity extends MBaseActivity<ReadBookContract.Presenter> 
             @Override
             public void center() {
                 popMenuIn();
+            }
+
+            @Override
+            public void autoChangeSource() {
+                autoChangeSource();
             }
 
             @Override
@@ -1089,7 +1104,7 @@ public class ReadBookActivity extends MBaseActivity<ReadBookContract.Presenter> 
         readLongPress.setListener(new ReadLongPressPop.OnBtnClickListener() {
             @Override
             public void copySelect() {
-                ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(CLIPBOARD_SERVICE);
                 ClipData clipData = ClipData.newPlainText(null, pageView.getSelectStr());
                 if (clipboard != null) {
                     clipboard.setPrimaryClip(clipData);
@@ -1686,12 +1701,12 @@ public class ReadBookActivity extends MBaseActivity<ReadBookContract.Presenter> 
                     }
                     return true;
                 }
-                if (readBookControl.getCanKeyTurn(aloudStatus == ReadAloudService.Status.PLAY) && keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+                if (readBookControl.getCanKeyTurn(aloudStatus ==  ReadAloudService.Status.PLAY) && keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
                     if (mPageLoader != null) {
                         mPageLoader.skipToNextPage();
                     }
                     return true;
-                } else if (readBookControl.getCanKeyTurn(aloudStatus == ReadAloudService.Status.PLAY) && keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+                } else if (readBookControl.getCanKeyTurn(aloudStatus ==  ReadAloudService.Status.PLAY) && keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
                     if (mPageLoader != null) {
                         mPageLoader.skipToPrePage();
                     }
@@ -1708,7 +1723,7 @@ public class ReadBookActivity extends MBaseActivity<ReadBookContract.Presenter> 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         if (flMenu.getVisibility() != View.VISIBLE) {
-            if (readBookControl.getCanKeyTurn(aloudStatus == ReadAloudService.Status.PLAY)
+            if (readBookControl.getCanKeyTurn(aloudStatus ==  ReadAloudService.Status.PLAY)
                     && (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN
                     || keyCode == KeyEvent.KEYCODE_VOLUME_UP
                     || keyCode == preferences.getInt("nextKeyCode", 0)
@@ -1818,7 +1833,7 @@ public class ReadBookActivity extends MBaseActivity<ReadBookContract.Presenter> 
     @Override
     public void onMediaButton(String cmd) {
         if (!ReadAloudService.running) {
-            aloudStatus = ReadAloudService.Status.STOP;
+            aloudStatus =  ReadAloudService.Status.STOP;
             SystemUtil.ignoreBatteryOptimization(this);
         }
         switch (aloudStatus) {
