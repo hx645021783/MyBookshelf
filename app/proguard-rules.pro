@@ -182,8 +182,8 @@ public static java.lang.String TABLENAME;
 -keep class okio.**{*;}
 -keep class com.hwangjr.rxbus.**{*;}
 -keep class org.conscrypt.**{*;}
--keep class com.kunfei.bookshelf.widget.**{*;}
--keep class com.kunfei.bookshelf.bean.**{*;}
+-keep class com.jaredhuang.bookself.widget.**{*;}
+-keep class com.jaredhuang.bookself.bean.**{*;}
 -keep class android.support.**{*;}
 -keep class me.grantland.widget.**{*;}
 -keep class de.hdodenhof.circleimageview.**{*;}

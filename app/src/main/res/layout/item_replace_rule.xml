@@ -6,7 +6,7 @@
     android:orientation="horizontal"
     android:padding="16dp">
 
-    <com.kunfei.bookshelf.widget.views.ATECheckBox
+    <com.jaredhuang.bookdb.widget.views.ATECheckBox
         android:id="@+id/cb_replace_rule"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

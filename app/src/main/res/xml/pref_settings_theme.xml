@@ -2,7 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.kunfei.bookshelf.widget.prefs.IconListPreference
+    <com.jaredhuang.bookdb.widget.prefs.IconListPreference
         android:defaultValue="@string/icon_main"
         android:entries="@array/icon_names"
         android:entryValues="@array/icons"
@@ -11,25 +11,25 @@
         android:title="@string/change_icon"
         app:icons="@array/icons" />
 
-    <com.kunfei.bookshelf.widget.prefs.ATESwitchPreference
+    <com.jaredhuang.bookdb.widget.prefs.ATESwitchPreference
         android:defaultValue="false"
         android:key="immersionStatusBar"
         android:summary="@string/status_bar_immersion"
         android:title="@string/immersion_status_bar" />
 
-    <com.kunfei.bookshelf.widget.prefs.ATESwitchPreference
+    <com.jaredhuang.bookdb.widget.prefs.ATESwitchPreference
         android:defaultValue="false"
         android:key="navigationBarColorChange"
         android:summary="@string/navigation_bar_color_change_s"
         android:title="@string/navigation_bar_color_change" />
 
-    <com.kunfei.bookshelf.widget.prefs.ATESwitchPreference
+    <com.jaredhuang.bookdb.widget.prefs.ATESwitchPreference
         android:defaultValue="true"
         android:key="behaviorMain"
         android:summary="@string/behavior_main_s"
         android:title="@string/behavior_main_t" />
 
-    <com.kunfei.bookshelf.widget.prefs.ATESwitchPreference
+    <com.jaredhuang.bookdb.widget.prefs.ATESwitchPreference
         android:defaultValue="false"
         android:key="E-InkMode"
         android:summary="@string/e_ink_mode_detail"
@@ -40,7 +40,7 @@
         android:summary="@string/restore_default_theme"
         android:title="@string/default_theme" />
 
-    <com.kunfei.bookshelf.widget.prefs.ATEPreferenceCategory android:title="白天">
+    <com.jaredhuang.bookdb.widget.prefs.ATEPreferenceCategory android:title="白天">
 
         <com.jaredrummler.android.colorpicker.ColorPreference
             android:defaultValue="@color/md_grey_100"
@@ -63,9 +63,9 @@
             android:title="背景色"
             app:cpv_dialogType="preset" />
 
-    </com.kunfei.bookshelf.widget.prefs.ATEPreferenceCategory>
+    </com.jaredhuang.bookdb.widget.prefs.ATEPreferenceCategory>
 
-    <com.kunfei.bookshelf.widget.prefs.ATEPreferenceCategory android:title="夜间">
+    <com.jaredhuang.bookdb.widget.prefs.ATEPreferenceCategory android:title="夜间">
 
         <com.jaredrummler.android.colorpicker.ColorPreference
             android:defaultValue="@color/md_grey_800"
@@ -88,6 +88,6 @@
             android:title="背景色"
             app:cpv_dialogType="preset" />
 
-    </com.kunfei.bookshelf.widget.prefs.ATEPreferenceCategory>
+    </com.jaredhuang.bookdb.widget.prefs.ATEPreferenceCategory>
 
 </PreferenceScreen>

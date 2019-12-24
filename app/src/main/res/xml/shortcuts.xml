@@ -13,7 +13,7 @@
         <intent
             android:action="android.intent.action.VIEW"
             android:targetPackage="${applicationId}"
-            android:targetClass="com.kunfei.bookshelf.view.activity.WelcomeToReadActivity" />
+            android:targetClass="com.jaredhuang.bookdb.view.activity.WelcomeToReadActivity" />
         <categories android:name="android.shortcut.conversation"/>
     </shortcut>
 
@@ -29,7 +29,7 @@
         <intent
             android:action="android.intent.action.VIEW"
             android:targetPackage="${applicationId}"
-            android:targetClass="com.kunfei.bookshelf.view.activity.MainActivity" />
+            android:targetClass="com.jaredhuang.bookdb.view.activity.MainActivity" />
         <categories android:name="android.shortcut.conversation" />
     </shortcut>
 </shortcuts>

@@ -29,7 +29,7 @@
             app:cardCornerRadius="5dp"
             app:cardElevation="10dp">
 
-            <com.kunfei.bookshelf.widget.FilletImageView
+            <com.jaredhuang.bookdb.widget.FilletImageView
                 android:id="@+id/iv_blur_cover"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -49,7 +49,7 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
-                    <com.kunfei.bookshelf.widget.CoverImageView
+                    <com.jaredhuang.bookdb.widget.CoverImageView
                         android:id="@+id/iv_cover"
                         android:layout_width="92dp"
                         android:layout_height="130dp"
@@ -169,7 +169,7 @@
                                 android:textSize="13sp"
                                 tools:ignore="RtlHardcoded,RtlSymmetry" />
 
-                            <com.kunfei.bookshelf.widget.views.ATEAccentBgTextView
+                            <com.jaredhuang.bookdb.widget.views.ATEAccentBgTextView
                                 android:id="@+id/tv_change_origin"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -233,7 +233,7 @@
                             android:paddingTop="3dp"
                             android:paddingBottom="3dp">
 
-                            <com.kunfei.bookshelf.widget.views.ATERadioNoButton
+                            <com.jaredhuang.bookdb.widget.views.ATERadioNoButton
                                 android:id="@+id/rb_zg"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -251,7 +251,7 @@
                                 android:textSize="13sp"
                                 tools:ignore="RtlHardcoded" />
 
-                            <com.kunfei.bookshelf.widget.views.ATERadioNoButton
+                            <com.jaredhuang.bookdb.widget.views.ATERadioNoButton
                                 android:id="@+id/rb_yf"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -268,7 +268,7 @@
                                 android:textSize="13sp"
                                 tools:ignore="RtlHardcoded" />
 
-                            <com.kunfei.bookshelf.widget.views.ATERadioNoButton
+                            <com.jaredhuang.bookdb.widget.views.ATERadioNoButton
                                 android:id="@+id/rb_wj"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -285,7 +285,7 @@
                                 android:textSize="13sp"
                                 tools:ignore="RtlHardcoded" />
 
-                            <com.kunfei.bookshelf.widget.views.ATERadioNoButton
+                            <com.jaredhuang.bookdb.widget.views.ATERadioNoButton
                                 android:id="@+id/rb_bd"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -310,7 +310,7 @@
                     android:layout_height="0.5dp"
                     android:background="@color/btn_bg_press" />
 
-                <com.kunfei.bookshelf.widget.ScrollTextView
+                <com.jaredhuang.bookdb.widget.ScrollTextView
                     android:id="@+id/tv_intro"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"

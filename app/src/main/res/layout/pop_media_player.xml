@@ -57,7 +57,7 @@
                 android:layout_height="wrap_content"
                 tools:ignore="RtlSymmetry" />
 
-            <com.kunfei.bookshelf.widget.views.ATESeekBar
+            <com.jaredhuang.bookdb.widget.views.ATESeekBar
                 android:id="@+id/player_progress"
                 android:layout_width="0dp"
                 android:layout_height="25dp"

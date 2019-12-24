@@ -8,7 +8,7 @@
     android:orientation="vertical">
 
     <!--阅读页面-->
-    <com.kunfei.bookshelf.widget.page.PageView
+    <com.jaredhuang.bookdb.widget.page.PageView
         android:id="@+id/pageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -32,14 +32,14 @@
         android:src="@drawable/ic_cursor_right"
         android:visibility="invisible" />
 
-    <com.kunfei.bookshelf.view.popupwindow.ReadLongPressPop
+    <com.jaredhuang.bookdb.view.popupwindow.ReadLongPressPop
         android:id="@+id/readLongPress"
         android:layout_width="120dp"
         android:layout_height="30dp"
         android:layout_gravity="center"
         android:visibility="invisible" />
 
-    <com.kunfei.bookshelf.view.popupwindow.MediaPlayerPop
+    <com.jaredhuang.bookdb.view.popupwindow.MediaPlayerPop
         android:id="@+id/mediaPlayerPop"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -132,35 +132,35 @@
             <View style="@style/Style.Shadow.Top" />
         </LinearLayout>
 
-        <com.kunfei.bookshelf.view.popupwindow.ReadBottomMenu
+        <com.jaredhuang.bookdb.view.popupwindow.ReadBottomMenu
             android:id="@+id/read_menu_bottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:visibility="invisible" />
 
-        <com.kunfei.bookshelf.view.popupwindow.ReadAdjustPop
+        <com.jaredhuang.bookdb.view.popupwindow.ReadAdjustPop
             android:id="@+id/readAdjustPop"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:visibility="invisible" />
 
-        <com.kunfei.bookshelf.view.popupwindow.ReadInterfacePop
+        <com.jaredhuang.bookdb.view.popupwindow.ReadInterfacePop
             android:id="@+id/readInterfacePop"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:visibility="invisible" />
 
-        <com.kunfei.bookshelf.view.popupwindow.MoreSettingPop
+        <com.jaredhuang.bookdb.view.popupwindow.MoreSettingPop
             android:id="@+id/moreSettingPop"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:visibility="invisible" />
 
-        <com.kunfei.bookshelf.view.popupwindow.ReadAdjustMarginPop
+        <com.jaredhuang.bookdb.view.popupwindow.ReadAdjustMarginPop
             android:id="@+id/readAdjustMarginPop"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -177,20 +177,20 @@
     <!--        android:layout_gravity="bottom"-->
     <!--        android:visibility="invisible" />-->
 
-    <com.kunfei.bookshelf.widget.seekbar.VerticalSeekBarWrapper
+    <com.jaredhuang.bookdb.widget.seekbar.VerticalSeekBarWrapper
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginTop="30dp"
         android:layout_marginBottom="20dp"
         tools:ignore="RtlHardcoded">
 
-        <com.kunfei.bookshelf.widget.seekbar.VerticalSeekBar
+        <com.jaredhuang.bookdb.widget.seekbar.VerticalSeekBar
             android:id="@+id/pb_nextPage"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             app:seekBarRotation="CW270"
             android:visibility="invisible" />
 
-    </com.kunfei.bookshelf.widget.seekbar.VerticalSeekBarWrapper>
+    </com.jaredhuang.bookdb.widget.seekbar.VerticalSeekBarWrapper>
 
 </FrameLayout>

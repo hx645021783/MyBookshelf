@@ -8,7 +8,7 @@
     android:id="@+id/ll_content"
     android:background="@color/background"
     android:orientation="vertical"
-    tools:context="com.kunfei.bookshelf.view.activity.BookCoverEditActivity">
+    tools:context="com.jaredhuang.bookdb.view.activity.BookCoverEditActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/action_bar"

@@ -58,7 +58,7 @@
                         android:textColor="@color/tv_text_default"
                         android:textSize="14sp" />
 
-                    <com.kunfei.bookshelf.widget.check_box.SmoothCheckBox
+                    <com.jaredhuang.bookdb.widget.check_box.SmoothCheckBox
                         android:id="@+id/scb_follow_sys"
                         android:layout_width="16dp"
                         android:layout_height="16dp"
@@ -68,7 +68,7 @@
                         app:duration="150" />
                 </LinearLayout>
 
-                <com.kunfei.bookshelf.widget.views.ATESeekBar
+                <com.jaredhuang.bookdb.widget.views.ATESeekBar
                     android:id="@+id/hpb_light"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
@@ -118,7 +118,7 @@
                         android:textColor="@color/tv_text_default"
                         android:textSize="14sp" />
 
-                    <com.kunfei.bookshelf.widget.check_box.SmoothCheckBox
+                    <com.jaredhuang.bookdb.widget.check_box.SmoothCheckBox
                         android:id="@+id/scb_tts_follow_sys"
                         android:layout_width="16dp"
                         android:layout_height="16dp"
@@ -128,7 +128,7 @@
                         app:duration="150" />
                 </LinearLayout>
 
-                <com.kunfei.bookshelf.widget.views.ATESeekBar
+                <com.jaredhuang.bookdb.widget.views.ATESeekBar
                     android:id="@+id/hpb_tts_SpeechRate"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
@@ -180,7 +180,7 @@
 
                 </LinearLayout>
 
-                <com.kunfei.bookshelf.widget.views.ATESeekBar
+                <com.jaredhuang.bookdb.widget.views.ATESeekBar
                     android:id="@+id/hpb_click"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"

@@ -17,7 +17,7 @@
         android:layout_height="100dp"
         android:orientation="horizontal">
 
-        <com.kunfei.bookshelf.widget.CoverImageView
+        <com.jaredhuang.bookdb.widget.CoverImageView
             android:id="@+id/iv_cover"
             android:layout_width="70dp"
             android:layout_height="100dp"
@@ -80,7 +80,7 @@
                 android:orientation="horizontal"
                 tools:ignore="NestedWeights">
 
-                <com.kunfei.bookshelf.widget.views.ATEAccentBgTextView
+                <com.jaredhuang.bookdb.widget.views.ATEAccentBgTextView
                     android:id="@+id/tv_state"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -91,7 +91,7 @@
                     android:text="连载"
                     android:textSize="12sp" />
 
-                <com.kunfei.bookshelf.widget.views.ATEAccentBgTextView
+                <com.jaredhuang.bookdb.widget.views.ATEAccentBgTextView
                     android:id="@+id/tv_kind"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -103,7 +103,7 @@
                     android:text="现代都市"
                     android:textSize="12sp" />
 
-                <com.kunfei.bookshelf.widget.views.ATEAccentBgTextView
+                <com.jaredhuang.bookdb.widget.views.ATEAccentBgTextView
                     android:id="@+id/tv_words"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

@@ -25,7 +25,7 @@ android {
 }
 greendao {
     schemaVersion 64
-    daoPackage 'com.kunfei.bookshelf.dao'
+    daoPackage 'com.jaredhuang.bookdb.dao'
     targetGenDir 'src/main/java'
 }
 dependencies {
