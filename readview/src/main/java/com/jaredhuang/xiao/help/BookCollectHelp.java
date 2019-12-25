@@ -13,8 +13,8 @@ import com.jaredhuang.xiao.bean.BookInfoBean;
 import com.jaredhuang.xiao.bean.BookmarkBean;
 import com.jaredhuang.xiao.bean.SearchBookBean;
 import com.jaredhuang.xiao.dao.BookChapterBeanDao;
+import com.jaredhuang.xiao.dao.BookCollectBeanDao;
 import com.jaredhuang.xiao.dao.BookInfoBeanDao;
-import com.jaredhuang.xiao.dao.BookShelfBeanDao;
 import com.jaredhuang.xiao.dao.BookmarkBeanDao;
 import com.jaredhuang.xiao.utils.StringUtils;
 
@@ -201,7 +201,7 @@ public class BookCollectHelp {
      */
     public static List<BookCollectBean> getAllBook() {
         List<BookCollectBean> bookShelfList = DbHelper.getDaoSession().getBookCollectBeanDao().queryBuilder()
-                .orderDesc(BookShelfBeanDao.Properties.FinalDate).list();
+                .orderDesc(BookCollectBeanDao.Properties.FinalDate).list();
         for (int i = 0; i < bookShelfList.size(); i++) {
             BookInfoBean bookInfoBean = DbHelper.getDaoSession().getBookInfoBeanDao().queryBuilder()
                     .where(BookInfoBeanDao.Properties.NoteUrl.eq(bookShelfList.get(i).getNoteUrl())).limit(1).build().unique();
@@ -220,8 +220,8 @@ public class BookCollectHelp {
      */
     public static List<BookCollectBean> getBooksByGroup(int group) {
         List<BookCollectBean> bookShelfList = DbHelper.getDaoSession().getBookCollectBeanDao().queryBuilder()
-                .where(BookShelfBeanDao.Properties.Group.eq(group))
-                .orderDesc(BookShelfBeanDao.Properties.FinalDate).list();
+                .where(BookCollectBeanDao.Properties.Group.eq(group))
+                .orderDesc(BookCollectBeanDao.Properties.FinalDate).list();
         for (int i = 0; i < bookShelfList.size(); i++) {
             BookInfoBean bookInfoBean = DbHelper.getDaoSession().getBookInfoBeanDao().queryBuilder()
                     .where(BookInfoBeanDao.Properties.NoteUrl.eq(bookShelfList.get(i).getNoteUrl())).limit(1).build().unique();
@@ -294,7 +294,7 @@ public class BookCollectHelp {
         }
 
         long count = DbHelper.getDaoSession().getBookCollectBeanDao().queryBuilder()
-                .where(BookShelfBeanDao.Properties.NoteUrl.eq(bookUrl))
+                .where(BookCollectBeanDao.Properties.NoteUrl.eq(bookUrl))
                 .count();
         return count > 0;
     }
