@@ -17,10 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.jiaredhuang.readcuswidget.R;
 import java.util.Objects;
-
-import butterknife.BindView;
-
-
 public class RefreshRecyclerView extends FrameLayout {
 
     RecyclerView recyclerView;
@@ -123,7 +119,9 @@ public class RefreshRecyclerView extends FrameLayout {
 
         View view = LayoutInflater.from(context).inflate(R.layout.view_refresh_recycler, this, false);
         addView(view);
-
+        recyclerView=findViewById(R.id.recycler_view);
+        rpb=findViewById(R.id.rpb);
+        llContent=findViewById(R.id.ll_content);
         @SuppressLint("CustomViewStyleable")
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.RefreshProgressBar);
         rpb.setSpeed(a.getDimensionPixelSize(R.styleable.RefreshProgressBar_speed, rpb.getSpeed()));
@@ -133,12 +131,7 @@ public class RefreshRecyclerView extends FrameLayout {
         rpb.setSecondColor(a.getColor(R.styleable.RefreshProgressBar_second_color, rpb.getSecondColor()));
         rpb.setFontColor(a.getColor(R.styleable.RefreshProgressBar_font_color, rpb.getFontColor()));
         a.recycle();
-        recyclerView=findViewById(R.id.recycler_view);
-        rpb=findViewById(R.id.rpb);
-        llContent=findViewById(R.id.ll_content);
         bindEvent();
-
-
     }
 
     public void addItemDecoration(@NonNull RecyclerView.ItemDecoration decor) {
