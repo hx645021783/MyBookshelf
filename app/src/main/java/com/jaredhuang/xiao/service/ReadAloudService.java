@@ -33,6 +33,7 @@ import androidx.core.app.NotificationCompat;
 
 import com.hwangjr.rxbus.RxBus;
 import com.jaredhuang.xiao.MApplication;
+import com.jaredhuang.xiao.constant.AppConstant;
 import com.kunfei.bookshelf.R;
 import com.jaredhuang.xiao.ReadViewExt;
 import com.jaredhuang.xiao.constant.RxBusTag;
@@ -46,7 +47,6 @@ import java.util.List;
 import java.util.Locale;
 
 import static android.text.TextUtils.isEmpty;
-import static com.jaredhuang.xiao.constant.AppConstant.ActionDoneService;
 
 /**
  * Created by GKF on 2018/1/2.
@@ -127,7 +127,7 @@ public class ReadAloudService extends Service {
     public static void stop(Context context) {
         if (running) {
             Intent intent = new Intent(context, ReadAloudService.class);
-            intent.setAction(ActionDoneService);
+            intent.setAction(AppConstant.ActionDoneService);
             context.startService(intent);
         }
     }
@@ -226,7 +226,7 @@ public class ReadAloudService extends Service {
             if (action != null) {
                 String sText;
                 switch (action) {
-                    case ActionDoneService:
+                    case AppConstant.ActionDoneService:
                         stopSelf();
                         break;
                     case ActionPauseService:
@@ -550,7 +550,7 @@ public class ReadAloudService extends Service {
         } else {
             builder.addAction(R.drawable.ic_pause_24dp, getString(R.string.pause), getThisServicePendingIntent(ActionPauseService));
         }
-        builder.addAction(R.drawable.ic_stop_black_24dp, getString(R.string.stop), getThisServicePendingIntent(ActionDoneService));
+        builder.addAction(R.drawable.ic_stop_black_24dp, getString(R.string.stop), getThisServicePendingIntent(AppConstant.ActionDoneService));
         builder.addAction(R.drawable.ic_time_add_24dp, getString(R.string.set_timer), getThisServicePendingIntent(ActionSetTimer));
         builder.setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
                 .setMediaSession(mediaSessionCompat.getSessionToken())
