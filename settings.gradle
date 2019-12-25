@@ -1,1 +1,1 @@
-include ':app', ':basemvplib', ':readview', ':dbdao', ':moudleutils'
+include ':app', ':basemvplib', ':readviewwidget', ':dbdao', ':moudleutils'
