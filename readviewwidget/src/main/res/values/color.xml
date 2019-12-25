@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="tv_text_default">#de000000</color>
+    <color name="tv_text_secondary">#b2000000</color>
+    <color name="tv_text_summary">#8a000000</color>
+    <color name="tv_text_book_detail">#dfdfdf</color>
+    <color name="background">#F5F5F5</color>
+    <color name="background_card">#dedede</color>
+    <color name="background_menu">#fcfcfc</color>
+    <!-- 分格线背景色 -->
+    <color name="bg_divider_line">#FFD4D4D4</color>
+    <!--statusBarBackground-->
+    <color name="status_bar_bag">#64000000</color>
+    <color name="navigation_bar_bag">#f4f4f4</color>
+
+    <color name="btn_bg_press">#80C0C0C0</color>
+    <color name="btn_bg_press_2">#80858585</color>
+    <color name="btn_bg_press_tp">#88000000</color>
+    <color name="transparent30">#30000000</color>
+
+    <color name="highlight">#d3321b</color>
+    <color name="darker_gray">#aaaaaaaa</color>
+    <color name="md_grey_500">#9E9E9E</color>
+</resources>
