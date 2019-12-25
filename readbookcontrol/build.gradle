@@ -29,7 +29,7 @@ dependencies {
     implementation project(':moudleutils')
     implementation project(':dbdao')
     implementation project(':pageviewwidget')
-    implementation project(':readviewwidget')
+    implementation project(':readbookwidget')
     //bind view
     implementation 'com.jakewharton:butterknife:10.1.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
