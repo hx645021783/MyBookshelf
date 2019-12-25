@@ -15,33 +15,33 @@
         android:text="@string/txt_chapter_regex"
         android:textSize="20sp" />
 
-    <com.jaredhuang.bookdb.widget.views.ATETextInputLayout
+    <com.jaredhuang.xiao.widget.views.ATETextInputLayout
         android:id="@+id/til_rule_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="名称"
         android:padding="10dp">
 
-        <com.jaredhuang.bookdb.widget.views.ATEEditText
+        <com.jaredhuang.xiao.widget.views.ATEEditText
             android:id="@+id/tie_rule_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxLines="3" />
-    </com.jaredhuang.bookdb.widget.views.ATETextInputLayout>
+    </com.jaredhuang.xiao.widget.views.ATETextInputLayout>
 
-    <com.jaredhuang.bookdb.widget.views.ATETextInputLayout
+    <com.jaredhuang.xiao.widget.views.ATETextInputLayout
         android:id="@+id/til_rule_regex"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="正则"
         android:padding="10dp">
 
-        <com.jaredhuang.bookdb.widget.views.ATEEditText
+        <com.jaredhuang.xiao.widget.views.ATEEditText
             android:id="@+id/tie_rule_regex"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxLines="3" />
-    </com.jaredhuang.bookdb.widget.views.ATETextInputLayout>
+    </com.jaredhuang.xiao.widget.views.ATETextInputLayout>
 
     <TextView
         android:id="@+id/tv_ok"

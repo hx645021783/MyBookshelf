@@ -34,7 +34,7 @@
                 android:paddingRight="15dp"
                 android:paddingBottom="10dp">
 
-                <com.jaredhuang.bookdb.widget.views.ATEStrokeTextView
+                <com.jaredhuang.xiao.widget.views.ATEStrokeTextView
                     android:id="@+id/nbTextSizeDec"
                     android:layout_width="0dp"
                     android:layout_height="36dp"
@@ -55,7 +55,7 @@
                     android:paddingRight="4dp"
                     android:text="20" />
 
-                <com.jaredhuang.bookdb.widget.views.ATEStrokeTextView
+                <com.jaredhuang.xiao.widget.views.ATEStrokeTextView
                     android:id="@+id/nbTextSizeAdd"
                     android:layout_width="0dp"
                     android:layout_height="36dp"
@@ -72,7 +72,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="0.5" />
 
-                <com.jaredhuang.bookdb.widget.views.ATEStrokeTextView
+                <com.jaredhuang.xiao.widget.views.ATEStrokeTextView
                     android:id="@+id/fl_text_Bold"
                     android:layout_width="0dp"
                     android:layout_height="36dp"
@@ -88,7 +88,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="0.5" />
 
-                <com.jaredhuang.bookdb.widget.views.ATEStrokeTextView
+                <com.jaredhuang.xiao.widget.views.ATEStrokeTextView
                     android:id="@+id/fl_text_font"
                     android:layout_width="0dp"
                     android:layout_height="36dp"
@@ -104,7 +104,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="0.5" />
 
-                <com.jaredhuang.bookdb.widget.views.ATEStrokeTextView
+                <com.jaredhuang.xiao.widget.views.ATEStrokeTextView
                     android:id="@+id/fl_indent"
                     android:layout_width="0dp"
                     android:layout_height="36dp"
@@ -132,7 +132,7 @@
                 android:paddingRight="15dp"
                 android:paddingBottom="10dp">
 
-                <com.jaredhuang.bookdb.widget.views.ATEStrokeTextView
+                <com.jaredhuang.xiao.widget.views.ATEStrokeTextView
                     android:id="@+id/tvPageMode"
                     android:layout_width="0dp"
                     android:layout_height="36dp"
@@ -149,7 +149,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1.0" />
 
-                <com.jaredhuang.bookdb.widget.views.ATEStrokeTextView
+                <com.jaredhuang.xiao.widget.views.ATEStrokeTextView
                     android:id="@+id/tvRowDef0"
                     android:layout_width="0dp"
                     android:layout_height="36dp"
@@ -166,7 +166,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="0.5" />
 
-                <com.jaredhuang.bookdb.widget.views.ATEStrokeTextView
+                <com.jaredhuang.xiao.widget.views.ATEStrokeTextView
                     android:id="@+id/tvRowDef1"
                     android:layout_width="0dp"
                     android:layout_height="36dp"
@@ -183,7 +183,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="0.5" />
 
-                <com.jaredhuang.bookdb.widget.views.ATEStrokeTextView
+                <com.jaredhuang.xiao.widget.views.ATEStrokeTextView
                     android:id="@+id/tvRowDef2"
                     android:layout_width="0dp"
                     android:layout_height="36dp"
@@ -200,7 +200,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="0.5" />
 
-                <com.jaredhuang.bookdb.widget.views.ATEStrokeTextView
+                <com.jaredhuang.xiao.widget.views.ATEStrokeTextView
                     android:id="@+id/tvRowDef"
                     android:layout_width="0dp"
                     android:layout_height="36dp"

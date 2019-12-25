@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.jaredhuang.bookdb.widget.recycler.refresh.RefreshProgressBar
+    <com.jaredhuang.xiao.widget.recycler.refresh.RefreshProgressBar
         android:id="@+id/rpb"
         android:layout_width="match_parent"
         android:layout_height="3dp"

@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         app:queryHint="@string/search" />
 
-    <com.jaredhuang.bookdb.widget.recycler.refresh.RefreshRecyclerView
+    <com.jaredhuang.xiao.widget.recycler.refresh.RefreshRecyclerView
         android:id="@+id/rf_rv_change_source"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -7,7 +7,7 @@
         android:summary="WebDav备份与恢复"
         android:title="WebDav设置" />
 
-    <com.jaredhuang.bookdb.widget.prefs.ATEPreferenceCategory android:title="书架设置">
+    <com.jaredhuang.xiao.widget.prefs.ATEPreferenceCategory android:title="书架设置">
 
         <ListPreference
             android:defaultValue="0"
@@ -44,9 +44,9 @@
             android:key="clearCache"
             android:title="@string/clear_cache" />
 
-    </com.jaredhuang.bookdb.widget.prefs.ATEPreferenceCategory>
+    </com.jaredhuang.xiao.widget.prefs.ATEPreferenceCategory>
 
-    <com.jaredhuang.bookdb.widget.prefs.ATEPreferenceCategory android:title="其它设置">
+    <com.jaredhuang.xiao.widget.prefs.ATEPreferenceCategory android:title="其它设置">
 
         <com.kunfei.bookshelf.widget.prefs.ATESwitchPreference
             android:defaultValue="true"
@@ -85,6 +85,6 @@
             android:summary="长按文字在操作菜单中显示阅读·搜索"
             android:title="文字操作显示搜索" />
 
-    </com.jaredhuang.bookdb.widget.prefs.ATEPreferenceCategory>
+    </com.jaredhuang.xiao.widget.prefs.ATEPreferenceCategory>
 
 </PreferenceScreen>

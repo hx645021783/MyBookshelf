@@ -63,7 +63,7 @@
         android:max="100"
         style="@android:style/Widget.ProgressBar.Horizontal" />
 
-    <com.jaredhuang.bookdb.widget.views.ATEStrokeTextView
+    <com.jaredhuang.xiao.widget.views.ATEStrokeTextView
         android:id="@+id/tv_install_update"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

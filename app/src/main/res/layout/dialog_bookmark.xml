@@ -22,19 +22,19 @@
         android:padding="10dp"
         android:text="@string/bookmark" />
 
-    <com.jaredhuang.bookdb.widget.views.ATETextInputLayout
+    <com.jaredhuang.xiao.widget.views.ATETextInputLayout
         android:id="@+id/til_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/content"
         android:padding="10dp">
 
-        <com.jaredhuang.bookdb.widget.views.ATEEditText
+        <com.jaredhuang.xiao.widget.views.ATEEditText
             android:id="@+id/tie_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxLines="3" />
-    </com.jaredhuang.bookdb.widget.views.ATETextInputLayout>
+    </com.jaredhuang.xiao.widget.views.ATETextInputLayout>
 
     <TextView
         android:id="@+id/tv_ok"

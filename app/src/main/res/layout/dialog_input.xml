@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp" />
 
-    <com.jaredhuang.bookdb.widget.views.ATEAutoCompleteTextView
+    <com.jaredhuang.xiao.widget.views.ATEAutoCompleteTextView
         android:id="@+id/et_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

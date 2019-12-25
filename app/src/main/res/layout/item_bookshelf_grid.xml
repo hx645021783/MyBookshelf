@@ -9,7 +9,7 @@
     android:paddingTop="10dp"
     android:paddingBottom="10dp">
 
-    <com.jaredhuang.bookdb.widget.CoverImageView
+    <com.jaredhuang.xiao.widget.CoverImageView
         android:id="@+id/iv_cover"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="UnusedAttribute" />
 
-    <com.jaredhuang.bookdb.widget.BadgeView
+    <com.jaredhuang.xiao.widget.BadgeView
         android:id="@+id/bv_unread"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
         app:layout_constraintRight_toRightOf="@+id/iv_cover"
         tools:ignore="RtlHardcoded" />
 
-    <com.jaredhuang.bookdb.widget.RotateLoading
+    <com.jaredhuang.xiao.widget.RotateLoading
         android:id="@+id/rl_loading"
         android:layout_width="26dp"
         android:layout_height="26dp"
