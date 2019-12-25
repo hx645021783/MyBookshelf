@@ -313,7 +313,7 @@ public abstract class PageLoader {
     /**
      * 设置文字相关参数
      */
-    public void setTextSize() {
+    public void upTextSize() {
         // 设置文字相关参数
         setUpTextParams();
         initPaint();
@@ -351,6 +351,13 @@ public abstract class PageLoader {
     }
 
     /**
+     * 设置翻页动画
+     */
+    public void upPageMode() {
+        setPageMode(PageAnimation.Mode.getPageMode(readBookControl.getPageMode()));
+    }
+
+    /**
      * 设置内容与屏幕的间距 单位为 px
      */
     public void upMargin() {
@@ -365,6 +372,14 @@ public abstract class PageLoader {
         initPaint();
         mPageView.setPageMode(mPageMode, mMarginTop, mMarginBottom);
         skipToChapter(mCurChapterPos, mCurPagePos);
+    }
+
+    /**
+     * 刷新界面
+     */
+    public void upBackground() {
+        mPageView.upBackground();
+        refreshUi();
     }
 
     /**
@@ -1862,15 +1877,18 @@ public abstract class PageLoader {
     }
 
     public void addBookChapterBeanList(List<BookChapterBean> bookChapterBeanList) {
-        if(bookChapterBeanList==null)return;
+        if (bookChapterBeanList == null) return;
         this.bookChapterBeanList.clear();
         this.bookChapterBeanList.addAll(bookChapterBeanList);
     }
+
     public interface OnNetLoaderCallback {
         Observable<List<BookChapterBean>> getChapterList(BookCollectBean book);
+
         ObservableSource<BookContentBean> getBookContent(BookCollectBean book, BookChapterBean bookChapterBean, BaseChapterBean nextChapterBean);
 
     }
+
     public interface OnPageLoaderCallback {
 
         /**

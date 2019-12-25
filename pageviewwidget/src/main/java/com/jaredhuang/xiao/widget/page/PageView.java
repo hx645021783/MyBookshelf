@@ -710,7 +710,10 @@ public class PageView extends View implements PageAnimation.OnPageChangeListener
         }
     }
 
+    public void upBackground(){
 
+        setBackground(readBookControl.getTextBackground(getContext()));
+    }
     public enum SelectMode {
         Normal, PressSelectText, SelectMoveForward, SelectMoveBack
     }

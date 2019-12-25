@@ -197,7 +197,7 @@ public class ReadBookControl {
             if (bgCustom == 2) {
                 bgBitmap = BitmapUtil.getFitSampleBitmap(bgPath, width, height);
             } else {
-                bgBitmap = MeUtils.getFitAssetsSampleBitmap( ReadViewExt.getInstance().getContext().getAssets(), bgPath, width, height);
+                bgBitmap = MeUtils.getFitAssetsSampleBitmap(ReadViewExt.getInstance().getContext().getAssets(), bgPath, width, height);
             }
             if (bgBitmap != null) {
                 return;
@@ -317,7 +317,7 @@ public class ReadBookControl {
     }
 
     private boolean getIsNightTheme() {
-        return  ReadViewExt.getInstance().isNightTheme();
+        return ReadViewExt.getInstance().isNightTheme();
     }
 
     public boolean getImmersionStatusBar() {
@@ -383,7 +383,7 @@ public class ReadBookControl {
                     .putInt("textDrawableIndex", textDrawableIndex)
                     .apply();
         }
-        setTextDrawable();
+        initTextDrawableIndex();
     }
 
     public void setTextConvert(int textConvert) {
@@ -797,7 +797,7 @@ public class ReadBookControl {
 
     private int getScreenBrightness() {
         int value = 0;
-        ContentResolver cr =  ReadViewExt.getInstance().getContext().getContentResolver();
+        ContentResolver cr = ReadViewExt.getInstance().getContext().getContentResolver();
         try {
             value = Settings.System.getInt(cr, Settings.System.SCREEN_BRIGHTNESS);
         } catch (Settings.SettingNotFoundException ignored) {

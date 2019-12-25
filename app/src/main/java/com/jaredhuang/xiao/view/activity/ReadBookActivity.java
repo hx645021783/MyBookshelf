@@ -672,7 +672,7 @@ public class ReadBookActivity extends MBaseActivity<ReadBookContract.Presenter> 
             @Override
             public void upTextSize() {
                 if (mPageLoader != null) {
-                    mPageLoader.setTextSize();
+                    mPageLoader.upTextSize();
                 }
             }
 
@@ -702,14 +702,14 @@ public class ReadBookActivity extends MBaseActivity<ReadBookContract.Presenter> 
             @Override
             public void upPageMode() {
                 if (mPageLoader != null) {
-                    mPageLoader.setPageMode(PageAnimation.Mode.getPageMode(readBookControl.getPageMode()));
+                    mPageLoader.upPageMode();
                 }
             }
 
             @Override
             public void upTextSize() {
                 if (mPageLoader != null) {
-                    mPageLoader.setTextSize();
+                    mPageLoader.upTextSize();
                 }
             }
 
@@ -722,11 +722,9 @@ public class ReadBookActivity extends MBaseActivity<ReadBookContract.Presenter> 
 
             @Override
             public void bgChange() {
-                readBookControl.initTextDrawableIndex();
-                pageView.setBackground(readBookControl.getTextBackground(ReadBookActivity.this));
                 initImmersionBar();
                 if (mPageLoader != null) {
-                    mPageLoader.refreshUi();
+                    mPageLoader.upBackground();
                 }
             }
 
