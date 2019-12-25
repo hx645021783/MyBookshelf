@@ -1,1 +1,1 @@
-include ':app', ':basemvplib', ':pageviewwidget', ':dbdao', ':moudleutils', ':readbookwidget', ':readbookcontrol'
+include ':app', ':basemvplib', ':pageviewwidget', ':dbdao', ':moudleutils', ':readbookwidget'
