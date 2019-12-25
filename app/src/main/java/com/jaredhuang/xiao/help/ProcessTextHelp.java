@@ -8,7 +8,7 @@ import com.jaredhuang.xiao.MApplication;
 public class ProcessTextHelp {
 
     private static PackageManager packageManager = MApplication.getInstance().getPackageManager();
-    private static ComponentName componentName = new ComponentName(MApplication.getInstance(), "com.jaredhuang.bookself.view.activity.ReceivingSharedActivity");
+    private static ComponentName componentName = new ComponentName(MApplication.getInstance(), "com.jaredhuang.xiao.view.activity.ReceivingSharedActivity");
 
     public static boolean isProcessTextEnabled() {
         return packageManager.getComponentEnabledSetting(componentName) != PackageManager.COMPONENT_ENABLED_STATE_DISABLED;

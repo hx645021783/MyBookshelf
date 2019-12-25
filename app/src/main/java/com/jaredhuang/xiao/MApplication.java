@@ -150,8 +150,7 @@ public class MApplication extends Application {
         } else {
             downloadPath = path;
         }
-        AppConstant.BOOK_CACHE_PATH = downloadPath + File.separator + "book_cache" + File.separator;
-        ReadViewExt.getInstance().setBookCachePath(AppConstant.BOOK_CACHE_PATH);
+        ReadViewExt.getInstance().setBookCachePath(downloadPath + File.separator + "book_cache" + File.separator);
         configPreferences.edit()
                 .putString(getString(R.string.pk_download_path), path)
                 .apply();
