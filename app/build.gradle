@@ -69,7 +69,7 @@ resourcePlaceholders {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation project(':dbdao')
+    implementation project(':pageviewdb')
     implementation project(':moudleutils')
     implementation project(':basemvplib')
     implementation project(':pageviewwidget')

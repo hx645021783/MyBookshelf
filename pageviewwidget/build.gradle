@@ -27,5 +27,5 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':basemvplib')
     implementation project(':moudleutils')
-    implementation project(':dbdao')
+    implementation project(':pageviewdb')
 }
