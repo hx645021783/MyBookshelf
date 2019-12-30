@@ -18,7 +18,7 @@ public class BookContentBean {
 
     private String durChapterContent; //当前章节内容
 
-    private String tag;   //来源  某个网站/本地
+    private String domain;   //来源  某个网站/本地
 
     private Long timeMillis;
 
@@ -26,15 +26,15 @@ public class BookContentBean {
 
     }
 
-    @Generated(hash = 695554675)
+    @Generated(hash = 2138814505)
     public BookContentBean(String noteUrl, String durChapterUrl,
-                           Integer durChapterIndex, String durChapterContent, String tag,
-                           Long timeMillis) {
+            Integer durChapterIndex, String durChapterContent, String domain,
+            Long timeMillis) {
         this.noteUrl = noteUrl;
         this.durChapterUrl = durChapterUrl;
         this.durChapterIndex = durChapterIndex;
         this.durChapterContent = durChapterContent;
-        this.tag = tag;
+        this.domain = domain;
         this.timeMillis = timeMillis;
     }
 
@@ -62,12 +62,12 @@ public class BookContentBean {
         this.durChapterContent = durChapterContent;
     }
 
-    public String getTag() {
-        return tag;
+    public String getDomain() {
+        return domain;
     }
 
-    public void setTag(String tag) {
-        this.tag = tag;
+    public void setDomain(String domain) {
+        this.domain = domain;
     }
 
     public String getNoteUrl() {
@@ -97,4 +97,15 @@ public class BookContentBean {
         return timeMillis < System.currentTimeMillis();
     }
 
+    @Override
+    public String toString() {
+        return "BookContentBean{" +
+                "noteUrl='" + noteUrl + '\'' +
+                ", durChapterUrl='" + durChapterUrl + '\'' +
+                ", durChapterIndex=" + durChapterIndex +
+                ", durChapterContent='" + durChapterContent + '\'' +
+                ", domain='" + domain + '\'' +
+                ", timeMillis=" + timeMillis +
+                '}';
+    }
 }

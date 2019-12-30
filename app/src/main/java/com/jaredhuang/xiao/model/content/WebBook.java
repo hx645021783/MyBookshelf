@@ -140,14 +140,14 @@ public class WebBook extends BaseModelImpl {
      */
     public Observable<BookContentBean> getBookContent(final BaseChapterBean chapterBean, final BaseChapterBean nextChapterBean, final BookCollectBean bookCollectBean) {
         if (bookSourceBean == null) {
-            return Observable.error(new NoSourceThrowable(chapterBean.getTag()));
+            return Observable.error(new NoSourceThrowable(chapterBean.getDomain()));
         }
         if (isEmpty(bookSourceBean.getRuleBookContent())) {
             return Observable.create(emitter -> {
                 BookContentBean bookContentBean = new BookContentBean();
                 bookContentBean.setDurChapterContent(chapterBean.getDurChapterUrl());
                 bookContentBean.setDurChapterIndex(chapterBean.getDurChapterIndex());
-                bookContentBean.setTag(bookCollectBean.getTag());
+                bookContentBean.setDomain(bookCollectBean.getDomain());
                 bookContentBean.setDurChapterUrl(chapterBean.getDurChapterUrl());
                 emitter.onNext(bookContentBean);
                 emitter.onComplete();

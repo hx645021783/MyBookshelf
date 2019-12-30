@@ -13,7 +13,7 @@ import java.util.Objects;
  */
 @Entity
 public class BookChapterBean implements Cloneable, BaseChapterBean {
-    private String tag;
+    private String domain;
     private String noteUrl; //对应BookInfoBean noteUrl;
 
     private int durChapterIndex;  //当前章节数
@@ -29,22 +29,26 @@ public class BookChapterBean implements Cloneable, BaseChapterBean {
     public BookChapterBean() {
     }
 
-    @Generated(hash = 304828234)
-    public BookChapterBean(String tag, String noteUrl, int durChapterIndex, String durChapterUrl, String durChapterName,
-                           Long start, Long end) {
-        this.tag = tag;
+
+
+    public BookChapterBean(String domain, String durChapterName, String durChapterUrl) {
+        this.domain = domain;
+        this.durChapterName = durChapterName;
+        this.durChapterUrl = durChapterUrl;
+    }
+
+
+
+    @Generated(hash = 589871795)
+    public BookChapterBean(String domain, String noteUrl, int durChapterIndex,
+            String durChapterUrl, String durChapterName, Long start, Long end) {
+        this.domain = domain;
         this.noteUrl = noteUrl;
         this.durChapterIndex = durChapterIndex;
         this.durChapterUrl = durChapterUrl;
         this.durChapterName = durChapterName;
         this.start = start;
         this.end = end;
-    }
-
-    public BookChapterBean(String tag, String durChapterName, String durChapterUrl) {
-        this.tag = tag;
-        this.durChapterName = durChapterName;
-        this.durChapterUrl = durChapterUrl;
     }
 
     @Override
@@ -77,12 +81,12 @@ public class BookChapterBean implements Cloneable, BaseChapterBean {
     }
 
     @Override
-    public String getTag() {
-        return this.tag;
+    public String getDomain() {
+        return this.domain;
     }
 
-    public void setTag(String tag) {
-        this.tag = tag;
+    public void setDomain(String domain) {
+        this.domain = domain;
     }
 
     @Override
@@ -135,5 +139,18 @@ public class BookChapterBean implements Cloneable, BaseChapterBean {
 
     public void setEnd(Long end) {
         this.end = end;
+    }
+
+    @Override
+    public String toString() {
+        return "BookChapterBean{" +
+                "domain='" + domain + '\'' +
+                ", noteUrl='" + noteUrl + '\'' +
+                ", durChapterIndex=" + durChapterIndex +
+                ", durChapterUrl='" + durChapterUrl + '\'' +
+                ", durChapterName='" + durChapterName + '\'' +
+                ", start=" + start +
+                ", end=" + end +
+                '}';
     }
 }

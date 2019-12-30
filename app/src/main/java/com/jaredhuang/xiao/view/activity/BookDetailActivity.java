@@ -158,7 +158,7 @@ public class BookDetailActivity extends MBaseActivity<BookDetailContract.Present
         bookCollectBean = mPresenter.getBookShelf();
         BookInfoBean bookInfoBean;
         if (null != bookCollectBean) {
-            if (BookCollectBean.LOCAL_TAG.equals(bookCollectBean.getTag())) {
+            if (BookCollectBean.LOCAL_TAG.equals(bookCollectBean.getDomain())) {
                 ivMenu.setVisibility(View.GONE);
             } else {
                 ivMenu.setVisibility(View.VISIBLE);
@@ -204,7 +204,7 @@ public class BookDetailActivity extends MBaseActivity<BookDetailContract.Present
             } else {
                 upImageView(bookInfoBean.getCoverUrl());
             }
-            if (bookCollectBean.getTag().equals(BookCollectBean.LOCAL_TAG)) {
+            if (bookCollectBean.getDomain().equals(BookCollectBean.LOCAL_TAG)) {
                 tvChangeOrigin.setVisibility(View.INVISIBLE);
             } else {
                 tvChangeOrigin.setVisibility(View.VISIBLE);
@@ -309,7 +309,7 @@ public class BookDetailActivity extends MBaseActivity<BookDetailContract.Present
             intent.putExtra("openFrom", ReadBookPresenter.OPEN_FROM_APP);
             intent.putExtra("inBookshelf", mPresenter.getInBookShelf());
             String key = String.valueOf(System.currentTimeMillis());
-            String bookKey = "book" + key;
+            String bookKey = "mBookCollectBean" + key;
             intent.putExtra("bookKey", bookKey);
             BitIntentDataManager.getInstance().putData(bookKey, mPresenter.getBookShelf().clone());
             startActivityByAnim(intent, android.R.anim.fade_in, android.R.anim.fade_out);
@@ -329,17 +329,17 @@ public class BookDetailActivity extends MBaseActivity<BookDetailContract.Present
 
         ivMenu.setOnClickListener(view -> {
             PopupMenu popupMenu = new PopupMenu(this, view, Gravity.END);
-            if (!mPresenter.getBookShelf().getTag().equals(BookCollectBean.LOCAL_TAG)) {
+            if (!mPresenter.getBookShelf().getDomain().equals(BookCollectBean.LOCAL_TAG)) {
                 popupMenu.getMenu().add(Menu.NONE, R.id.menu_refresh, Menu.NONE, R.string.refresh);
             }
-            if (mPresenter.getInBookShelf() && !mPresenter.getBookShelf().getTag().equals(BookCollectBean.LOCAL_TAG)) {
+            if (mPresenter.getInBookShelf() && !mPresenter.getBookShelf().getDomain().equals(BookCollectBean.LOCAL_TAG)) {
                 if (mPresenter.getBookShelf().getAllowUpdate()) {
                     popupMenu.getMenu().add(Menu.NONE, R.id.menu_disable_update, Menu.NONE, R.string.disable_update);
                 } else {
                     popupMenu.getMenu().add(Menu.NONE, R.id.menu_allow_update, Menu.NONE, R.string.allow_update);
                 }
             }
-            if (!mPresenter.getBookShelf().getTag().equals(BookCollectBean.LOCAL_TAG)) {
+            if (!mPresenter.getBookShelf().getDomain().equals(BookCollectBean.LOCAL_TAG)) {
                 popupMenu.getMenu().add(Menu.NONE, R.id.menu_edit, Menu.NONE, R.string.edit_book_source);
             }
             popupMenu.setOnMenuItemClickListener(menuItem -> {
@@ -356,7 +356,7 @@ public class BookDetailActivity extends MBaseActivity<BookDetailContract.Present
                         mPresenter.addToBookShelf();
                         break;
                     case R.id.menu_edit:
-                        BookSourceBean sourceBean = BookSourceManager.getBookSourceByUrl(mPresenter.getBookShelf().getTag());
+                        BookSourceBean sourceBean = BookSourceManager.getBookSourceByUrl(mPresenter.getBookShelf().getDomain());
                         if (sourceBean != null) {
                             SourceEditActivity.startThis(this, sourceBean);
                         }

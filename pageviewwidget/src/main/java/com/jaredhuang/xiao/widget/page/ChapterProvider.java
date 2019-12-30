@@ -72,7 +72,7 @@ class ChapterProvider {
     private TxtChapter loadPageList(BookChapterBean chapter, @NonNull String content) {
         //生成的页面
         TxtChapter txtChapter = new TxtChapter(chapter.getDurChapterIndex());
-        if (pageLoader.book.isAudio()) {
+        if (pageLoader.mBookCollectBean.isAudio()) {
             txtChapter.setStatus(TxtChapter.Status.FINISH);
             txtChapter.setMsg(content);
             TxtPage page = new TxtPage(txtChapter.getTxtPageList().size());
@@ -86,7 +86,7 @@ class ChapterProvider {
             return txtChapter;
         }
         content = toTraditional( content);
-//        content = contentHelper.replaceContent(pageLoader.book.getBookInfoBean().getName(), pageLoader.book.getTag(), content, pageLoader.book.getReplaceEnable());
+//        content = contentHelper.replaceContent(pageLoader.mBookCollectBean.getBookInfoBean().getName(), pageLoader.mBookCollectBean.getDomain(), content, pageLoader.mBookCollectBean.getReplaceEnable());
         String[] allLine = content.split("\n");
         List<String> lines = new ArrayList<>();
         List<TxtLine> txtLists = new ArrayList<>();//记录每个字的位置 //pzl
@@ -96,7 +96,7 @@ class ChapterProvider {
         String paragraph = null;
         if (showTitle) {
             paragraph = toTraditional(  chapter.getDurChapterName());
-//            paragraph = contentHelper.replaceContent(pageLoader.book.getBookInfoBean().getName(), pageLoader.book.getTag(), chapter.getDurChapterName(), pageLoader.book.getReplaceEnable());
+//            paragraph = contentHelper.replaceContent(pageLoader.mBookCollectBean.getBookInfoBean().getName(), pageLoader.mBookCollectBean.getDomain(), chapter.getDurChapterName(), pageLoader.mBookCollectBean.getReplaceEnable());
             paragraph = paragraph.trim() + "\n";
         }
         int i = 1;

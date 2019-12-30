@@ -64,7 +64,7 @@ public class BookDetailPresenter extends BasePresenterImpl<BookDetailContract.Vi
             inBookShelf = true;
             searchBook = new SearchBookBean();
             searchBook.setNoteUrl(bookShelf.getNoteUrl());
-            searchBook.setTag(bookShelf.getTag());
+            searchBook.setDomain(bookShelf.getDomain());
         } else {
             initBookFormSearch((SearchBookBean) BitIntentDataManager.getInstance().getData(key));
         }
@@ -108,7 +108,7 @@ public class BookDetailPresenter extends BasePresenterImpl<BookDetailContract.Vi
 
     @Override
     public void getBookShelfInfo() {
-        if (BookCollectBean.LOCAL_TAG.equals(bookShelf.getTag())) return;
+        if (BookCollectBean.LOCAL_TAG.equals(bookShelf.getDomain())) return;
         WebBookModel.getInstance().getBookInfo(bookShelf)
                 .flatMap(bookShelfBean -> WebBookModel.getInstance().getChapterList(bookShelfBean))
                 .flatMap(chapterBeans -> saveBookToShelfO(bookShelf, chapterBeans))
@@ -238,7 +238,7 @@ public class BookDetailPresenter extends BasePresenterImpl<BookDetailContract.Vi
                         bookShelf = value.getData1();
                         chapterBeanList = value.getData2();
                         mView.updateView();
-                        String tag = bookShelf.getTag();
+                        String tag = bookShelf.getDomain();
                         try {
                             long currentTime = System.currentTimeMillis();
                             String bookName = bookShelf.getBookInfoBean().getName();

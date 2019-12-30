@@ -50,7 +50,7 @@ public class ChapterListActivity extends BaseTabActivity {
     public static void startThis(MBaseActivity activity, BookCollectBean bookShelf, List<BookChapterBean> chapterBeanList) {
         Intent intent = new Intent(activity, ChapterListActivity.class);
         String key = String.valueOf(System.currentTimeMillis());
-        String bookKey = "book" + key;
+        String bookKey = "mBookCollectBean" + key;
         intent.putExtra("bookKey", bookKey);
         BitIntentDataManager.getInstance().putData(bookKey, bookShelf.clone());
         String chapterListKey = "chapterList" + key;
@@ -76,7 +76,7 @@ public class ChapterListActivity extends BaseTabActivity {
         super.onSaveInstanceState(outState);
         if (bookShelf != null) {
             String key = String.valueOf(System.currentTimeMillis());
-            String bookKey = "book" + key;
+            String bookKey = "mBookCollectBean" + key;
             getIntent().putExtra("bookKey", bookKey);
             BitIntentDataManager.getInstance().putData(bookKey, bookShelf.clone());
             String chapterListKey = "chapterList" + key;

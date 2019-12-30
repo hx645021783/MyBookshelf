@@ -174,7 +174,7 @@ class BookList {
     private SearchBookBean getItem(AnalyzeRule analyzer, String baseUrl) throws Exception {
         SearchBookBean item = new SearchBookBean();
         analyzer.setBook(item);
-        item.setTag(tag);
+        item.setDomain(tag);
         item.setOrigin(sourceName);
         item.setNoteUrl(baseUrl);
         // 获取详情页预处理规则
@@ -185,7 +185,7 @@ class BookList {
                 ruleInfoInit = ruleInfoInit.substring(1);
                 Debug.printLog(tag, "┌详情信息预处理");
                 BookCollectBean bookCollectBean = new BookCollectBean();
-                bookCollectBean.setTag(tag);
+                bookCollectBean.setDomain(tag);
                 bookCollectBean.setNoteUrl(baseUrl);
                 AnalyzeByRegex.getInfoOfRegex(String.valueOf(analyzer.getContent()), ruleInfoInit.split("&&"), 0, bookCollectBean, analyzer, bookSourceBean, tag);
                 if (isEmpty(bookCollectBean.getBookInfoBean().getName())) return null;
@@ -236,7 +236,7 @@ class BookList {
         String bookName = StringUtils.formatHtml(String.valueOf(nativeObject.get(ruleName)));
         Debug.printLog(tag, 1, "└" + bookName, printLog);
         if (!isEmpty(bookName)) {
-            item.setTag(tag);
+            item.setDomain(tag);
             item.setOrigin(sourceName);
             item.setName(bookName);
             Debug.printLog(tag, 1, "┌获取作者", printLog);
@@ -273,7 +273,7 @@ class BookList {
         String bookName = StringUtils.formatHtml(analyzer.getString(ruleName));
         Debug.printLog(tag, 1, "└" + bookName, printLog);
         if (!TextUtils.isEmpty(bookName)) {
-            item.setTag(tag);
+            item.setDomain(tag);
             item.setOrigin(sourceName);
             item.setName(bookName);
             Debug.printLog(tag, 1, "┌获取作者", printLog);

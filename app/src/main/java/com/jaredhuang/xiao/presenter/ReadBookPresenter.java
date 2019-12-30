@@ -122,7 +122,7 @@ public class ReadBookPresenter extends BasePresenterImpl<ReadBookContract.View> 
      */
     public void disableDurBookSource() {
         try {
-            BookSourceBean bookSourceBean = BookSourceManager.getBookSourceByUrl(bookShelf.getTag());
+            BookSourceBean bookSourceBean = BookSourceManager.getBookSourceByUrl(bookShelf.getDomain());
             if (bookSourceBean != null) {
                 bookSourceBean.addGroup("禁用");
                 DbHelper.getDaoSession().getBookSourceBeanDao().insertOrReplace(bookSourceBean);
@@ -225,7 +225,7 @@ public class ReadBookPresenter extends BasePresenterImpl<ReadBookContract.View> 
                         bookShelf = value.getData1();
                         chapterBeanList = value.getData2();
                         mView.changeSourceFinish(bookShelf);
-                        String tag = bookShelf.getTag();
+                        String tag = bookShelf.getDomain();
                         try {
                             long currentTime = System.currentTimeMillis();
                             String bookName = bookShelf.getBookInfoBean().getName();
@@ -395,7 +395,7 @@ public class ReadBookPresenter extends BasePresenterImpl<ReadBookContract.View> 
     @Override
     public BookSourceBean getBookSource() {
         if (bookShelf != null) {
-            return BookSourceManager.getBookSourceByUrl(bookShelf.getTag());
+            return BookSourceManager.getBookSourceByUrl(bookShelf.getDomain());
         }
         return null;
     }

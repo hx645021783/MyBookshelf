@@ -56,7 +56,7 @@ public class BookChapterList {
                 Debug.printLog(tag, 1, "┌成功获取目录页", analyzeNextUrl);
                 Debug.printLog(tag, 1, "└" + bookCollectBean.getBookInfoBean().getChapterUrl(), analyzeNextUrl);
             }
-            bookCollectBean.setTag(tag);
+            bookCollectBean.setDomain(tag);
             AnalyzeRule analyzer = new AnalyzeRule(bookCollectBean);
             String ruleChapterList = bookSourceBean.getRuleChapterList();
             if (ruleChapterList != null && ruleChapterList.startsWith("-")) {

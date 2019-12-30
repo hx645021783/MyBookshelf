@@ -63,7 +63,7 @@ public class ReplaceRuleDialog extends BaseDialog {
             replaceRuleBean.setEnable(true);
             cbUseRegex.setChecked(ReadDataExt.getInstance().getConfigPreferences().getBoolean("useRegexInNewRule", false));
             if (bookCollectBean != null) {
-                tieUseTo.setText(String.format("%s,%s", bookCollectBean.getBookInfoBean().getName(), bookCollectBean.getTag()));
+                tieUseTo.setText(String.format("%s,%s", bookCollectBean.getBookInfoBean().getName(), bookCollectBean.getDomain()));
             }
         }
     }

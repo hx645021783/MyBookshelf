@@ -65,7 +65,7 @@ public class UpLastChapterModel {
         Observable.create((ObservableOnSubscribe<BookCollectBean>) e -> {
             List<BookCollectBean> bookCollectBeans = BookCollectHelp.getAllBook();
             for (BookCollectBean bookCollectBean : bookCollectBeans) {
-                if (!Objects.equals(bookCollectBean.getTag(), BookCollectBean.LOCAL_TAG)) {
+                if (!Objects.equals(bookCollectBean.getDomain(), BookCollectBean.LOCAL_TAG)) {
                     e.onNext(bookCollectBean);
                 }
             }
@@ -167,7 +167,7 @@ public class UpLastChapterModel {
             List<SearchBookBean> searchBookBeans = DbHelper.getDaoSession().getSearchBookBeanDao().queryBuilder()
                     .where(SearchBookBeanDao.Properties.Name.eq(bookShelf.getBookInfoBean().getName())).list();
             for (SearchBookBean searchBookBean : searchBookBeans) {
-                BookSourceBean sourceBean = BookSourceManager.getBookSourceByUrl(searchBookBean.getTag());
+                BookSourceBean sourceBean = BookSourceManager.getBookSourceByUrl(searchBookBean.getDomain());
                 if (sourceBean == null) {
                     DbHelper.getDaoSession().getSearchBookBeanDao().delete(searchBookBean);
                 } else if (System.currentTimeMillis() - searchBookBean.getUpTime() > 1000 * 60 * 60

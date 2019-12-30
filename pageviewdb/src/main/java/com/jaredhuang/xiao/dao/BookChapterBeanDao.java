@@ -24,7 +24,7 @@ public class BookChapterBeanDao extends AbstractDao<BookChapterBean, String> {
      * Can be used for QueryBuilder and for referencing column names.
      */
     public static class Properties {
-        public final static Property Tag = new Property(0, String.class, "tag", false, "TAG");
+        public final static Property Domain = new Property(0, String.class, "domain", false, "DOMAIN");
         public final static Property NoteUrl = new Property(1, String.class, "noteUrl", false, "NOTE_URL");
         public final static Property DurChapterIndex = new Property(2, int.class, "durChapterIndex", false, "DUR_CHAPTER_INDEX");
         public final static Property DurChapterUrl = new Property(3, String.class, "durChapterUrl", true, "DUR_CHAPTER_URL");
@@ -46,7 +46,7 @@ public class BookChapterBeanDao extends AbstractDao<BookChapterBean, String> {
     public static void createTable(Database db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"BOOK_CHAPTER_BEAN\" (" + //
-                "\"TAG\" TEXT," + // 0: tag
+                "\"DOMAIN\" TEXT," + // 0: domain
                 "\"NOTE_URL\" TEXT," + // 1: noteUrl
                 "\"DUR_CHAPTER_INDEX\" INTEGER NOT NULL ," + // 2: durChapterIndex
                 "\"DUR_CHAPTER_URL\" TEXT PRIMARY KEY NOT NULL ," + // 3: durChapterUrl
@@ -65,9 +65,9 @@ public class BookChapterBeanDao extends AbstractDao<BookChapterBean, String> {
     protected final void bindValues(DatabaseStatement stmt, BookChapterBean entity) {
         stmt.clearBindings();
  
-        String tag = entity.getTag();
-        if (tag != null) {
-            stmt.bindString(1, tag);
+        String domain = entity.getDomain();
+        if (domain != null) {
+            stmt.bindString(1, domain);
         }
  
         String noteUrl = entity.getNoteUrl();
@@ -101,9 +101,9 @@ public class BookChapterBeanDao extends AbstractDao<BookChapterBean, String> {
     protected final void bindValues(SQLiteStatement stmt, BookChapterBean entity) {
         stmt.clearBindings();
  
-        String tag = entity.getTag();
-        if (tag != null) {
-            stmt.bindString(1, tag);
+        String domain = entity.getDomain();
+        if (domain != null) {
+            stmt.bindString(1, domain);
         }
  
         String noteUrl = entity.getNoteUrl();
@@ -141,7 +141,7 @@ public class BookChapterBeanDao extends AbstractDao<BookChapterBean, String> {
     @Override
     public BookChapterBean readEntity(Cursor cursor, int offset) {
         BookChapterBean entity = new BookChapterBean( //
-            cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0), // tag
+            cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0), // domain
             cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // noteUrl
             cursor.getInt(offset + 2), // durChapterIndex
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // durChapterUrl
@@ -154,7 +154,7 @@ public class BookChapterBeanDao extends AbstractDao<BookChapterBean, String> {
      
     @Override
     public void readEntity(Cursor cursor, BookChapterBean entity, int offset) {
-        entity.setTag(cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0));
+        entity.setDomain(cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0));
         entity.setNoteUrl(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
         entity.setDurChapterIndex(cursor.getInt(offset + 2));
         entity.setDurChapterUrl(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));

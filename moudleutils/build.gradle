@@ -26,4 +26,8 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':basemvplib')
+
+    //J_SOUP
+    implementation 'org.jsoup:jsoup:1.12.1'
+    implementation 'com.jayway.jsonpath:json-path:2.4.0'
 }

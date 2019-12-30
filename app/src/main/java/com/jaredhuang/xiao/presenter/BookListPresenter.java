@@ -92,12 +92,12 @@ public class BookListPresenter extends BasePresenterImpl<BookListContract.View> 
         }
         AsyncTask.execute(() -> {
             for (BookCollectBean bookCollectBean : new ArrayList<>(bookCollectBeans)) {
-                if (!bookCollectBean.getTag().equals(BookCollectBean.LOCAL_TAG) && (!onlyNew || bookCollectBean.getHasUpdate())) {
+                if (!bookCollectBean.getDomain().equals(BookCollectBean.LOCAL_TAG) && (!onlyNew || bookCollectBean.getHasUpdate())) {
                     List<BookChapterBean> chapterBeanList = BookCollectHelp.getChapterList(bookCollectBean.getNoteUrl());
                     if (chapterBeanList.size() >= bookCollectBean.getDurChapter()) {
                         for (int start = bookCollectBean.getDurChapter(); start < chapterBeanList.size(); start++) {
 
-                            boolean chapterCached = BookCollectHelp.isChapterCached(bookCollectBean.getBookInfoBean().getName(), chapterBeanList.get(start).getTag(), chapterBeanList.get(start), bookCollectBean.getBookInfoBean().isAudio());
+                            boolean chapterCached = BookCollectHelp.isChapterCached(bookCollectBean.getBookInfoBean().getName(), chapterBeanList.get(start).getDomain(), chapterBeanList.get(start), bookCollectBean.getBookInfoBean().isAudio());
                             if (!chapterCached) {
                                 DownloadBookBean downloadBook = new DownloadBookBean();
                                 downloadBook.setName(bookCollectBean.getBookInfoBean().getName());
@@ -132,7 +132,7 @@ public class BookListPresenter extends BasePresenterImpl<BookListContract.View> 
         refreshIndex++;
         if (refreshIndex < bookCollectBeans.size()) {
             BookCollectBean bookCollectBean = bookCollectBeans.get(refreshIndex);
-            if (!bookCollectBean.getTag().equals(BookCollectBean.LOCAL_TAG) && bookCollectBean.getAllowUpdate() && bookCollectBean.getGroup() != 3) {
+            if (!bookCollectBean.getDomain().equals(BookCollectBean.LOCAL_TAG) && bookCollectBean.getAllowUpdate() && bookCollectBean.getGroup() != 3) {
                 int chapterNum = bookCollectBean.getChapterListSize();
                 bookCollectBean.setLoading(true);
                 mView.refreshBook(bookCollectBean.getNoteUrl());

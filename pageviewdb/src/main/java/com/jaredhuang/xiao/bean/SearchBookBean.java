@@ -30,7 +30,7 @@ public class SearchBookBean implements BaseBookBean {
     private String coverUrl;//封面URL
     private String name;
     private String author;
-    private String tag;// 网站域名
+    private String domain;// 网站域名
     private String kind;//分类
     private String origin;//来源
     private String lastChapter;
@@ -61,23 +61,22 @@ public class SearchBookBean implements BaseBookBean {
 
     /**
      * 手动新增
-     * @param tag   网站域名
+     * @param domain   网站域名
      * @param origin
      */
-    public SearchBookBean(String tag, String origin) {
-        this.tag = tag;
+    public SearchBookBean(String domain, String origin) {
+        this.domain = domain;
         this.origin = origin;
     }
 
-    @Generated(hash = 337890066)
-    public SearchBookBean(String noteUrl, String coverUrl, String name, String author, String tag, String kind,
-                          String origin, String lastChapter, String introduce, String chapterUrl, Long addTime, Long upTime,
-                          String variable) {
+    @Generated(hash = 887441386)
+    public SearchBookBean(String noteUrl, String coverUrl, String name, String author, String domain, String kind, String origin,
+            String lastChapter, String introduce, String chapterUrl, Long addTime, Long upTime, String variable) {
         this.noteUrl = noteUrl;
         this.coverUrl = coverUrl;
         this.name = name;
         this.author = author;
-        this.tag = tag;
+        this.domain = domain;
         this.kind = kind;
         this.origin = origin;
         this.lastChapter = lastChapter;
@@ -188,12 +187,12 @@ public class SearchBookBean implements BaseBookBean {
     }
 
     @Override
-    public String getTag() {
-        return tag;
+    public String getDomain() {
+        return domain;
     }
 
-    public void setTag(String tag) {
-        this.tag = tag;
+    public void setDomain(String domain) {
+        this.domain = domain;
     }
 
     public String getOrigin() {
@@ -252,7 +251,7 @@ public class SearchBookBean implements BaseBookBean {
 
     public int getWeight() {
 
-        BookSourceBean source =DbHelper.getDaoSession().getBookSourceBeanDao().load(this.tag);
+        BookSourceBean source =DbHelper.getDaoSession().getBookSourceBeanDao().load(this.domain);
         if (source != null)
             return source.getWeight();
         else
@@ -294,4 +293,5 @@ public class SearchBookBean implements BaseBookBean {
         this.coverUrl = coverUrl;
         this.noteUrl = noteUrl;
     }
+
 }

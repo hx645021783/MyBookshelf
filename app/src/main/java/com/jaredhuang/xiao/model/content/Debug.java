@@ -2,7 +2,6 @@ package com.jaredhuang.xiao.model.content;
 
 import android.annotation.SuppressLint;
 import android.text.TextUtils;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -79,7 +78,7 @@ public class Debug {
         if (NetworkUtils.isUrl(key)) {
             printLog(String.format("%s %s", getDoTime(), "⇒开始访问详情页:" + key));
             BookCollectBean bookCollectBean = new BookCollectBean();
-            bookCollectBean.setTag(Debug.SOURCE_DEBUG_TAG);
+            bookCollectBean.setDomain(Debug.SOURCE_DEBUG_TAG);
             bookCollectBean.setNoteUrl(key);
             bookCollectBean.setDurChapter(0);
             bookCollectBean.setGroup(0);

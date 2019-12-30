@@ -218,7 +218,7 @@ public class ReadBookActivity extends MBaseActivity<ReadBookContract.Presenter> 
             outState.putString("noteUrl", mPresenter.getBookShelf().getNoteUrl());
             outState.putBoolean("isAdd", isAdd);
             String key = String.valueOf(System.currentTimeMillis());
-            String bookKey = "book" + key;
+            String bookKey = "mBookCollectBean" + key;
             getIntent().putExtra("bookKey", bookKey);
             BitIntentDataManager.getInstance().putData(bookKey, mPresenter.getBookShelf().clone());
             String chapterListKey = "chapterList" + key;
@@ -980,7 +980,7 @@ public class ReadBookActivity extends MBaseActivity<ReadBookContract.Presenter> 
                 }
             }
         });
-        mPageLoader.refreshChapterList();
+        mPageLoader.loadChapterList();
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -1499,7 +1499,7 @@ public class ReadBookActivity extends MBaseActivity<ReadBookContract.Presenter> 
             ReadAloudService.play(ReadBookActivity.this, false, unReadContent,
                     mPresenter.getBookShelf().getBookInfoBean().getName(),
                     ChapterContentHelp.getInstance().replaceContent(mPresenter.getBookShelf().getBookInfoBean().getName(),
-                            mPresenter.getBookShelf().getTag(),
+                            mPresenter.getBookShelf().getDomain(),
                             mPresenter.getBookShelf().getDurChapterName(),
                             mPresenter.getBookShelf().getReplaceEnable()),
                     mPresenter.getBookShelf().isAudio(),
@@ -1730,7 +1730,7 @@ public class ReadBookActivity extends MBaseActivity<ReadBookContract.Presenter> 
     @Override
     public void upMenu() {
         if (menu == null) return;
-        boolean onLine = mPresenter.getBookShelf() != null && !mPresenter.getBookShelf().getTag().equals(BookCollectBean.LOCAL_TAG);
+        boolean onLine = mPresenter.getBookShelf() != null && !mPresenter.getBookShelf().getDomain().equals(BookCollectBean.LOCAL_TAG);
         if (onLine) {
             tvUrl.setVisibility(View.VISIBLE);
             atvLine.setVisibility(View.VISIBLE);

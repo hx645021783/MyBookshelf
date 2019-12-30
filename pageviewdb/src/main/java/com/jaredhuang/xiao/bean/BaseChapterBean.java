@@ -2,7 +2,7 @@ package com.jaredhuang.xiao.bean;
 
 public interface BaseChapterBean {
 
-    String getTag();
+    String getDomain();
 
     String getDurChapterUrl();
 

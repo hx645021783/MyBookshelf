@@ -34,7 +34,7 @@ public class WebBookModel {
      * return BookCollectBean
      */
     public Observable<BookCollectBean> getBookInfo(BookCollectBean bookCollectBean) {
-        return WebBook.getInstance(bookCollectBean.getTag())
+        return WebBook.getInstance(bookCollectBean.getDomain())
                 .getBookInfo(bookCollectBean)
                 .timeout(TIME_OUT, TimeUnit.SECONDS);
     }
@@ -44,7 +44,7 @@ public class WebBookModel {
      * return BookCollectBean
      */
     public Observable<List<BookChapterBean>> getChapterList(final BookCollectBean bookCollectBean) {
-        return WebBook.getInstance(bookCollectBean.getTag())
+        return WebBook.getInstance(bookCollectBean.getDomain())
                 .getChapterList(bookCollectBean)
                 .flatMap((chapterList) -> upChapterList(bookCollectBean, chapterList))
                 .timeout(TIME_OUT, TimeUnit.SECONDS);
@@ -54,9 +54,8 @@ public class WebBookModel {
      * 章节缓存
      */
     public Observable<BookContentBean> getBookContent(BookCollectBean bookCollectBean, BaseChapterBean chapterBean, BaseChapterBean nextChapterBean) {
-        return WebBook.getInstance(chapterBean.getTag())
+        return WebBook.getInstance(chapterBean.getDomain())
                 .getBookContent(chapterBean, nextChapterBean, bookCollectBean)
-                .flatMap((bookContentBean -> saveContent(bookCollectBean.getBookInfoBean(), chapterBean, bookContentBean)))
                 .timeout(TIME_OUT, TimeUnit.SECONDS);
     }
 
@@ -86,7 +85,7 @@ public class WebBookModel {
             for (int i = 0; i < chapterList.size(); i++) {
                 BookChapterBean chapter = chapterList.get(i);
                 chapter.setDurChapterIndex(i);
-                chapter.setTag(bookCollectBean.getTag());
+                chapter.setDomain(bookCollectBean.getDomain());
                 chapter.setNoteUrl(bookCollectBean.getNoteUrl());
             }
             if (bookCollectBean.getChapterListSize() < chapterList.size()) {
@@ -118,7 +117,7 @@ public class WebBookModel {
                 bookContentBean.setTimeMillis(System.currentTimeMillis() + TimeUnit.HOURS.toMillis(1));
                 DbHelper.getDaoSession().getBookContentBeanDao().insertOrReplace(bookContentBean);
                 e.onNext(bookContentBean);
-            } else if (BookCollectHelp.saveChapterInfo(infoBean.getName() + "-" + chapterBean.getTag(), chapterBean.getDurChapterIndex(),
+            } else if (BookCollectHelp.saveChapterInfo(infoBean.getName() + "-" + chapterBean.getDomain(), chapterBean.getDurChapterIndex(),
                     chapterBean.getDurChapterName(), bookContentBean.getDurChapterContent())) {
                 RxBus.get().post(RxBusTag.CHAPTER_CHANGE, chapterBean);
                 e.onNext(bookContentBean);

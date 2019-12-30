@@ -115,9 +115,9 @@ public class ChapterListAdapter extends RecyclerView.Adapter<ChapterListAdapter.
 
         holder.tvName.setText(bookChapterBean.getDurChapterName());
 
-        boolean chapterCached = BookCollectHelp.isChapterCached(bookCollectBean.getBookInfoBean().getName(), bookChapterBean.getTag(), bookChapterBean, bookCollectBean.getBookInfoBean().isAudio());
+        boolean chapterCached = BookCollectHelp.isChapterCached(bookCollectBean.getBookInfoBean().getName(), bookChapterBean.getDomain(), bookChapterBean, bookCollectBean.getBookInfoBean().isAudio());
 
-        if (Objects.equals(bookCollectBean.getTag(), BookCollectBean.LOCAL_TAG) || chapterCached) {
+        if (Objects.equals(bookCollectBean.getDomain(), BookCollectBean.LOCAL_TAG) || chapterCached) {
             holder.tvName.setSelected(true);
             holder.tvName.getPaint().setFakeBoldText(true);
         } else {

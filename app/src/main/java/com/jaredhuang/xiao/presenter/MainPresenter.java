@@ -121,7 +121,7 @@ public class MainPresenter extends BasePresenterImpl<MainContract.View> implemen
                 }
                 if (bookSourceBean != null) {
                     BookCollectBean bookCollectBean = new BookCollectBean();
-                    bookCollectBean.setTag(bookSourceBean.getBookSourceUrl());
+                    bookCollectBean.setDomain(bookSourceBean.getBookSourceUrl());
                     bookCollectBean.setNoteUrl(bookUrl);
                     bookCollectBean.setDurChapter(0);
                     bookCollectBean.setGroup(mView.getGroup() % 4);

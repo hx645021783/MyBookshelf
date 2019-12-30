@@ -29,4 +29,6 @@ dependencies {
     implementation project(':moudleutils')
     implementation project(':pageviewdb')
     implementation project(':pageviewwidget')
+    implementation project(':easybookmodule')
+    implementation 'com.squareup.okhttp3:okhttp:4.1.1'
 }

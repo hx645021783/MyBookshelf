@@ -54,7 +54,7 @@ public class DownloadChapterBean implements BaseChapterBean {
     }
 
     @Override
-    public String getTag() {
+    public String getDomain() {
         return tag;
     }
 

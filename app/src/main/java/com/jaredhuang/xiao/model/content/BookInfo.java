@@ -37,11 +37,11 @@ class BookInfo {
                 Debug.printLog(tag, "┌成功获取详情页");
                 Debug.printLog(tag, "└" + baseUrl);
             }
-            bookCollectBean.setTag(tag);
+            bookCollectBean.setDomain(tag);
 
             BookInfoBean bookInfoBean = bookCollectBean.getBookInfoBean();
             bookInfoBean.setNoteUrl(baseUrl);   //id
-            bookInfoBean.setTag(tag);
+            bookInfoBean.setDomain(tag);
             bookInfoBean.setOrigin(sourceName);
             bookInfoBean.setBookSourceType(bookSourceBean.getBookSourceType()); // 是否为有声读物
 

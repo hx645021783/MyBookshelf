@@ -54,8 +54,8 @@ public abstract class DownloadTaskImpl implements IDownloadTask {
                     chapter.setDurChapterName(chapterList.get(i).getDurChapterName());
                     chapter.setDurChapterUrl(chapterList.get(i).getDurChapterUrl());
                     chapter.setNoteUrl(chapterList.get(i).getNoteUrl());
-                    chapter.setTag(chapterList.get(i).getTag());
-                    if (!BookCollectHelp.isChapterCached(chapter.getBookName(), chapter.getTag(), chapter, false)) {
+                    chapter.setTag(chapterList.get(i).getDomain());
+                    if (!BookCollectHelp.isChapterCached(chapter.getBookName(), chapter.getDomain(), chapter, false)) {
                         downloadChapters.add(chapter);
                     }
                 }
@@ -171,7 +171,7 @@ public abstract class DownloadTaskImpl implements IDownloadTask {
             DownloadChapterBean next = null;
             List<DownloadChapterBean> temp = new ArrayList<>(downloadChapters);
             for (DownloadChapterBean data : temp) {
-                boolean cached = BookCollectHelp.isChapterCached(data.getBookName(), data.getTag(), data, false);
+                boolean cached = BookCollectHelp.isChapterCached(data.getBookName(), data.getDomain(), data, false);
                 if (cached) {
                     removeFromDownloadList(data);
                 } else {
@@ -190,7 +190,7 @@ public abstract class DownloadTaskImpl implements IDownloadTask {
         whenProgress(chapter);
         BookCollectBean bookCollectBean = BookCollectHelp.getBook(chapter.getNoteUrl());
         Observable.create((ObservableOnSubscribe<DownloadChapterBean>) e -> {
-            if (!BookCollectHelp.isChapterCached(chapter.getBookName(), chapter.getTag(), chapter, false)) {
+            if (!BookCollectHelp.isChapterCached(chapter.getBookName(), chapter.getDomain(), chapter, false)) {
                 e.onNext(chapter);
             } else {
                 e.onError(new Exception("cached"));

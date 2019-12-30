@@ -36,7 +36,7 @@ public class ImportBookModel extends BaseModelImpl {
                 bookCollectBean.setDurChapter(0);
                 bookCollectBean.setDurChapterPage(0);
                 bookCollectBean.setGroup(3);
-                bookCollectBean.setTag(BookCollectBean.LOCAL_TAG);
+                bookCollectBean.setDomain(BookCollectBean.LOCAL_TAG);
                 bookCollectBean.setNoteUrl(file.getAbsolutePath());
                 bookCollectBean.setAllowUpdate(false);
 
@@ -62,7 +62,7 @@ public class ImportBookModel extends BaseModelImpl {
                 bookInfoBean.setFinalRefreshData(file.lastModified());
                 bookInfoBean.setCoverUrl("");
                 bookInfoBean.setNoteUrl(file.getAbsolutePath());
-                bookInfoBean.setTag(BookCollectBean.LOCAL_TAG);
+                bookInfoBean.setDomain(BookCollectBean.LOCAL_TAG);
                 bookInfoBean.setOrigin(MApplication.getInstance().getString(R.string.local));
 
                 DbHelper.getDaoSession().getBookInfoBeanDao().insertOrReplace(bookInfoBean);

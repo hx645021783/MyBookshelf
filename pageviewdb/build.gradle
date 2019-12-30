@@ -32,4 +32,12 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':basemvplib')
     implementation project(':moudleutils')
+    //GreenDao
+    api 'org.greenrobot:greendao:3.2.2'
+    api 'com.github.yuweiguocn:GreenDaoUpgradeHelper:v2.1.0'
+    //epub
+    implementation('nl.siegmann.epublib:epublib-core:3.1') {
+        exclude group: 'org.slf4j'
+        exclude group: 'xmlpull'
+    }
 }

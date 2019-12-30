@@ -143,7 +143,7 @@
     <string name="replace_rule">替換規則</string>
     <string name="replace_to">替換為</string>
     <string name="img_cover">封面</string>
-    <string name="book">書</string>
+    <string name="mBookCollectBean">書</string>
     <string name="volume_open_page">音量鍵翻頁</string>
     <string name="click_open_page">點擊翻頁</string>
     <string name="click_all_next_page">點擊總是翻下一頁</string>

@@ -30,7 +30,7 @@ public class BookCollectBeanDao extends AbstractDao<BookCollectBean, String> {
         public final static Property FinalDate = new Property(3, Long.class, "finalDate", false, "FINAL_DATE");
         public final static Property HasUpdate = new Property(4, Boolean.class, "hasUpdate", false, "HAS_UPDATE");
         public final static Property NewChapters = new Property(5, Integer.class, "newChapters", false, "NEW_CHAPTERS");
-        public final static Property Tag = new Property(6, String.class, "tag", false, "TAG");
+        public final static Property Domain = new Property(6, String.class, "domain", false, "DOMAIN");
         public final static Property SerialNumber = new Property(7, Integer.class, "serialNumber", false, "SERIAL_NUMBER");
         public final static Property FinalRefreshData = new Property(8, Long.class, "finalRefreshData", false, "FINAL_REFRESH_DATA");
         public final static Property Group = new Property(9, Integer.class, "group", false, "GROUP");
@@ -63,7 +63,7 @@ public class BookCollectBeanDao extends AbstractDao<BookCollectBean, String> {
                 "\"FINAL_DATE\" INTEGER," + // 3: finalDate
                 "\"HAS_UPDATE\" INTEGER," + // 4: hasUpdate
                 "\"NEW_CHAPTERS\" INTEGER," + // 5: newChapters
-                "\"TAG\" TEXT," + // 6: tag
+                "\"DOMAIN\" TEXT," + // 6: domain
                 "\"SERIAL_NUMBER\" INTEGER," + // 7: serialNumber
                 "\"FINAL_REFRESH_DATA\" INTEGER," + // 8: finalRefreshData
                 "\"GROUP\" INTEGER," + // 9: group
@@ -117,9 +117,9 @@ public class BookCollectBeanDao extends AbstractDao<BookCollectBean, String> {
             stmt.bindLong(6, newChapters);
         }
  
-        String tag = entity.getTag();
-        if (tag != null) {
-            stmt.bindString(7, tag);
+        String domain = entity.getDomain();
+        if (domain != null) {
+            stmt.bindString(7, domain);
         }
  
         Integer serialNumber = entity.getSerialNumber();
@@ -212,9 +212,9 @@ public class BookCollectBeanDao extends AbstractDao<BookCollectBean, String> {
             stmt.bindLong(6, newChapters);
         }
  
-        String tag = entity.getTag();
-        if (tag != null) {
-            stmt.bindString(7, tag);
+        String domain = entity.getDomain();
+        if (domain != null) {
+            stmt.bindString(7, domain);
         }
  
         Integer serialNumber = entity.getSerialNumber();
@@ -287,7 +287,7 @@ public class BookCollectBeanDao extends AbstractDao<BookCollectBean, String> {
             cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3), // finalDate
             cursor.isNull(offset + 4) ? null : cursor.getShort(offset + 4) != 0, // hasUpdate
             cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5), // newChapters
-            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // tag
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // domain
             cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7), // serialNumber
             cursor.isNull(offset + 8) ? null : cursor.getLong(offset + 8), // finalRefreshData
             cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9), // group
@@ -311,7 +311,7 @@ public class BookCollectBeanDao extends AbstractDao<BookCollectBean, String> {
         entity.setFinalDate(cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3));
         entity.setHasUpdate(cursor.isNull(offset + 4) ? null : cursor.getShort(offset + 4) != 0);
         entity.setNewChapters(cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5));
-        entity.setTag(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setDomain(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
         entity.setSerialNumber(cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7));
         entity.setFinalRefreshData(cursor.isNull(offset + 8) ? null : cursor.getLong(offset + 8));
         entity.setGroup(cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9));

@@ -50,25 +50,25 @@ public class PageLoaderText extends PageLoader {
     }
 
     @Override
-    public void refreshChapterList() {
+    public void loadChapterList() {
         Single.create((SingleOnSubscribe<List<BookChapterBean>>) e -> {
             // 对于文件是否存在，或者为空的判断，不作处理。 ==> 在文件打开前处理过了。
-            mBookFile = new File(book.getNoteUrl());
+            mBookFile = new File(mBookCollectBean.getNoteUrl());
             //获取文件编码
-            if (TextUtils.isEmpty(book.getBookInfoBean().getCharset())) {
-                book.getBookInfoBean().setCharset(EncodingDetect.getJavaEncode(mBookFile));
+            if (TextUtils.isEmpty(mBookCollectBean.getBookInfoBean().getCharset())) {
+                mBookCollectBean.getBookInfoBean().setCharset(EncodingDetect.getJavaEncode(mBookFile));
             }
-            mCharset = Charset.forName(book.getBookInfoBean().getCharset());
+            mCharset = Charset.forName(mBookCollectBean.getBookInfoBean().getCharset());
 
             Long lastModified = mBookFile.lastModified();
-            if (book.getFinalRefreshData() < lastModified) {
-                book.setFinalRefreshData(lastModified);
-                book.setHasUpdate(true);
+            if (mBookCollectBean.getFinalRefreshData() < lastModified) {
+                mBookCollectBean.setFinalRefreshData(lastModified);
+                mBookCollectBean.setHasUpdate(true);
             }
-            if (book.getHasUpdate() || bookChapterBeanList.size() == 0) {
+            if (mBookCollectBean.getHasUpdate() || bookChapterBeanList.size() == 0) {
                 List<BookChapterBean> chapterBeanList = loadChapters();
-                book.setHasUpdate(false);
-                book.setChapterListSize(chapterBeanList.size());
+                mBookCollectBean.setHasUpdate(false);
+                mBookCollectBean.setChapterListSize(chapterBeanList.size());
                 e.onSuccess(chapterBeanList);
             } else {
                 e.onSuccess(new ArrayList<>());
@@ -84,13 +84,13 @@ public class PageLoaderText extends PageLoader {
                     public void onSuccess(List<BookChapterBean> bookChapterBeans) {
                         isChapterListPrepare = true;
                         addBookChapterBeanList(bookChapterBeans);
-                        BookCollectHelp.saveChapterList(book,bookChapterBeans);
+                        BookCollectHelp.saveChapterList(mBookCollectBean,bookChapterBeans);
                         // 目录加载完成，执行回调操作。
                         if (!bookChapterBeans.isEmpty()) {
                             onPageLoaderCallback.onCategoryFinish(bookChapterBeans);
                         }
                         // 打开章节
-                        skipToChapter(book.getDurChapter(), book.getDurChapterPage());
+                        skipToChapter(mBookCollectBean.getDurChapter(), mBookCollectBean.getDurChapterPage());
                     }
 
                     @Override
@@ -117,12 +117,12 @@ public class PageLoaderText extends PageLoader {
     public void updateChapter() {
         Toast.makeText(mPageView.getContext(), "目录更新中", Toast.LENGTH_SHORT).show();
         Single.create((SingleOnSubscribe<List<BookChapterBean>>) e -> {
-            delChapterList(book.getNoteUrl());
+            delChapterList(mBookCollectBean.getNoteUrl());
             //获取文件编码
-            if (TextUtils.isEmpty(book.getBookInfoBean().getCharset())) {
-                book.getBookInfoBean().setCharset(EncodingDetect.getJavaEncode(mBookFile));
+            if (TextUtils.isEmpty(mBookCollectBean.getBookInfoBean().getCharset())) {
+                mBookCollectBean.getBookInfoBean().setCharset(EncodingDetect.getJavaEncode(mBookFile));
             }
-            mCharset = Charset.forName(book.getBookInfoBean().getCharset());
+            mCharset = Charset.forName(mBookCollectBean.getBookInfoBean().getCharset());
             e.onSuccess(loadChapters());
         })
                 .compose(RxUtils::toSimpleSingle)
@@ -136,16 +136,16 @@ public class PageLoaderText extends PageLoader {
                     public void onSuccess(List<BookChapterBean> value) {
                         isChapterListPrepare = true;
                         Toast.makeText(mPageView.getContext(), "更新完成", Toast.LENGTH_SHORT).show();
-                        book.setHasUpdate(false);
+                        mBookCollectBean.setHasUpdate(false);
                         addBookChapterBeanList(value);
-                        BookCollectHelp.saveChapterList(book,value);
+                        BookCollectHelp.saveChapterList(mBookCollectBean,value);
                         // 提示目录加载完成
                         if (onPageLoaderCallback != null) {
                             onPageLoaderCallback.onCategoryFinish(value);
                         }
 
                         // 加载并显示当前章节
-                        openChapter(book.getDurChapterPage());
+                        openChapter(mBookCollectBean.getDurChapterPage());
                     }
 
                     @Override
@@ -183,10 +183,10 @@ public class PageLoaderText extends PageLoader {
      */
     private boolean checkChapterType(RandomAccessFile bookStream) throws IOException {
         chapterPatterns.clear();
-        if (TextUtils.isEmpty(book.getBookInfoBean().getChapterUrl())) {
+        if (TextUtils.isEmpty(mBookCollectBean.getBookInfoBean().getChapterUrl())) {
             chapterPatterns.addAll(TxtChapterRuleManager.enabledRuleList());
         } else {
-            chapterPatterns.add(book.getBookInfoBean().getChapterUrl());
+            chapterPatterns.add(mBookCollectBean.getBookInfoBean().getChapterUrl());
         }
         //首先获取128k的数据
         byte[] buffer = new byte[BUFFER_SIZE / 4];
@@ -263,7 +263,7 @@ public class PageLoaderText extends PageLoader {
 
                         if (mChapterList.size() == 0) { //如果当前没有章节，那么就是序章
                             //加入简介
-                            book.getBookInfoBean().setIntroduce(chapterContent);
+                            mBookCollectBean.getBookInfoBean().setIntroduce(chapterContent);
 
                             //创建当前章节
                             BookChapterBean curChapter = new BookChapterBean();
@@ -367,7 +367,7 @@ public class PageLoaderText extends PageLoader {
         for (int i = 0; i < mChapterList.size(); i++) {
             BookChapterBean bean = mChapterList.get(i);
             bean.setDurChapterIndex(i);
-            bean.setNoteUrl(book.getNoteUrl());
+            bean.setNoteUrl(mBookCollectBean.getNoteUrl());
             bean.setDurChapterUrl(MD5Utils.strToMd5By16(mBookFile.getAbsolutePath() + i + bean.getDurChapterName()));
         }
         IOUtils.close(bookStream);

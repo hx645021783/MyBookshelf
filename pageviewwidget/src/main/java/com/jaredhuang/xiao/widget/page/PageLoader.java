@@ -64,7 +64,7 @@ public abstract class PageLoader {
     protected OnPageLoaderCallback onPageLoaderCallback;
     protected OnNetLoaderCallback onNetLoaderCallback;
     private Context mContext;
-    protected BookCollectBean book;
+    protected BookCollectBean mBookCollectBean;
     // 页面显示类
     protected PageView mPageView;
     private List<ChapterContainer> chapterContainers = new ArrayList<>();
@@ -152,22 +152,26 @@ public abstract class PageLoader {
     protected List<BookChapterBean> bookChapterBeanList = new ArrayList<>();
 
     /*****************************init params*******************************/
-    public PageLoader(PageView pageView, BookCollectBean book, OnPageLoaderCallback onPageLoaderCallback) {
+    public PageLoader(PageView pageView, BookCollectBean mBookCollectBean, OnPageLoaderCallback onPageLoaderCallback) {
         mPageView = pageView;
-        this.book = book;
+        this.mBookCollectBean = mBookCollectBean;
         this.onPageLoaderCallback = onPageLoaderCallback;
         for (int i = 0; i < 3; i++) {
             chapterContainers.add(new ChapterContainer());
         }
         mContext = pageView.getContext();
-        mCurChapterPos = book.getDurChapter();
-        mCurPagePos = book.getDurChapterPage();
+        mCurChapterPos = mBookCollectBean.getDurChapter();
+        mCurPagePos = mBookCollectBean.getDurChapterPage();
         compositeDisposable = new CompositeDisposable();
         oneSpPx = ScreenUtils.spToPx(1);
         // 初始化数据
         initData();
         // 初始化画笔
         initPaint();
+    }
+
+    public BookCollectBean getBookCollectBean() {
+        return mBookCollectBean;
     }
 
     public void setOnNetLoaderCallback(OnNetLoaderCallback onNetLoaderCallback) {
@@ -408,7 +412,7 @@ public abstract class PageLoader {
      * 跳转到下一章
      */
     public boolean skipNextChapter() {
-        if (mCurChapterPos + 1 >= book.getChapterListSize()) {
+        if (mCurChapterPos + 1 >= mBookCollectBean.getChapterListSize()) {
             return false;
         }
 
@@ -585,7 +589,7 @@ public abstract class PageLoader {
      */
     public String getUnReadContent() {
         if (curChapter().txtChapter == null) return null;
-        if (book.isAudio()) return curChapter().txtChapter.getMsg();
+        if (mBookCollectBean.isAudio()) return curChapter().txtChapter.getMsg();
         if (curChapter().txtChapter.getTxtPageList().isEmpty()) return null;
         StringBuilder s = new StringBuilder();
         String content = getContent();
@@ -674,7 +678,7 @@ public abstract class PageLoader {
     /**
      * 刷新章节列表
      */
-    public abstract void refreshChapterList();
+    public abstract void loadChapterList();
 
     /**
      * 获取章节的文本
@@ -763,7 +767,7 @@ public abstract class PageLoader {
             case NEXT:
                 if (mCurPagePos < curChapter().txtChapter.getPageSize() - 1) {
                     mCurPagePos = mCurPagePos + 1;
-                } else if (mCurChapterPos < book.getChapterListSize() - 1) {
+                } else if (mCurChapterPos < mBookCollectBean.getChapterListSize() - 1) {
                     mCurChapterPos = mCurChapterPos + 1;
                     mCurPagePos = 0;
                     Collections.swap(chapterContainers, 0, 1);
@@ -794,14 +798,14 @@ public abstract class PageLoader {
                 break;
         }
         mPageView.setContentDescription(getContent());
-        book.setDurChapter(mCurChapterPos);
-        book.setDurChapterPage(mCurPagePos);
+        mBookCollectBean.setDurChapter(mCurChapterPos);
+        mBookCollectBean.setDurChapterPage(mCurPagePos);
         onPageLoaderCallback.onPageChange(mCurChapterPos, getCurPagePos(), resetReadAloud);
-        book.setDurChapter(mCurChapterPos);
-        book.setDurChapterPage(getCurPagePos());
-        book.setFinalDate(System.currentTimeMillis());
-        book.setHasUpdate(false);
-        AsyncTask.execute(() ->  DbHelper.getDaoSession().getBookCollectBeanDao().insertOrReplace(book));
+        mBookCollectBean.setDurChapter(mCurChapterPos);
+        mBookCollectBean.setDurChapterPage(getCurPagePos());
+        mBookCollectBean.setFinalDate(System.currentTimeMillis());
+        mBookCollectBean.setHasUpdate(false);
+        AsyncTask.execute(() ->  DbHelper.getDaoSession().getBookCollectBeanDao().insertOrReplace(mBookCollectBean));
         resetReadAloud = true;
     }
 
@@ -935,7 +939,7 @@ public abstract class PageLoader {
             String page = (txtChapter.getStatus() != TxtChapter.Status.FINISH || txtPage == null) ? ""
                     : String.format("%d/%d", txtPage.getPosition() + 1, txtChapter.getPageSize());
             String progress = (txtChapter.getStatus() != TxtChapter.Status.FINISH) ? ""
-                    : getReadProgress(mCurChapterPos, book.getChapterListSize(), mCurPagePos, curChapter().txtChapter.getPageSize());
+                    : getReadProgress(mCurChapterPos, mBookCollectBean.getChapterListSize(), mCurPagePos, curChapter().txtChapter.getPageSize());
 
             float tipBottom;
             float tipLeft;
@@ -1418,7 +1422,7 @@ public abstract class PageLoader {
             if (top > totalHeight) break;
             if (pagePos == chapter.getPageSize() - 1) {
                 String sign = "\u23af \u23af";
-                if (chapterPos == book.getChapterListSize() - 1) {
+                if (chapterPos == mBookCollectBean.getChapterListSize() - 1) {
                     bookEnd = pagePos == mCurPagePos;
                     str = sign + " 所有章节已读完 " + sign;
                 } else {
@@ -1461,7 +1465,7 @@ public abstract class PageLoader {
             case 1:
                 if (mCurPagePos < curChapter().txtChapter.getPageSize() - 1) {
                     mCurPagePos = mCurPagePos + 1;
-                } else if (mCurChapterPos < book.getChapterListSize() - 1) {
+                } else if (mCurChapterPos < mBookCollectBean.getChapterListSize() - 1) {
                     mCurChapterPos = mCurChapterPos + 1;
                     Collections.swap(chapterContainers, 0, 1);
                     Collections.swap(chapterContainers, 1, 2);
@@ -1605,7 +1609,7 @@ public abstract class PageLoader {
                 return true;
             }
         }
-        return mCurChapterPos + 1 < book.getChapterListSize();
+        return mCurChapterPos + 1 < mBookCollectBean.getChapterListSize();
     }
 
     /**
@@ -1800,7 +1804,7 @@ public abstract class PageLoader {
         if (onPageLoaderCallback != null) {
             readAloudParagraph = -1;
             if (!bookChapterBeanList.isEmpty()) {
-                book.setDurChapterName(bookChapterBeanList.get(mCurChapterPos).getDurChapterName());
+                mBookCollectBean.setDurChapterName(bookChapterBeanList.get(mCurChapterPos).getDurChapterName());
             }
             onPageLoaderCallback.onChapterChange(mCurChapterPos);
 

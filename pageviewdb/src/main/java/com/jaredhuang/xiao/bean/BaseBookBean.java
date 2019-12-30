@@ -4,7 +4,7 @@ import java.util.Map;
 
 public interface BaseBookBean {
 
-    String getTag();
+    String getDomain();
 
     String getNoteUrl();
 

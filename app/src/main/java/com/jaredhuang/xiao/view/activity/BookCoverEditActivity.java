@@ -151,7 +151,7 @@ public class BookCoverEditActivity extends MBaseActivity {
                     .where(SearchBookBeanDao.Properties.Name.eq(name), SearchBookBeanDao.Properties.Author.eq(author), SearchBookBeanDao.Properties.CoverUrl.isNotNull())
                     .build().list();
             for (SearchBookBean searchBook : searchBookBeans) {
-                BookSourceBean bean = BookSourceManager.getBookSourceByUrl(searchBook.getTag());
+                BookSourceBean bean = BookSourceManager.getBookSourceByUrl(searchBook.getDomain());
                 if (bean != null) {
                     String url = searchBook.getCoverUrl();
                     if (url != null && !urls.contains(url)) {

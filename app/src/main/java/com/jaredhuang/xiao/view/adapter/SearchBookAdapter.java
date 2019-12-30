@@ -159,7 +159,7 @@ public class SearchBookAdapter extends RefreshRecyclerViewAdapter {
                         if (TextUtils.equals(temp.getName(), searchBook.getName())
                                 && TextUtils.equals(temp.getAuthor(), searchBook.getAuthor())) {
                             hasSame = true;
-                            searchBook.addOriginUrl(temp.getTag());
+                            searchBook.addOriginUrl(temp.getDomain());
                             break;
                         }
                     }

@@ -28,7 +28,7 @@ public class SearchBookBeanDao extends AbstractDao<SearchBookBean, String> {
         public final static Property CoverUrl = new Property(1, String.class, "coverUrl", false, "COVER_URL");
         public final static Property Name = new Property(2, String.class, "name", false, "NAME");
         public final static Property Author = new Property(3, String.class, "author", false, "AUTHOR");
-        public final static Property Tag = new Property(4, String.class, "tag", false, "TAG");
+        public final static Property Domain = new Property(4, String.class, "domain", false, "DOMAIN");
         public final static Property Kind = new Property(5, String.class, "kind", false, "KIND");
         public final static Property Origin = new Property(6, String.class, "origin", false, "ORIGIN");
         public final static Property LastChapter = new Property(7, String.class, "lastChapter", false, "LAST_CHAPTER");
@@ -56,7 +56,7 @@ public class SearchBookBeanDao extends AbstractDao<SearchBookBean, String> {
                 "\"COVER_URL\" TEXT," + // 1: coverUrl
                 "\"NAME\" TEXT," + // 2: name
                 "\"AUTHOR\" TEXT," + // 3: author
-                "\"TAG\" TEXT," + // 4: tag
+                "\"DOMAIN\" TEXT," + // 4: domain
                 "\"KIND\" TEXT," + // 5: kind
                 "\"ORIGIN\" TEXT," + // 6: origin
                 "\"LAST_CHAPTER\" TEXT," + // 7: lastChapter
@@ -97,9 +97,9 @@ public class SearchBookBeanDao extends AbstractDao<SearchBookBean, String> {
             stmt.bindString(4, author);
         }
  
-        String tag = entity.getTag();
-        if (tag != null) {
-            stmt.bindString(5, tag);
+        String domain = entity.getDomain();
+        if (domain != null) {
+            stmt.bindString(5, domain);
         }
  
         String kind = entity.getKind();
@@ -167,9 +167,9 @@ public class SearchBookBeanDao extends AbstractDao<SearchBookBean, String> {
             stmt.bindString(4, author);
         }
  
-        String tag = entity.getTag();
-        if (tag != null) {
-            stmt.bindString(5, tag);
+        String domain = entity.getDomain();
+        if (domain != null) {
+            stmt.bindString(5, domain);
         }
  
         String kind = entity.getKind();
@@ -225,7 +225,7 @@ public class SearchBookBeanDao extends AbstractDao<SearchBookBean, String> {
             cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // coverUrl
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // name
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // author
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // tag
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // domain
             cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // kind
             cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // origin
             cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // lastChapter
@@ -244,7 +244,7 @@ public class SearchBookBeanDao extends AbstractDao<SearchBookBean, String> {
         entity.setCoverUrl(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
         entity.setName(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
         entity.setAuthor(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setTag(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setDomain(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
         entity.setKind(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
         entity.setOrigin(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
         entity.setLastChapter(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));

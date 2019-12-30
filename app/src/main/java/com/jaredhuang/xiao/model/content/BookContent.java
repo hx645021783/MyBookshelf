@@ -70,7 +70,7 @@ class BookContent {
             BookContentBean bookContentBean = new BookContentBean();
             bookContentBean.setDurChapterIndex(chapterBean.getDurChapterIndex());
             bookContentBean.setDurChapterUrl(chapterBean.getDurChapterUrl());
-            bookContentBean.setTag(tag);
+            bookContentBean.setDomain(tag);
             AnalyzeRule analyzer = new AnalyzeRule(bookCollectBean);
             WebContentBean webContentBean = analyzeBookContent(analyzer, s, chapterBean.getDurChapterUrl(), baseUrl);
             bookContentBean.setDurChapterContent(webContentBean.content);

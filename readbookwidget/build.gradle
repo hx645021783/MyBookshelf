@@ -28,4 +28,6 @@ dependencies {
     implementation project(':basemvplib')
     implementation project(':moudleutils')
     implementation project(':pageviewdb')
+    //MarkDown
+    implementation 'ru.noties.markwon:core:3.0.2'
 }

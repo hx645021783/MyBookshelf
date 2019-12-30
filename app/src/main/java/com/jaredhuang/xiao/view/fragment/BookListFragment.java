@@ -185,7 +185,7 @@ public class BookListFragment extends MBaseFragment<BookListContract.Presenter> 
                 Intent intent = new Intent(getContext(), ReadBookActivity.class);
                 intent.putExtra("openFrom", ReadBookPresenter.OPEN_FROM_APP);
                 String key = String.valueOf(System.currentTimeMillis());
-                String bookKey = "book" + key;
+                String bookKey = "mBookCollectBean" + key;
                 intent.putExtra("bookKey", bookKey);
                 BitIntentDataManager.getInstance().putData(bookKey, bookCollectBean.clone());
                 startActivityByAnim(intent, android.R.anim.fade_in, android.R.anim.fade_out);

@@ -28,7 +28,7 @@ public class BookContentBeanDao extends AbstractDao<BookContentBean, String> {
         public final static Property DurChapterUrl = new Property(1, String.class, "durChapterUrl", true, "DUR_CHAPTER_URL");
         public final static Property DurChapterIndex = new Property(2, Integer.class, "durChapterIndex", false, "DUR_CHAPTER_INDEX");
         public final static Property DurChapterContent = new Property(3, String.class, "durChapterContent", false, "DUR_CHAPTER_CONTENT");
-        public final static Property Tag = new Property(4, String.class, "tag", false, "TAG");
+        public final static Property Domain = new Property(4, String.class, "domain", false, "DOMAIN");
         public final static Property TimeMillis = new Property(5, Long.class, "timeMillis", false, "TIME_MILLIS");
     }
 
@@ -49,7 +49,7 @@ public class BookContentBeanDao extends AbstractDao<BookContentBean, String> {
                 "\"DUR_CHAPTER_URL\" TEXT PRIMARY KEY NOT NULL ," + // 1: durChapterUrl
                 "\"DUR_CHAPTER_INDEX\" INTEGER," + // 2: durChapterIndex
                 "\"DUR_CHAPTER_CONTENT\" TEXT," + // 3: durChapterContent
-                "\"TAG\" TEXT," + // 4: tag
+                "\"DOMAIN\" TEXT," + // 4: domain
                 "\"TIME_MILLIS\" INTEGER);"); // 5: timeMillis
     }
 
@@ -83,9 +83,9 @@ public class BookContentBeanDao extends AbstractDao<BookContentBean, String> {
             stmt.bindString(4, durChapterContent);
         }
  
-        String tag = entity.getTag();
-        if (tag != null) {
-            stmt.bindString(5, tag);
+        String domain = entity.getDomain();
+        if (domain != null) {
+            stmt.bindString(5, domain);
         }
  
         Long timeMillis = entity.getTimeMillis();
@@ -118,9 +118,9 @@ public class BookContentBeanDao extends AbstractDao<BookContentBean, String> {
             stmt.bindString(4, durChapterContent);
         }
  
-        String tag = entity.getTag();
-        if (tag != null) {
-            stmt.bindString(5, tag);
+        String domain = entity.getDomain();
+        if (domain != null) {
+            stmt.bindString(5, domain);
         }
  
         Long timeMillis = entity.getTimeMillis();
@@ -141,7 +141,7 @@ public class BookContentBeanDao extends AbstractDao<BookContentBean, String> {
             cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // durChapterUrl
             cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2), // durChapterIndex
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // durChapterContent
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // tag
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // domain
             cursor.isNull(offset + 5) ? null : cursor.getLong(offset + 5) // timeMillis
         );
         return entity;
@@ -153,7 +153,7 @@ public class BookContentBeanDao extends AbstractDao<BookContentBean, String> {
         entity.setDurChapterUrl(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
         entity.setDurChapterIndex(cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2));
         entity.setDurChapterContent(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setTag(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setDomain(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
         entity.setTimeMillis(cursor.isNull(offset + 5) ? null : cursor.getLong(offset + 5));
      }
     

@@ -54,23 +54,23 @@ public class PageLoaderEpub extends PageLoader {
     }
 
     @Override
-    public void refreshChapterList() {
-        if (book == null) return;
+    public void loadChapterList() {
+        if (mBookCollectBean == null) return;
 
         Observable.create((ObservableOnSubscribe<BookCollectBean>) e -> {
-            File bookFile = new File(book.getNoteUrl());
+            File bookFile = new File(mBookCollectBean.getNoteUrl());
             epubBook = readBook(bookFile);
 
             if (epubBook == null) {
                 e.onError(new Exception("文件解析失败"));
                 return;
             }
-            if (TextUtils.isEmpty(book.getBookInfoBean().getCharset())) {
-                book.getBookInfoBean().setCharset("UTF-8");
+            if (TextUtils.isEmpty(mBookCollectBean.getBookInfoBean().getCharset())) {
+                mBookCollectBean.getBookInfoBean().setCharset("UTF-8");
             }
-            mCharset = Charset.forName(book.getBookInfoBean().getCharset());
+            mCharset = Charset.forName(mBookCollectBean.getBookInfoBean().getCharset());
 
-            e.onNext(book);
+            e.onNext(mBookCollectBean);
             e.onComplete();
         }).subscribeOn(Schedulers.single())
                 .flatMap(this::checkChapterList)
@@ -146,13 +146,13 @@ public class PageLoaderEpub extends PageLoader {
 
     private List<BookChapterBean> loadChapters() {
         Metadata metadata = epubBook.getMetadata();
-        book.getBookInfoBean().setName(metadata.getFirstTitle());
+        mBookCollectBean.getBookInfoBean().setName(metadata.getFirstTitle());
         if (metadata.getAuthors().size() > 0) {
             String author = metadata.getAuthors().get(0).toString().replaceAll("^, |, $", "");
-            book.getBookInfoBean().setAuthor(author);
+            mBookCollectBean.getBookInfoBean().setAuthor(author);
         }
         if (metadata.getDescriptions().size() > 0) {
-            book.getBookInfoBean().setIntroduce(Jsoup.parse(metadata.getDescriptions().get(0)).text());
+            mBookCollectBean.getBookInfoBean().setIntroduce(Jsoup.parse(metadata.getDescriptions().get(0)).text());
         }
         chapterList = new ArrayList<>();
         List<TOCReference> refs = epubBook.getTableOfContents().getTocReferences();
@@ -198,7 +198,7 @@ public class PageLoaderEpub extends PageLoader {
         for (TOCReference ref : refs) {
             if (ref.getResource() != null) {
                 BookChapterBean bookChapterBean = new BookChapterBean();
-                bookChapterBean.setNoteUrl(book.getNoteUrl());
+                bookChapterBean.setNoteUrl(mBookCollectBean.getNoteUrl());
                 bookChapterBean.setDurChapterName(ref.getTitle());
                 bookChapterBean.setDurChapterUrl(ref.getCompleteHref());
                 chapterList.add(bookChapterBean);
@@ -271,14 +271,14 @@ public class PageLoaderEpub extends PageLoader {
     public void updateChapter() {
         Toast.makeText(mPageView.getContext(), "目录更新中", 0).show();
         Observable.create((ObservableOnSubscribe<BookCollectBean>) e -> {
-            if (TextUtils.isEmpty(book.getBookInfoBean().getCharset())) {
-                book.getBookInfoBean().setCharset("UTF-8");
+            if (TextUtils.isEmpty(mBookCollectBean.getBookInfoBean().getCharset())) {
+                mBookCollectBean.getBookInfoBean().setCharset("UTF-8");
             }
-            mCharset = Charset.forName(book.getBookInfoBean().getCharset());
+            mCharset = Charset.forName(mBookCollectBean.getBookInfoBean().getCharset());
             //清除原目录
-            PageLoader.delChapterList(book.getNoteUrl());
+            PageLoader.delChapterList(mBookCollectBean.getNoteUrl());
             bookChapterBeanList.clear();
-            e.onNext(book);
+            e.onNext(mBookCollectBean);
             e.onComplete();
         }).flatMap(this::checkChapterList)
                 .compose(RxUtils::toSimpleSingle)

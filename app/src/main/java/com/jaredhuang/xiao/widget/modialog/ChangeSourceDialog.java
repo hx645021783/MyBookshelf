@@ -139,7 +139,7 @@ public class ChangeSourceDialog extends BaseDialog implements ChangeSourceAdapte
 
     @Override
     public void showMenu(View view, SearchBookBean searchBookBean) {
-        final String url = searchBookBean.getTag();
+        final String url = searchBookBean.getDomain();
         final BookSourceBean sourceBean = BookSourceManager.getBookSourceByUrl(url);
         PopupMenu popupMenu = new PopupMenu(context, view);
         popupMenu.getMenu().add(0, R.id.menu_disable, 1, "禁用书源");
@@ -221,7 +221,7 @@ public class ChangeSourceDialog extends BaseDialog implements ChangeSourceAdapte
             }
         };
         searchBookModel = new SearchBookModel(searchListener);
-        bookTag = book.getTag();
+        bookTag = book.getDomain();
         bookName = book.getBookInfoBean().getName();
         bookAuthor = book.getBookInfoBean().getAuthor();
         shelfLastChapter = BookCollectHelp.guessChapterNum(book.getLastChapterName());
@@ -262,7 +262,7 @@ public class ChangeSourceDialog extends BaseDialog implements ChangeSourceAdapte
                 for (BookSourceBean bookSourceBean : BookSourceManager.getSelectedBookSource()) {
                     boolean hasSource = false;
                     for (SearchBookBean searchBookBean : new ArrayList<>(searchBookBeans)) {
-                        if (Objects.equals(searchBookBean.getTag(), bookSourceBean.getBookSourceUrl())) {
+                        if (Objects.equals(searchBookBean.getDomain(), bookSourceBean.getBookSourceUrl())) {
                             bookSourceList.remove(bookSourceBean);
                             searchBookList.add(searchBookBean);
                             hasSource = true;
@@ -284,7 +284,7 @@ public class ChangeSourceDialog extends BaseDialog implements ChangeSourceAdapte
             }
             if (searchBookList.size() > 0) {
                 for (SearchBookBean searchBookBean : searchBookList) {
-                    if (searchBookBean.getTag().equals(bookShelf.getTag())) {
+                    if (searchBookBean.getDomain().equals(bookShelf.getDomain())) {
                         searchBookBean.setIsCurrentSource(true);
                     } else {
                         searchBookBean.setIsCurrentSource(false);
@@ -336,13 +336,13 @@ public class ChangeSourceDialog extends BaseDialog implements ChangeSourceAdapte
             for (SearchBookBean searchBookBean : value) {
                 if (searchBookBean.getName().equals(bookName)
                         && (searchBookBean.getAuthor().equals(bookAuthor) || TextUtils.isEmpty(searchBookBean.getAuthor()) || TextUtils.isEmpty(bookAuthor))) {
-                    if (searchBookBean.getTag().equals(bookTag)) {
+                    if (searchBookBean.getDomain().equals(bookTag)) {
                         searchBookBean.setIsCurrentSource(true);
                     } else {
                         searchBookBean.setIsCurrentSource(false);
                     }
                     boolean saveBookSource = false;
-                    BookSourceBean bookSourceBean = BookSourceManager.getBookSourceByUrl(searchBookBean.getTag());
+                    BookSourceBean bookSourceBean = BookSourceManager.getBookSourceByUrl(searchBookBean.getDomain());
                     if (searchBookBean.getSearchTime() < 60 && bookSourceBean != null) {
                         bookSourceBean.increaseWeight(100 / (10 + searchBookBean.getSearchTime()));
                         saveBookSource = true;
@@ -368,8 +368,8 @@ public class ChangeSourceDialog extends BaseDialog implements ChangeSourceAdapte
     }
 
     private int compareSearchBooks(SearchBookBean s1, SearchBookBean s2) {
-        boolean s1tag = s1.getTag().equals(bookTag);
-        boolean s2tag = s2.getTag().equals(bookTag);
+        boolean s1tag = s1.getDomain().equals(bookTag);
+        boolean s2tag = s2.getDomain().equals(bookTag);
         if (s2tag && !s1tag)
             return 1;
         else if (s1tag && !s2tag)
@@ -401,7 +401,7 @@ public class ChangeSourceDialog extends BaseDialog implements ChangeSourceAdapte
             return;
         }
         for (int i = 0; i < adapter.getSearchBookBeans().size(); i++) {
-            if (adapter.getSearchBookBeans().get(i).getTag().equals(searchBookBean.getTag())
+            if (adapter.getSearchBookBeans().get(i).getDomain().equals(searchBookBean.getDomain())
                     && !adapter.getSearchBookBeans().get(i).getLastChapter().equals(searchBookBean.getLastChapter())) {
                 adapter.getSearchBookBeans().get(i).setLastChapter(searchBookBean.getLastChapter());
                 adapter.notifyItemChanged(i);

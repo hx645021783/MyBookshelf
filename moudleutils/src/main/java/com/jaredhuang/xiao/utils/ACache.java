@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -33,7 +34,6 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
-import timber.log.Timber;
 
 /**
  * 本地缓存
@@ -50,7 +50,7 @@ public class ACache {
     private ACache(File cacheDir, long max_size, int max_count) {
         try {
             if (!cacheDir.exists() && !cacheDir.mkdirs()) {
-                Timber.tag("ACache").i("can't make dirs in %s", cacheDir.getAbsolutePath());
+                Log.d("ACache",cacheDir.getAbsolutePath()+"不存子啊");
             }
             mCache = new ACacheManager(cacheDir, max_size, max_count);
         } catch (Exception ignored) {

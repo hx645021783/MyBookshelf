@@ -25,7 +25,7 @@ public class BookInfoBeanDao extends AbstractDao<BookInfoBean, String> {
      */
     public static class Properties {
         public final static Property Name = new Property(0, String.class, "name", false, "NAME");
-        public final static Property Tag = new Property(1, String.class, "tag", false, "TAG");
+        public final static Property Domain = new Property(1, String.class, "domain", false, "DOMAIN");
         public final static Property NoteUrl = new Property(2, String.class, "noteUrl", true, "NOTE_URL");
         public final static Property ChapterUrl = new Property(3, String.class, "chapterUrl", false, "CHAPTER_URL");
         public final static Property FinalRefreshData = new Property(4, long.class, "finalRefreshData", false, "FINAL_REFRESH_DATA");
@@ -51,7 +51,7 @@ public class BookInfoBeanDao extends AbstractDao<BookInfoBean, String> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"BOOK_INFO_BEAN\" (" + //
                 "\"NAME\" TEXT," + // 0: name
-                "\"TAG\" TEXT," + // 1: tag
+                "\"DOMAIN\" TEXT," + // 1: domain
                 "\"NOTE_URL\" TEXT PRIMARY KEY NOT NULL ," + // 2: noteUrl
                 "\"CHAPTER_URL\" TEXT," + // 3: chapterUrl
                 "\"FINAL_REFRESH_DATA\" INTEGER NOT NULL ," + // 4: finalRefreshData
@@ -78,9 +78,9 @@ public class BookInfoBeanDao extends AbstractDao<BookInfoBean, String> {
             stmt.bindString(1, name);
         }
  
-        String tag = entity.getTag();
-        if (tag != null) {
-            stmt.bindString(2, tag);
+        String domain = entity.getDomain();
+        if (domain != null) {
+            stmt.bindString(2, domain);
         }
  
         String noteUrl = entity.getNoteUrl();
@@ -134,9 +134,9 @@ public class BookInfoBeanDao extends AbstractDao<BookInfoBean, String> {
             stmt.bindString(1, name);
         }
  
-        String tag = entity.getTag();
-        if (tag != null) {
-            stmt.bindString(2, tag);
+        String domain = entity.getDomain();
+        if (domain != null) {
+            stmt.bindString(2, domain);
         }
  
         String noteUrl = entity.getNoteUrl();
@@ -190,7 +190,7 @@ public class BookInfoBeanDao extends AbstractDao<BookInfoBean, String> {
     public BookInfoBean readEntity(Cursor cursor, int offset) {
         BookInfoBean entity = new BookInfoBean( //
             cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0), // name
-            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // tag
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // domain
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // noteUrl
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // chapterUrl
             cursor.getLong(offset + 4), // finalRefreshData
@@ -207,7 +207,7 @@ public class BookInfoBeanDao extends AbstractDao<BookInfoBean, String> {
     @Override
     public void readEntity(Cursor cursor, BookInfoBean entity, int offset) {
         entity.setName(cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0));
-        entity.setTag(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setDomain(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
         entity.setNoteUrl(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
         entity.setChapterUrl(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
         entity.setFinalRefreshData(cursor.getLong(offset + 4));

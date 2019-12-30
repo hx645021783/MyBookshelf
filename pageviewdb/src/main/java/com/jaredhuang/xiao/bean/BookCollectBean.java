@@ -37,7 +37,7 @@ public class BookCollectBean implements Cloneable, BaseBookBean {
     private Long finalDate = System.currentTimeMillis();  //最后阅读时间
     private Boolean hasUpdate = false;  //是否有更新
     private Integer newChapters = 0;  //更新章节数
-    private String tag;
+    private String domain;
     private Integer serialNumber = 0; //手动排序
     private Long finalRefreshData = System.currentTimeMillis();  //章节最后更新时间
     private Integer group = 0;
@@ -61,17 +61,17 @@ public class BookCollectBean implements Cloneable, BaseBookBean {
     }
 
 
-    @Generated(hash = 1615587374)
-    public BookCollectBean(String noteUrl, Integer durChapter, Integer durChapterPage, Long finalDate, Boolean hasUpdate, Integer newChapters, String tag,
-            Integer serialNumber, Long finalRefreshData, Integer group, String durChapterName, String lastChapterName, Integer chapterListSize,
-            String customCoverPath, Boolean allowUpdate, Boolean useReplaceRule, String variable, Boolean replaceEnable) {
+    @Generated(hash = 2126782416)
+    public BookCollectBean(String noteUrl, Integer durChapter, Integer durChapterPage, Long finalDate, Boolean hasUpdate, Integer newChapters,
+            String domain, Integer serialNumber, Long finalRefreshData, Integer group, String durChapterName, String lastChapterName,
+            Integer chapterListSize, String customCoverPath, Boolean allowUpdate, Boolean useReplaceRule, String variable, Boolean replaceEnable) {
         this.noteUrl = noteUrl;
         this.durChapter = durChapter;
         this.durChapterPage = durChapterPage;
         this.finalDate = finalDate;
         this.hasUpdate = hasUpdate;
         this.newChapters = newChapters;
-        this.tag = tag;
+        this.domain = domain;
         this.serialNumber = serialNumber;
         this.finalRefreshData = finalRefreshData;
         this.group = group;
@@ -157,19 +157,19 @@ public class BookCollectBean implements Cloneable, BaseBookBean {
     }
 
     @Override
-    public String getTag() {
-        return tag;
+    public String getDomain() {
+        return domain;
     }
 
-    public void setTag(String tag) {
-        this.tag = tag;
+    public void setDomain(String domain) {
+        this.domain = domain;
     }
 
     public BookInfoBean getBookInfoBean() {
         if (bookInfoBean == null) {
             bookInfoBean = new BookInfoBean();
             bookInfoBean.setNoteUrl(noteUrl);
-            bookInfoBean.setTag(tag);
+            bookInfoBean.setDomain(domain);
         }
         return bookInfoBean;
     }
@@ -309,5 +309,33 @@ public class BookCollectBean implements Cloneable, BaseBookBean {
 
     public void setReplaceEnable(Boolean replaceEnable) {
         this.replaceEnable = replaceEnable;
+    }
+
+    @Override
+    public String toString() {
+        return "BookCollectBean{" +
+                "errorMsg='" + errorMsg + '\'' +
+                ", isLoading=" + isLoading +
+                ", noteUrl='" + noteUrl + '\'' +
+                ", durChapter=" + durChapter +
+                ", durChapterPage=" + durChapterPage +
+                ", finalDate=" + finalDate +
+                ", hasUpdate=" + hasUpdate +
+                ", newChapters=" + newChapters +
+                ", domain='" + domain + '\'' +
+                ", serialNumber=" + serialNumber +
+                ", finalRefreshData=" + finalRefreshData +
+                ", group=" + group +
+                ", durChapterName='" + durChapterName + '\'' +
+                ", lastChapterName='" + lastChapterName + '\'' +
+                ", chapterListSize=" + chapterListSize +
+                ", customCoverPath='" + customCoverPath + '\'' +
+                ", allowUpdate=" + allowUpdate +
+                ", useReplaceRule=" + useReplaceRule +
+                ", variable='" + variable + '\'' +
+                ", replaceEnable=" + replaceEnable +
+                ", variableMap=" + variableMap +
+                ", bookInfoBean=" + bookInfoBean +
+                '}';
     }
 }

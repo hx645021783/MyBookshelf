@@ -28,4 +28,17 @@ dependencies {
     implementation project(':basemvplib')
     implementation project(':moudleutils')
     implementation project(':pageviewdb')
+    //字符串比较
+    implementation 'net.ricecode:string-similarity:1.0.0'
+    //简繁转换
+    implementation 'com.luhuiguo:chinese-utils:1.0'
+    //epub
+    implementation('nl.siegmann.epublib:epublib-core:3.1') {
+        exclude group: 'org.slf4j'
+        exclude group: 'xmlpull'
+    }
+
+    //J_SOUP
+    implementation 'org.jsoup:jsoup:1.12.1'
+    implementation 'com.jayway.jsonpath:json-path:2.4.0'
 }

@@ -34,7 +34,7 @@ import nl.siegmann.epublib.service.MediatypeService;
 public class BookInfoBean implements Cloneable {
 
     private String name; //小说名
-    private String tag;
+    private String domain;
     @Id
     private String noteUrl;  //如果是来源网站,则小说根地址,如果是本地则是小说本地MD5
     private String chapterUrl;  //章节目录地址,本地目录正则
@@ -53,11 +53,12 @@ public class BookInfoBean implements Cloneable {
     public BookInfoBean() {
     }
 
-    @Generated(hash = 906814482)
-    public BookInfoBean(String name, String tag, String noteUrl, String chapterUrl, long finalRefreshData, String coverUrl, String author, String introduce,
-                        String origin, String charset, String bookSourceType) {
+
+    @Generated(hash = 90809577)
+    public BookInfoBean(String name, String domain, String noteUrl, String chapterUrl, long finalRefreshData, String coverUrl, String author,
+            String introduce, String origin, String charset, String bookSourceType) {
         this.name = name;
-        this.tag = tag;
+        this.domain = domain;
         this.noteUrl = noteUrl;
         this.chapterUrl = chapterUrl;
         this.finalRefreshData = finalRefreshData;
@@ -68,6 +69,7 @@ public class BookInfoBean implements Cloneable {
         this.charset = charset;
         this.bookSourceType = bookSourceType;
     }
+
 
     @Override
     protected Object clone() {
@@ -88,12 +90,12 @@ public class BookInfoBean implements Cloneable {
         this.name = name;
     }
 
-    public String getTag() {
-        return tag;
+    public String getDomain() {
+        return domain;
     }
 
-    public void setTag(String tag) {
-        this.tag = tag;
+    public void setDomain(String domain) {
+        this.domain = domain;
     }
 
     public String getNoteUrl() {
@@ -156,7 +158,7 @@ public class BookInfoBean implements Cloneable {
     }
 
     public String getOrigin() {
-        return TextUtils.isEmpty(origin) && tag.equals(BookCollectBean.LOCAL_TAG) ? "本地文本" : origin;
+        return TextUtils.isEmpty(origin) && domain.equals(BookCollectBean.LOCAL_TAG) ? "本地文本" : origin;
     }
 
     public void setOrigin(String origin) {
@@ -208,7 +210,7 @@ public class BookInfoBean implements Cloneable {
     }
 
     private boolean isEpub() {
-        return Objects.equals(tag, BookCollectBean.LOCAL_TAG) && noteUrl.toLowerCase().matches(".*\\.epub$");
+        return Objects.equals(domain, BookCollectBean.LOCAL_TAG) && noteUrl.toLowerCase().matches(".*\\.epub$");
     }
 
     public String getBookSourceType() {

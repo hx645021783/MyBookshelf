@@ -3,8 +3,8 @@ package com.jaredhuang.xiao.help;
 import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.text.TextUtils;
+import android.util.Log;
 
-import com.hwangjr.rxbus.RxBus;
 import com.jaredhuang.basemvplib.BitIntentDataManager;
 import com.jaredhuang.xiao.DbHelper;
 import com.jaredhuang.xiao.ReadViewExt;
@@ -33,13 +33,12 @@ import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 import static android.text.TextUtils.isEmpty;
 
@@ -61,20 +60,7 @@ public class BookCollectHelp {
         return String.format("%05d-%s", chapterIndex, formatFolderName(chapterName));
     }
 
-    public static boolean isChapterCached(String bookName, String tag, BaseChapterBean chapter, boolean isAudio) {
-        if (isAudio) {
-            BookContentBean contentBean = DbHelper.getDaoSession().getBookContentBeanDao().load(chapter.getDurChapterUrl());
-            if (contentBean == null) return false;
-            if (contentBean.outTime()) {
-                DbHelper.getDaoSession().getBookContentBeanDao().delete(contentBean);
-                return false;
-            }
-            return !TextUtils.isEmpty(contentBean.getDurChapterContent());
-        }
-        File file = new File(ReadViewExt.getInstance().getBookCachePath() + getCachePathName(bookName, tag)
-                + File.separator + getCacheFileName(chapter.getDurChapterIndex(), chapter.getDurChapterName()) + FileHelp.SUFFIX_NB);
-        return file.exists();
-    }
+
 
     public static String getChapterCache(BookCollectBean bookCollectBean, BookChapterBean chapter) {
         if (bookCollectBean.isAudio()) {
@@ -87,7 +73,7 @@ public class BookCollectHelp {
             return contentBean.getDurChapterContent();
         }
         File file = new File(ReadViewExt.getInstance().getBookCachePath()
-                + formatFolderName(BookCollectHelp.getCachePathName(bookCollectBean.getBookInfoBean().getName(), bookCollectBean.getTag()))
+                + formatFolderName(BookCollectHelp.getCachePathName(bookCollectBean.getBookInfoBean().getName(), bookCollectBean.getDomain()))
                 + File.separator + getCacheFileName(chapter.getDurChapterIndex(), chapter.getDurChapterName()) + FileHelp.SUFFIX_NB);
         if (!file.exists()) return null;
 
@@ -118,6 +104,7 @@ public class BookCollectHelp {
             return false;
         }
         File file = getBookFile(folderName, index, fileName);
+        Log.d("saveChapterInfo",file.getAbsolutePath());
         //获取流并存储
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             writer.write(fileName + "\n\n");
@@ -130,7 +117,20 @@ public class BookCollectHelp {
             return false;
         }
     }
-
+    public static boolean isChapterCached(String bookName, String tag, BaseChapterBean chapter, boolean isAudio) {
+        if (isAudio) {
+            BookContentBean contentBean = DbHelper.getDaoSession().getBookContentBeanDao().load(chapter.getDurChapterUrl());
+            if (contentBean == null) return false;
+            if (contentBean.outTime()) {
+                DbHelper.getDaoSession().getBookContentBeanDao().delete(contentBean);
+                return false;
+            }
+            return !TextUtils.isEmpty(contentBean.getDurChapterContent());
+        }
+        File file = new File(ReadViewExt.getInstance().getBookCachePath() + getCachePathName(bookName, tag) + File.separator + getCacheFileName(chapter.getDurChapterIndex(), chapter.getDurChapterName()) + FileHelp.SUFFIX_NB);
+        Log.d("saveChapterInfo",file.getAbsolutePath()+"  "+file.exists());
+        return file.exists();
+    }
     /**
      * 创建或获取存储文件
      */
@@ -280,7 +280,7 @@ public class BookCollectHelp {
             long bookNum = DbHelper.getDaoSession().getBookInfoBeanDao().queryBuilder()
                     .where(BookInfoBeanDao.Properties.Name.eq(bookName)).count();
             if (bookNum > 0) {
-                FileHelp.deleteFile(ReadViewExt.getInstance().getBookCachePath() + getCachePathName(bookCollectBean.getBookInfoBean().getName(), bookCollectBean.getTag()));
+                FileHelp.deleteFile(ReadViewExt.getInstance().getBookCachePath() + getCachePathName(bookCollectBean.getBookInfoBean().getName(), bookCollectBean.getDomain()));
                 return;
             }
             // 没有同名书籍，删除本书所有的缓存
@@ -331,7 +331,7 @@ public class BookCollectHelp {
      */
     public static BookCollectBean getBookFromSearchBook(SearchBookBean searchBookBean) {
         BookCollectBean bookCollectBean = new BookCollectBean();
-        bookCollectBean.setTag(searchBookBean.getTag());
+        bookCollectBean.setDomain(searchBookBean.getDomain());
         bookCollectBean.setNoteUrl(searchBookBean.getNoteUrl());
         bookCollectBean.setFinalDate(System.currentTimeMillis());
         bookCollectBean.setDurChapter(0);
@@ -342,7 +342,7 @@ public class BookCollectHelp {
         bookInfo.setAuthor(searchBookBean.getAuthor());
         bookInfo.setCoverUrl(searchBookBean.getCoverUrl());
         bookInfo.setName(searchBookBean.getName());
-        bookInfo.setTag(searchBookBean.getTag());
+        bookInfo.setDomain(searchBookBean.getDomain());
         bookInfo.setOrigin(searchBookBean.getOrigin());
         bookInfo.setIntroduce(searchBookBean.getIntroduce());
         bookInfo.setChapterUrl(searchBookBean.getChapterUrl());
@@ -350,6 +350,7 @@ public class BookCollectHelp {
         bookCollectBean.setVariable(searchBookBean.getVariable());
         return bookCollectBean;
     }
+
 
     public static List<BookChapterBean> getChapterList(String noteUrl) {
         return DbHelper.getDaoSession().getBookChapterBeanDao().queryBuilder()
@@ -377,6 +378,28 @@ public class BookCollectHelp {
         });
     }
 
+    /**
+     * 保存章节
+     */
+    @SuppressLint("DefaultLocale")
+    public static Observable<BookContentBean> saveContent(BookInfoBean infoBean, BaseChapterBean chapterBean, BookContentBean bookContentBean) {
+        return Observable.create(e -> {
+            bookContentBean.setNoteUrl(chapterBean.getNoteUrl());
+            if (isEmpty(bookContentBean.getDurChapterContent())) {
+                e.onError(new Throwable("下载章节出错"));
+            } else if (infoBean.isAudio()) {
+                bookContentBean.setTimeMillis(System.currentTimeMillis() + TimeUnit.HOURS.toMillis(1));
+                DbHelper.getDaoSession().getBookContentBeanDao().insertOrReplace(bookContentBean);
+                e.onNext(bookContentBean);
+            } else if (BookCollectHelp.saveChapterInfo(infoBean.getName() + "-" + chapterBean.getDomain(), chapterBean.getDurChapterIndex(),
+                    chapterBean.getDurChapterName(), bookContentBean.getDurChapterContent())) {
+                e.onNext(bookContentBean);
+            } else {
+                e.onError(new Throwable("保存章节出错"));
+            }
+            e.onComplete();
+        });
+    }
 
     public static Observable<BookCollectBean> loadLocalFile(final File file) {
         return Observable.create(e -> {
@@ -388,7 +411,7 @@ public class BookCollectHelp {
                 bookCollectBean.setDurChapter(0);
                 bookCollectBean.setDurChapterPage(0);
                 bookCollectBean.setGroup(3);
-                bookCollectBean.setTag(BookCollectBean.LOCAL_TAG);
+                bookCollectBean.setDomain(BookCollectBean.LOCAL_TAG);
                 bookCollectBean.setNoteUrl(file.getAbsolutePath());
                 bookCollectBean.setAllowUpdate(false);
 
@@ -414,7 +437,7 @@ public class BookCollectHelp {
                 bookInfoBean.setFinalRefreshData(file.lastModified());
                 bookInfoBean.setCoverUrl("");
                 bookInfoBean.setNoteUrl(file.getAbsolutePath());
-                bookInfoBean.setTag(BookCollectBean.LOCAL_TAG);
+                bookInfoBean.setDomain(BookCollectBean.LOCAL_TAG);
                 bookInfoBean.setOrigin("本地");
 
                 DbHelper.getDaoSession().getBookInfoBeanDao().insertOrReplace(bookInfoBean);
@@ -425,12 +448,12 @@ public class BookCollectHelp {
         });
     }
 
-    public static Observable<BookCollectBean> loadNetBook( String pageKey) {
+    public static Observable<BookCollectBean> loadNetBook(String pageKey) {
         return Observable.create((ObservableOnSubscribe<BookCollectBean>) e -> {
-            BookCollectBean bookShelf=null;
+            BookCollectBean bookShelf = null;
             if (!isEmpty(pageKey)) {
-                    bookShelf = (BookCollectBean) BitIntentDataManager.getInstance().getData(pageKey);
-                }
+                bookShelf = (BookCollectBean) BitIntentDataManager.getInstance().getData(pageKey);
+            }
             if (bookShelf == null && !isEmpty(pageKey)) {
                 bookShelf = BookCollectHelp.getBook(pageKey);
             }

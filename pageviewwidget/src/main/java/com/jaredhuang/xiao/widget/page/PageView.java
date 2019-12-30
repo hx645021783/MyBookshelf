@@ -680,7 +680,7 @@ public class PageView extends View implements PageAnimation.OnPageChangeListener
                 .compose(RxUtils::toSimpleSingle)
                 .flatMap((Function<BookCollectBean, ObservableSource<PageLoader>>) bookCollectBean -> {
                     PageLoader pageLoader = getPageLoader(activity, bookCollectBean, onPageLoaderCallback);
-                    pageLoader.refreshChapterList();
+                    pageLoader.loadChapterList();
                     return Observable.just(pageLoader);
                 })
                 .subscribe(consumer);
@@ -691,7 +691,7 @@ public class PageView extends View implements PageAnimation.OnPageChangeListener
                 .compose(RxUtils::toSimpleSingle)
                 .flatMap((Function<BookCollectBean, ObservableSource<PageLoader>>) bookCollectBean -> {
                     PageLoader pageLoader = getPageLoader(activity, bookCollectBean, onPageLoaderCallback);
-                    pageLoader.refreshChapterList();
+
                     return Observable.just(pageLoader);
                 })
                 .subscribe(consumer);
@@ -720,7 +720,7 @@ public class PageView extends View implements PageAnimation.OnPageChangeListener
             return mPageLoader;
         }
         // 根据书籍类型，获取具体的加载器
-        if (!Objects.equals(bookCollectBean.getTag(), BookCollectBean.LOCAL_TAG)) {
+        if (!Objects.equals(bookCollectBean.getDomain(), BookCollectBean.LOCAL_TAG)) {
             mPageLoader = new PageLoaderNet(this, bookCollectBean, onPageLoaderCallback) {
                 @Override
                 public ObservableSource<BookContentBean> getBookContent(BookCollectBean book, BookChapterBean bookChapterBean, BaseChapterBean nextChapterBean) {
