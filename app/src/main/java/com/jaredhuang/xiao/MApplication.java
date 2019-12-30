@@ -15,7 +15,6 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.multidex.MultiDex;
 
-import com.jaredhuang.xiao.constant.AppConstant;
 import com.jaredhuang.xiao.help.AppFrontBackHelper;
 import com.jaredhuang.xiao.help.CrashHandler;
 import com.jaredhuang.xiao.help.FileHelp;
@@ -42,7 +41,6 @@ public class MApplication extends Application {
     private static MApplication instance;
     private static String versionName;
     private static int versionCode;
-    private SharedPreferences configPreferences;
     private boolean donateHb;
 
     public static MApplication getInstance() {
@@ -65,8 +63,6 @@ public class MApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
-        ReadDataExt.getInstance().init(this);
-        UtilsExt.getInstance().init(this);
         ReadViewExt.getInstance().init(this);
         CrashHandler.getInstance().init(this);
         RxJavaPlugins.setErrorHandler(Functions.emptyConsumer());
@@ -80,9 +76,7 @@ public class MApplication extends Application {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createChannelId();
         }
-        configPreferences = getSharedPreferences("CONFIG", 0);
-        ReadDataExt.getInstance().setConfigPreferences(configPreferences);
-        downloadPath = configPreferences.getString(getString(R.string.pk_download_path), "");
+        downloadPath = ReadDataExt.getInstance().getConfigPreferences().getString(getString(R.string.pk_download_path), "");
         if (TextUtils.isEmpty(downloadPath) | Objects.equals(downloadPath, FileHelp.getCachePath())) {
             setDownloadPath(null);
         }
@@ -93,7 +87,7 @@ public class MApplication extends Application {
         AppFrontBackHelper.getInstance().register(this, new AppFrontBackHelper.OnAppStatusListener() {
             @Override
             public void onFront() {
-                donateHb = System.currentTimeMillis() - configPreferences.getLong("DonateHb", 0) <= TimeUnit.DAYS.toMillis(30);
+                donateHb = System.currentTimeMillis() - ReadDataExt.getInstance().getConfigPreferences().getLong("DonateHb", 0) <= TimeUnit.DAYS.toMillis(30);
             }
 
             @Override
@@ -124,21 +118,21 @@ public class MApplication extends Application {
     public void upThemeStore() {
         if (isNightTheme()) {
             ThemeStore.editTheme(this)
-                    .primaryColor(configPreferences.getInt("colorPrimaryNight", getResources().getColor(R.color.md_grey_800)))
-                    .accentColor(configPreferences.getInt("colorAccentNight", getResources().getColor(R.color.md_pink_800)))
-                    .backgroundColor(configPreferences.getInt("colorBackgroundNight", getResources().getColor(R.color.md_grey_800)))
+                    .primaryColor(ReadDataExt.getInstance().getConfigPreferences().getInt("colorPrimaryNight", getResources().getColor(R.color.md_grey_800)))
+                    .accentColor(ReadDataExt.getInstance().getConfigPreferences().getInt("colorAccentNight", getResources().getColor(R.color.md_pink_800)))
+                    .backgroundColor(ReadDataExt.getInstance().getConfigPreferences().getInt("colorBackgroundNight", getResources().getColor(R.color.md_grey_800)))
                     .apply();
         } else {
             ThemeStore.editTheme(this)
-                    .primaryColor(configPreferences.getInt("colorPrimary", getResources().getColor(R.color.md_grey_100)))
-                    .accentColor(configPreferences.getInt("colorAccent", getResources().getColor(R.color.md_pink_600)))
-                    .backgroundColor(configPreferences.getInt("colorBackground", getResources().getColor(R.color.md_grey_100)))
+                    .primaryColor(ReadDataExt.getInstance().getConfigPreferences().getInt("colorPrimary", getResources().getColor(R.color.md_grey_100)))
+                    .accentColor(ReadDataExt.getInstance().getConfigPreferences().getInt("colorAccent", getResources().getColor(R.color.md_pink_600)))
+                    .backgroundColor(ReadDataExt.getInstance().getConfigPreferences().getInt("colorBackground", getResources().getColor(R.color.md_grey_100)))
                     .apply();
         }
     }
 
     public boolean isNightTheme() {
-        return configPreferences.getBoolean("nightTheme", false);
+        return ReadDataExt.getInstance().getConfigPreferences().getBoolean("nightTheme", false);
     }
 
     /**
@@ -151,13 +145,13 @@ public class MApplication extends Application {
             downloadPath = path;
         }
         ReadViewExt.getInstance().setBookCachePath(downloadPath + File.separator + "book_cache" + File.separator);
-        configPreferences.edit()
+        ReadDataExt.getInstance().getConfigPreferences().edit()
                 .putString(getString(R.string.pk_download_path), path)
                 .apply();
     }
 
     public static SharedPreferences getConfigPreferences() {
-        return getInstance().configPreferences;
+        return ReadDataExt.getInstance().getConfigPreferences();
     }
 
     public boolean getDonateHb() {
@@ -165,14 +159,14 @@ public class MApplication extends Application {
     }
 
     public void upDonateHb() {
-        configPreferences.edit()
+        ReadDataExt.getInstance().getConfigPreferences().edit()
                 .putLong("DonateHb", System.currentTimeMillis())
                 .apply();
         donateHb = true;
     }
 
     public void upEInkMode() {
-        MApplication.isEInkMode = configPreferences.getBoolean("E-InkMode", false);
+        MApplication.isEInkMode = ReadDataExt.getInstance().getConfigPreferences().getBoolean("E-InkMode", false);
     }
 
     /**

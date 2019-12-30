@@ -31,6 +31,8 @@ public class ReadViewExt {
 
     public void init(Context mContext) {
         this.mContext = mContext;
+        ReadDataExt.getInstance().init(mContext);
+        UtilsExt.getInstance().init(mContext);
         String downloadPath = FileHelp.getFilesPath(mContext);
         bookCachePath = downloadPath + File.separator + "book_cache" + File.separator;
     }

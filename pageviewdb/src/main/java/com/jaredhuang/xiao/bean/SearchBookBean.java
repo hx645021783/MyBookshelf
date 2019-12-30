@@ -30,7 +30,7 @@ public class SearchBookBean implements BaseBookBean {
     private String coverUrl;//封面URL
     private String name;
     private String author;
-    private String tag;
+    private String tag;// 网站域名
     private String kind;//分类
     private String origin;//来源
     private String lastChapter;
@@ -59,6 +59,11 @@ public class SearchBookBean implements BaseBookBean {
 
     }
 
+    /**
+     * 手动新增
+     * @param tag   网站域名
+     * @param origin
+     */
     public SearchBookBean(String tag, String origin) {
         this.tag = tag;
         this.origin = origin;

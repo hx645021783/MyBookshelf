@@ -73,6 +73,7 @@ public abstract class PageLoaderNet extends PageLoader {
                         // 目录加载完成
                         if (!chapterBeanList.isEmpty()) {
                             BookCollectHelp.delChapterList(book.getNoteUrl());
+                            BookCollectHelp.saveChapterList(book, chapterBeanList);
                             onPageLoaderCallback.onCategoryFinish(chapterBeanList);
                         }
                         // 加载并显示当前章节
@@ -144,19 +145,20 @@ public abstract class PageLoaderNet extends PageLoader {
 
                 }
             };
-            Observable.create((ObservableOnSubscribe<Integer>) e -> {
-                if (shouldRequestChapter(chapterIndex)) {
-                    DownloadingList(listHandle.ADD, bookChapterBeanList.get(chapterIndex).getDurChapterUrl());
-                    e.onNext(chapterIndex);
-                }
-                e.onComplete();
-            })
+            if (onNetLoaderCallback != null) {
+                Observable.create((ObservableOnSubscribe<Integer>) e -> {
+                    if (shouldRequestChapter(chapterIndex)) {
+                        DownloadingList(listHandle.ADD, bookChapterBeanList.get(chapterIndex).getDurChapterUrl());
+                        e.onNext(chapterIndex);
+                    }
+                    e.onComplete();
+                })
 //                    .flatMap(index -> WebBookModel.getInstance().getBookContent(book, bookChapterBeanList().get(chapterIndex), null))
-                    .flatMap(index -> getBookContent(book, bookChapterBeanList.get(chapterIndex), null))
-                    .subscribeOn(scheduler)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(observer);
-
+                        .flatMap(index -> onNetLoaderCallback.getBookContent(book, bookChapterBeanList.get(chapterIndex), null))
+                        .subscribeOn(scheduler)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(observer);
+            }
         }
     }
 
@@ -260,40 +262,44 @@ public abstract class PageLoaderNet extends PageLoader {
     @Override
     public void updateChapter() {
         Toast.makeText(mPageView.getContext(), "目录更新中", Toast.LENGTH_SHORT).show();
-        getChapterList(book)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<BookChapterBean>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        compositeDisposable.add(d);
-                    }
-
-                    @Override
-                    public void onNext(List<BookChapterBean> chapterBeanList) {
-                        isChapterListPrepare = true;
-                        addBookChapterBeanList(chapterBeanList);
-                        if (chapterBeanList.size() > bookChapterBeanList.size()) {
-                            Toast.makeText(mPageView.getContext(), "更新完成,有新章节", Toast.LENGTH_SHORT).show();
-                            onPageLoaderCallback.onCategoryFinish(chapterBeanList);
-                        } else {
-                            Toast.makeText(mPageView.getContext(), "更新完成,无新章节", Toast.LENGTH_SHORT).show();
+        if (onNetLoaderCallback != null) {
+            onNetLoaderCallback.getChapterList(book)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<List<BookChapterBean>>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+                            compositeDisposable.add(d);
                         }
 
-                        // 加载并显示当前章节
-                        skipToChapter(book.getDurChapter(), book.getDurChapterPage());
-                    }
+                        @Override
+                        public void onNext(List<BookChapterBean> chapterBeanList) {
+                            isChapterListPrepare = true;
+                            if (chapterBeanList.size() > bookChapterBeanList.size()) {
+                                Toast.makeText(mPageView.getContext(), "更新完成,有新章节", Toast.LENGTH_SHORT).show();
+                                addBookChapterBeanList(chapterBeanList);
+                                BookCollectHelp.saveChapterList(book, chapterBeanList);
+                                onPageLoaderCallback.onCategoryFinish(chapterBeanList);
+                            } else {
+                                Toast.makeText(mPageView.getContext(), "更新完成,无新章节", Toast.LENGTH_SHORT).show();
+                            }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        durDhapterError(e.getMessage());
-                    }
+                            // 加载并显示当前章节
+                            skipToChapter(book.getDurChapter(), book.getDurChapterPage());
+                        }
 
-                    @Override
-                    public void onComplete() {
+                        @Override
+                        public void onError(Throwable e) {
+                            durDhapterError(e.getMessage());
+                        }
 
-                    }
-                });
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        }
+
     }
 
     public abstract ObservableSource<BookContentBean> getBookContent(BookCollectBean book, BookChapterBean bookChapterBean, BaseChapterBean nextChapterBean);

@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.text.Layout;
 import android.text.StaticLayout;
@@ -796,6 +797,11 @@ public abstract class PageLoader {
         book.setDurChapter(mCurChapterPos);
         book.setDurChapterPage(mCurPagePos);
         onPageLoaderCallback.onPageChange(mCurChapterPos, getCurPagePos(), resetReadAloud);
+        book.setDurChapter(mCurChapterPos);
+        book.setDurChapterPage(getCurPagePos());
+        book.setFinalDate(System.currentTimeMillis());
+        book.setHasUpdate(false);
+        AsyncTask.execute(() ->  DbHelper.getDaoSession().getBookCollectBeanDao().insertOrReplace(book));
         resetReadAloud = true;
     }
 
@@ -1793,7 +1799,11 @@ public abstract class PageLoader {
     private void chapterChangeCallback() {
         if (onPageLoaderCallback != null) {
             readAloudParagraph = -1;
+            if (!bookChapterBeanList.isEmpty()) {
+                book.setDurChapterName(bookChapterBeanList.get(mCurChapterPos).getDurChapterName());
+            }
             onPageLoaderCallback.onChapterChange(mCurChapterPos);
+
             onPageLoaderCallback.onPageCountChange(curChapter().txtChapter != null ? curChapter().txtChapter.getPageSize() : 0);
         }
     }

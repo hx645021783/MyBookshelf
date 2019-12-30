@@ -1,8 +1,11 @@
 package com.jaredhuang.xiao.help;
 
 import android.annotation.SuppressLint;
+import android.os.AsyncTask;
 import android.text.TextUtils;
 
+import com.hwangjr.rxbus.RxBus;
+import com.jaredhuang.basemvplib.BitIntentDataManager;
 import com.jaredhuang.xiao.DbHelper;
 import com.jaredhuang.xiao.ReadViewExt;
 import com.jaredhuang.xiao.bean.BaseChapterBean;
@@ -32,6 +35,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+
+import static android.text.TextUtils.isEmpty;
 
 /**
  * Created by GKF on 2018/1/18.
@@ -353,6 +363,86 @@ public class BookCollectHelp {
         DbHelper.getDaoSession().getBookChapterBeanDao().queryBuilder()
                 .where(BookChapterBeanDao.Properties.NoteUrl.eq(noteUrl))
                 .buildDelete().executeDeleteWithoutDetachingEntities();
+    }
+
+    public static void saveChapterList(BookCollectBean bookShelf, List<BookChapterBean> chapterBeanList) {
+        bookShelf.setChapterListSize(chapterBeanList.size());
+        bookShelf.setFinalDate(System.currentTimeMillis());
+        bookShelf.setHasUpdate(false);
+        bookShelf.setDurChapterName(chapterBeanList.get(bookShelf.getDurChapter()).getDurChapterName());
+        bookShelf.setLastChapterName(chapterBeanList.get(chapterBeanList.size() - 1).getDurChapterName());
+        AsyncTask.execute(() -> {
+            DbHelper.getDaoSession().getBookChapterBeanDao().insertOrReplaceInTx(chapterBeanList);
+            DbHelper.getDaoSession().getBookCollectBeanDao().insertOrReplace(bookShelf);
+        });
+    }
+
+
+    public static Observable<BookCollectBean> loadLocalFile(final File file) {
+        return Observable.create(e -> {
+            BookCollectBean bookCollectBean = BookCollectHelp.getBook(file.getAbsolutePath());
+            if (bookCollectBean == null) {
+                bookCollectBean = new BookCollectBean();
+                bookCollectBean.setHasUpdate(true);
+                bookCollectBean.setFinalDate(System.currentTimeMillis());
+                bookCollectBean.setDurChapter(0);
+                bookCollectBean.setDurChapterPage(0);
+                bookCollectBean.setGroup(3);
+                bookCollectBean.setTag(BookCollectBean.LOCAL_TAG);
+                bookCollectBean.setNoteUrl(file.getAbsolutePath());
+                bookCollectBean.setAllowUpdate(false);
+
+                BookInfoBean bookInfoBean = bookCollectBean.getBookInfoBean();
+                String fileName = file.getName();
+                int lastDotIndex = file.getName().lastIndexOf(".");
+                if (lastDotIndex > 0)
+                    fileName = fileName.substring(0, lastDotIndex);
+                int authorIndex = fileName.indexOf("作者");
+                if (authorIndex != -1) {
+                    bookInfoBean.setAuthor(fileName.substring(authorIndex));
+                    fileName = fileName.substring(0, authorIndex).trim();
+                } else {
+                    bookInfoBean.setAuthor("");
+                }
+                int smhStart = fileName.indexOf("《");
+                int smhEnd = fileName.indexOf("》");
+                if (smhStart != -1 && smhEnd != -1) {
+                    bookInfoBean.setName(fileName.substring(smhStart + 1, smhEnd));
+                } else {
+                    bookInfoBean.setName(fileName);
+                }
+                bookInfoBean.setFinalRefreshData(file.lastModified());
+                bookInfoBean.setCoverUrl("");
+                bookInfoBean.setNoteUrl(file.getAbsolutePath());
+                bookInfoBean.setTag(BookCollectBean.LOCAL_TAG);
+                bookInfoBean.setOrigin("本地");
+
+                DbHelper.getDaoSession().getBookInfoBeanDao().insertOrReplace(bookInfoBean);
+                DbHelper.getDaoSession().getBookCollectBeanDao().insertOrReplace(bookCollectBean);
+            }
+            e.onNext(bookCollectBean);
+            e.onComplete();
+        });
+    }
+
+    public static Observable<BookCollectBean> loadNetBook( String pageKey) {
+        return Observable.create((ObservableOnSubscribe<BookCollectBean>) e -> {
+            BookCollectBean bookShelf=null;
+            if (!isEmpty(pageKey)) {
+                    bookShelf = (BookCollectBean) BitIntentDataManager.getInstance().getData(pageKey);
+                }
+            if (bookShelf == null && !isEmpty(pageKey)) {
+                bookShelf = BookCollectHelp.getBook(pageKey);
+            }
+            if (bookShelf == null) {
+                List<BookCollectBean> beans = BookCollectHelp.getAllBook();
+                if (beans != null && beans.size() > 0) {
+                    bookShelf = beans.get(0);
+                }
+            }
+            e.onNext(bookShelf);
+            e.onComplete();
+        });
     }
 
     public static void saveBookmark(BookmarkBean bookmarkBean) {

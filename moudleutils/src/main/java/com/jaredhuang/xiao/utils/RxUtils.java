@@ -24,6 +24,11 @@ public class RxUtils {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
+    public static <T> ObservableSource<T> ioToIo(Observable<T> upstream) {
+        return upstream.subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io());
+    }
+
     public static <T, R> TwoTuple<T, R> twoTuple(T first, R second) {
         return new TwoTuple<T, R>(first, second);
     }

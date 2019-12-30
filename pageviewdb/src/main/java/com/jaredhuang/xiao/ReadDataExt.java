@@ -12,6 +12,7 @@ import android.content.SharedPreferences;
  */
 public class ReadDataExt {
     private static ReadDataExt readDataExt =null;
+    public static String NAME_SHAREDPREFERENCES ="READ_CONFIG";
     private ReadDataExt() {
     }
 
@@ -26,12 +27,8 @@ public class ReadDataExt {
 
     public void init(Context mContext){
         this.mContext=mContext;
+        configPreferences = mContext.getSharedPreferences("CONFIG", 0);
     }
-
-    public void setConfigPreferences(SharedPreferences configPreferences) {
-        this.configPreferences = configPreferences;
-    }
-
     public SharedPreferences getConfigPreferences() {
         return configPreferences;
     }

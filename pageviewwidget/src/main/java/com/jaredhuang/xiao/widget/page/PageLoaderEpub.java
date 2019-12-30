@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.jaredhuang.xiao.bean.BookChapterBean;
 import com.jaredhuang.xiao.bean.BookCollectBean;
+import com.jaredhuang.xiao.help.BookCollectHelp;
 import com.jaredhuang.xiao.utils.RxUtils;
 import com.jaredhuang.xiao.utils.StringUtils;
 
@@ -248,7 +249,7 @@ public class PageLoaderEpub extends PageLoader {
                 e.onComplete();
             })
                     .flatMap(chapterList -> {
-                        collBook.setChapterListSize(chapterList.size());
+                        BookCollectHelp.saveChapterList(collBook,chapterList);
                         addBookChapterBeanList(chapterList);
                         onPageLoaderCallback.onCategoryFinish(chapterList);
                         return Observable.just(collBook);

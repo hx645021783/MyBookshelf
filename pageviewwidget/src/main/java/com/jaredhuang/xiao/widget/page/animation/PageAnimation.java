@@ -9,9 +9,8 @@ import android.widget.Scroller;
 
 import androidx.annotation.NonNull;
 
-import com.jiaredhuang.readview.R;
 import com.jaredhuang.xiao.help.ReadBookControl;
-import com.jaredhuang.xiao.ReadViewExt;
+
 
 /**
  * 翻页动画抽象类
@@ -200,11 +199,11 @@ public abstract class PageAnimation {
      * 翻页模式
      */
     public enum Mode {
-        COVER(ReadViewExt.getInstance().getContext().getString(R.string.page_mode_COVER)),
-        SIMULATION(ReadViewExt.getInstance().getContext().getString(R.string.page_mode_SIMULATION)),
-        SLIDE(ReadViewExt.getInstance().getContext().getString(R.string.page_mode_SLIDE)),
-        SCROLL(ReadViewExt.getInstance().getContext().getString(R.string.page_mode_SCROLL)),
-        NONE(ReadViewExt.getInstance().getContext().getString(R.string.page_mode_NONE));
+        COVER("覆盖"),
+        SIMULATION("仿真"),
+        SLIDE("侧滑"),
+        SCROLL("滚动"),
+        NONE("无动画");
 
         private String name;
 

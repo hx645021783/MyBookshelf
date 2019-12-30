@@ -2,6 +2,7 @@ package com.jaredhuang.xiao.model.content;
 
 import android.annotation.SuppressLint;
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 

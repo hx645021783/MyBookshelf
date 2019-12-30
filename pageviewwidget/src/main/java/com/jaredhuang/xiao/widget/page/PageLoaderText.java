@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import com.jaredhuang.xiao.bean.BookChapterBean;
 import com.jaredhuang.xiao.bean.BookCollectBean;
+import com.jaredhuang.xiao.help.BookCollectHelp;
 import com.jaredhuang.xiao.model.TxtChapterRuleManager;
 import com.jaredhuang.xiao.utils.EncodingDetect;
 import com.jaredhuang.xiao.utils.IOUtils;
@@ -67,6 +68,7 @@ public class PageLoaderText extends PageLoader {
             if (book.getHasUpdate() || bookChapterBeanList.size() == 0) {
                 List<BookChapterBean> chapterBeanList = loadChapters();
                 book.setHasUpdate(false);
+                book.setChapterListSize(chapterBeanList.size());
                 e.onSuccess(chapterBeanList);
             } else {
                 e.onSuccess(new ArrayList<>());
@@ -82,6 +84,7 @@ public class PageLoaderText extends PageLoader {
                     public void onSuccess(List<BookChapterBean> bookChapterBeans) {
                         isChapterListPrepare = true;
                         addBookChapterBeanList(bookChapterBeans);
+                        BookCollectHelp.saveChapterList(book,bookChapterBeans);
                         // 目录加载完成，执行回调操作。
                         if (!bookChapterBeans.isEmpty()) {
                             onPageLoaderCallback.onCategoryFinish(bookChapterBeans);
@@ -135,6 +138,7 @@ public class PageLoaderText extends PageLoader {
                         Toast.makeText(mPageView.getContext(), "更新完成", Toast.LENGTH_SHORT).show();
                         book.setHasUpdate(false);
                         addBookChapterBeanList(value);
+                        BookCollectHelp.saveChapterList(book,value);
                         // 提示目录加载完成
                         if (onPageLoaderCallback != null) {
                             onPageLoaderCallback.onCategoryFinish(value);

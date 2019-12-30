@@ -91,7 +91,6 @@ import com.jaredhuang.xiao.widget.modialog.ReplaceRuleDialog;
 import com.jaredhuang.xiao.widget.page.PageLoader;
 import com.jaredhuang.xiao.widget.page.PageView;
 import com.jaredhuang.xiao.widget.page.TxtChapter;
-import com.jaredhuang.xiao.widget.page.animation.PageAnimation;
 import com.jaredhuang.xiao.widget.page.webload.PageLoaderNet;
 
 import java.util.ArrayList;
@@ -814,9 +813,6 @@ public class ReadBookActivity extends MBaseActivity<ReadBookContract.Presenter> 
                      */
                     @Override
                     public void onChapterChange(int pos) {
-                        if (mPresenter.getChapterList().isEmpty()) return;
-                        if (pos >= mPresenter.getChapterList().size()) return;
-                        mPresenter.getBookShelf().setDurChapterName(mPresenter.getChapterList().get(pos).getDurChapterName());
                         actionBar.setTitle(mPresenter.getBookShelf().getBookInfoBean().getName());
                         if (mPresenter.getBookShelf().getChapterListSize() > 0) {
                             tvChapterName.setVisibility(View.VISIBLE);
@@ -852,10 +848,6 @@ public class ReadBookActivity extends MBaseActivity<ReadBookContract.Presenter> 
                     @Override
                     public void onCategoryFinish(List<BookChapterBean> chapters) {
                         mPresenter.setChapterList(chapters);
-                        mPresenter.getBookShelf().setChapterListSize(chapters.size());
-                        mPresenter.getBookShelf().setDurChapterName(chapters.get(mPresenter.getBookShelf().getDurChapter()).getDurChapterName());
-                        mPresenter.getBookShelf().setLastChapterName(chapters.get(mPresenter.getChapterList().size() - 1).getDurChapterName());
-                        mPresenter.saveProgress();
                     }
 
                     /**
@@ -879,9 +871,6 @@ public class ReadBookActivity extends MBaseActivity<ReadBookContract.Presenter> 
                      */
                     @Override
                     public void onPageChange(int chapterIndex, int pageIndex, boolean resetReadAloud) {
-                        mPresenter.getBookShelf().setDurChapter(chapterIndex);
-                        mPresenter.getBookShelf().setDurChapterPage(pageIndex);
-                        mPresenter.saveProgress();
                         readBottomMenu.getReadProgress().post(
                                 () -> readBottomMenu.getReadProgress().setProgress(pageIndex)
                         );

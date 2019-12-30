@@ -12,7 +12,6 @@ import android.graphics.Region;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.view.View;
-import com.jaredhuang.xiao.ReadDataExt;
 
 /**
  * 仿真翻页
@@ -58,7 +57,6 @@ public class SimulationPageAnim extends HorizonPageAnim {
     private GradientDrawable mFrontShadowDrawableVRL;
 
     private Paint mPaint;
-    private boolean blurBackImage;
 
 
     public SimulationPageAnim(int w, int h, View view, OnPageChangeListener listener) {
@@ -83,7 +81,6 @@ public class SimulationPageAnim extends HorizonPageAnim {
 
         mTouchX = 0.01f; // 不让x,y为0,否则在点计算时会有问题
         mTouchY = 0.01f;
-        blurBackImage = ReadDataExt.getInstance().getConfigPreferences().getBoolean("blurSimBack", false);
     }
 
     @Override

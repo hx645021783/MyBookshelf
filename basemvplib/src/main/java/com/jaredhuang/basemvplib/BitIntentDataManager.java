@@ -1,16 +1,15 @@
 //Copyright (c) 2017. 章钦豪. All rights reserved.
 package com.jaredhuang.basemvplib;
 
-import java.util.HashMap;
-import java.util.Map;
+import androidx.collection.ArrayMap;
 
 public class BitIntentDataManager {
-    private static Map<String, Object> bigData;
+    private static ArrayMap<String, Object> bigData;
 
     private static BitIntentDataManager instance = null;
 
     private BitIntentDataManager() {
-        bigData = new HashMap<>();
+        bigData = new ArrayMap<>();
     }
 
     public static BitIntentDataManager getInstance() {

@@ -31,7 +31,7 @@ public class BookCollectBean implements Cloneable, BaseBookBean {
     private boolean isLoading;
 
     @Id
-    private String noteUrl; //对应BookInfoBean noteUrl;
+    private String noteUrl; //对应BookInfoBean noteUrl;或者本地路径
     private Integer durChapter = 0;   //当前章节 （包括番外）
     private Integer durChapterPage = 0;  // 当前章节位置   用页码
     private Long finalDate = System.currentTimeMillis();  //最后阅读时间

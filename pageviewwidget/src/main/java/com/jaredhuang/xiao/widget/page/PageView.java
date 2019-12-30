@@ -13,14 +13,17 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.jaredhuang.xiao.bean.BaseChapterBean;
 import com.jaredhuang.xiao.bean.BookChapterBean;
 import com.jaredhuang.xiao.bean.BookCollectBean;
 import com.jaredhuang.xiao.bean.BookContentBean;
+import com.jaredhuang.xiao.help.BookCollectHelp;
 import com.jaredhuang.xiao.help.FileHelp;
 import com.jaredhuang.xiao.help.ReadBookControl;
+import com.jaredhuang.xiao.utils.RxUtils;
 import com.jaredhuang.xiao.utils.ScreenUtils;
 import com.jaredhuang.xiao.utils.bar.ImmersionBar;
 import com.jaredhuang.xiao.widget.page.animation.CoverPageAnim;
@@ -32,12 +35,16 @@ import com.jaredhuang.xiao.widget.page.animation.SimulationPageAnim;
 import com.jaredhuang.xiao.widget.page.animation.SlidePageAnim;
 import com.jaredhuang.xiao.widget.page.webload.PageLoaderNet;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 
 import static com.jaredhuang.xiao.utils.ScreenUtils.getDisplayMetrics;
 
@@ -125,7 +132,9 @@ public class PageView extends View implements PageAnimation.OnPageChangeListener
                 firstSelectTxtChar = p;//设置开始位置字符
                 lastSelectTxtChar = p;//设置结束位置字符
                 selectMode = SelectMode.PressSelectText;//设置模式为长按选择
-                mTouchListener.onLongPress();//响应长按事件，供上层调用
+                if (mTouchListener != null) {
+                    mTouchListener.onLongPress();//响应长按事件，供上层调用
+                }
             }
         };
     }
@@ -515,13 +524,16 @@ public class PageView extends View implements PageAnimation.OnPageChangeListener
 
                 //
                 isLongPress = false;
-                mTouchListener.onTouch();
+                if (mTouchListener != null) {
+                    mTouchListener.onTouch();
+                }
+
                 mPageAnim.onTouchEvent(event);
 
                 selectMode = SelectMode.Normal;
-
-                mTouchListener.onTouchClearCursor();
-
+                if (mTouchListener != null) {
+                    mTouchListener.onTouchClearCursor();
+                }
                 break;
             case MotionEvent.ACTION_MOVE:
                 mPageAnim.initTouch(x, y);
@@ -662,6 +674,41 @@ public class PageView extends View implements PageAnimation.OnPageChangeListener
         mPageLoader.pagingEnd(direction);
     }
 
+
+    private void createLocalPageLoader(Activity activity, String localPath, PageLoader.OnPageLoaderCallback onPageLoaderCallback, Consumer<PageLoader> consumer) {
+        Disposable subscribe = BookCollectHelp.loadLocalFile(new File(localPath))
+                .compose(RxUtils::toSimpleSingle)
+                .flatMap((Function<BookCollectBean, ObservableSource<PageLoader>>) bookCollectBean -> {
+                    PageLoader pageLoader = getPageLoader(activity, bookCollectBean, onPageLoaderCallback);
+                    pageLoader.refreshChapterList();
+                    return Observable.just(pageLoader);
+                })
+                .subscribe(consumer);
+    }
+
+    private void createNetPageLoader(Activity activity, String pageKey, PageLoader.OnPageLoaderCallback onPageLoaderCallback, Consumer<PageLoader> consumer) {
+        Disposable subscribe = BookCollectHelp.loadNetBook(pageKey)
+                .compose(RxUtils::toSimpleSingle)
+                .flatMap((Function<BookCollectBean, ObservableSource<PageLoader>>) bookCollectBean -> {
+                    PageLoader pageLoader = getPageLoader(activity, bookCollectBean, onPageLoaderCallback);
+                    pageLoader.refreshChapterList();
+                    return Observable.just(pageLoader);
+                })
+                .subscribe(consumer);
+    }
+
+    public void createPageLoader(Activity activity, String pageKey, PageLoader.OnPageLoaderCallback onPageLoaderCallback, Consumer<PageLoader> consumer) {
+        if (pageKey == null) {
+            return;
+        }
+        if (pageKey.startsWith("http")) {
+            createNetPageLoader(activity, pageKey, onPageLoaderCallback, consumer);
+        } else {
+            createLocalPageLoader(activity, pageKey, onPageLoaderCallback, consumer);
+        }
+    }
+
+
     /**
      * 获取 PageLoader
      */
@@ -677,13 +724,22 @@ public class PageView extends View implements PageAnimation.OnPageChangeListener
             mPageLoader = new PageLoaderNet(this, bookCollectBean, onPageLoaderCallback) {
                 @Override
                 public ObservableSource<BookContentBean> getBookContent(BookCollectBean book, BookChapterBean bookChapterBean, BaseChapterBean nextChapterBean) {
+                    if (onNetLoaderCallback != null) {
+                        return this.onNetLoaderCallback.getBookContent(book, bookChapterBean, nextChapterBean);
+                    } else {
+                        return null;
+                    }
 
-                    return this.onNetLoaderCallback.getBookContent(book, bookChapterBean, nextChapterBean);
                 }
 
                 @Override
                 public Observable<List<BookChapterBean>> getChapterList(BookCollectBean book) {
-                    return this.onNetLoaderCallback.getChapterList(book);
+                    if (onNetLoaderCallback != null) {
+                        return this.onNetLoaderCallback.getChapterList(book);
+                    } else {
+                        return null;
+                    }
+
                 }
             };
         } else {
@@ -710,10 +766,11 @@ public class PageView extends View implements PageAnimation.OnPageChangeListener
         }
     }
 
-    public void upBackground(){
+    public void upBackground() {
 
         setBackground(readBookControl.getTextBackground(getContext()));
     }
+
     public enum SelectMode {
         Normal, PressSelectText, SelectMoveForward, SelectMoveBack
     }
@@ -730,4 +787,16 @@ public class PageView extends View implements PageAnimation.OnPageChangeListener
         void autoChangeSource();
     }
 
+    public void setAutoScreenBrightness() {
+        WindowManager.LayoutParams params = ((Activity) getContext()).getWindow().getAttributes();
+        params.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
+        ((Activity) getContext()).getWindow().setAttributes(params);
+    }
+
+    public void setScreenBrightness(int value) {
+        if (value < 1) value = 1;
+        WindowManager.LayoutParams params = ((Activity) getContext()).getWindow().getAttributes();
+        params.screenBrightness = value * 1.0f / 255f;
+        ((Activity) getContext()).getWindow().setAttributes(params);
+    }
 }
