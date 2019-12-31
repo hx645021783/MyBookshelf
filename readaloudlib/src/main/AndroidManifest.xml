@@ -1,0 +1,7 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.jiaredhuang.readaloudlib" >
+
+    <application>
+        <service android:name="com.jiaredhuang.readaloudlib.ReadAloudService" />
+    </application>
+</manifest>

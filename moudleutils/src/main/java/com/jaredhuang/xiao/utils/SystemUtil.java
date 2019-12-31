@@ -23,18 +23,19 @@ public class SystemUtil {
         return screenOffTime;
     }
 
-    public static void ignoreBatteryOptimization(Activity activity) {
+    public static void ignoreBatteryOptimization(Context context) {
         if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.M) return;
 
-        PowerManager powerManager = (PowerManager) activity.getSystemService(POWER_SERVICE);
-        boolean hasIgnored = powerManager.isIgnoringBatteryOptimizations(activity.getPackageName());
+        PowerManager powerManager = (PowerManager) context.getSystemService(POWER_SERVICE);
+        boolean hasIgnored = powerManager.isIgnoringBatteryOptimizations(context.getPackageName());
         //  判断当前APP是否有加入电池优化的白名单，如果没有，弹出加入电池优化的白名单的设置对话框。
         if (!hasIgnored) {
             try {
                 @SuppressLint("BatteryLife")
                 Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
-                intent.setData(Uri.parse("package:" + activity.getPackageName()));
-                activity.startActivity(intent);
+                intent.setData(Uri.parse("package:" + context.getPackageName()));
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
             } catch (Throwable ignored) {
             }
         }

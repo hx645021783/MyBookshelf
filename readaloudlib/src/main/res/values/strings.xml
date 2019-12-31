@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">readaloudlib</string>
+
+    <string name="read_aloud_pause">朗读暂停</string>
+    <string name="read_aloud_timer">正在朗读(还剩%d分钟)</string>
+    <string name="read_aloud_timerlong">"正在朗读(还剩%d小时%d分)"</string>
+    <string name="read_aloud_timerremaining">%d分钟</string>
+    <string name="read_aloud_timerremaininglong">"%d小时%d分"</string>
+    <string name="read_aloud_timerstop">"计时已取消"</string>
+    <string name="read_aloud">朗读</string>
+    <string name="read_aloud_t">正在朗读</string>
+    <string name="read_aloud_s">点击打开阅读界面</string>
+
+    <string name="tts_init_failed">TTS初始化失敗!</string>
+    <string name="tts_fix">請安裝並選擇中文TTS!</string>
+
+    <string name="start">开始</string>
+    <string name="stop">停止</string>
+    <string name="pause">暂停</string>
+    <string name="resume">继续</string>
+    <string name="set_timer">定时</string>
+</resources>

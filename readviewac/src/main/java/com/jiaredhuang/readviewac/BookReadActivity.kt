@@ -3,13 +3,20 @@ package com.jiaredhuang.readviewac
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.hwangjr.rxbus.RxBus
+import com.hwangjr.rxbus.annotation.Subscribe
+import com.hwangjr.rxbus.annotation.Tag
+import com.hwangjr.rxbus.thread.EventThread
 import com.jaredhuang.readbook.R
 import com.jaredhuang.xiao.ReadViewExt
-import com.jaredhuang.xiao.bean.*
+import com.jaredhuang.xiao.bean.BaseChapterBean
+import com.jaredhuang.xiao.bean.BookChapterBean
+import com.jaredhuang.xiao.bean.BookCollectBean
+import com.jaredhuang.xiao.bean.BookContentBean
 import com.jaredhuang.xiao.help.BookCollectHelp
 import com.jaredhuang.xiao.help.ReadBookControl
 import com.jaredhuang.xiao.widget.page.PageLoader
-import com.socks.library.KLog
+import com.jiaredhuang.readaloudlib.ReadAloudService
 import com.zia.easybookmodule.bean.Book
 import com.zia.easybookmodule.bean.Catalog
 import com.zia.easybookmodule.engine.EasyBook
@@ -19,7 +26,6 @@ import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
 import io.reactivex.annotations.NonNull
 import kotlinx.android.synthetic.main.activity_book_read.*
-import java.lang.StringBuilder
 
 
 class BookReadActivity : AppCompatActivity() {
@@ -35,6 +41,7 @@ class BookReadActivity : AppCompatActivity() {
     lateinit var readBookControl: ReadBookControl
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        RxBus.get().register(this)
         ReadViewExt.getInstance().init(this)
         readBookControl = ReadBookControl.getInstance()
         readBookControl.initTextDrawableIndex()
@@ -44,8 +51,12 @@ class BookReadActivity : AppCompatActivity() {
         searchBook();
     }
 
+    override fun onDestroy() {
+        mPageLoader?.closeBook()
+        RxBus.get().unregister(this)
+        super.onDestroy()
+    }
     private fun loadPageBook(book: BookCollectBean?) {
-        Log.d("loadPageBook1", book.toString())
         page_view.createPageLoader(this, book?.noteUrl, object : PageLoader.OnPageLoaderCallback {
             override fun onPageChange(chapterIndex: Int, pageIndex: Int, resetReadAloud: Boolean) {
             }
@@ -54,6 +65,7 @@ class BookReadActivity : AppCompatActivity() {
             }
 
             override fun onChapterChange(pos: Int) {
+                ReadAloudService.readAloud(this@BookReadActivity,book?.bookInfoBean?.name,mPageLoader?.unReadContent,book?.durChapterPage!!)
             }
 
             override fun onPageCountChange(count: Int) {
@@ -98,7 +110,6 @@ class BookReadActivity : AppCompatActivity() {
                         mBookChapterBean.durChapterName = mCatalog.chapterName
                         booklist.add(mBookChapterBean)
                     }
-                    Log.d("loadPageBook2", booklist.toString())
                     Observable.just(booklist)
                 };
             }
@@ -125,14 +136,12 @@ class BookReadActivity : AppCompatActivity() {
                     });
                 }).flatMap { tList ->
                     val mBookContentBean = BookContentBean()
-
                     mBookContentBean.durChapterContent =createBookContent(tList)
                     mBookContentBean.noteUrl = bookChapterBean?.noteUrl
                     mBookContentBean.durChapterUrl = bookChapterBean?.durChapterUrl
                     mBookContentBean.domain = bookChapterBean?.domain
                     mBookContentBean.setDurChapterIndex(bookChapterBean?.durChapterIndex)
                     mBookContentBean.timeMillis = System.currentTimeMillis()
-                    Log.d("loadPageBook3", mBookContentBean.toString())
                     Observable.just(mBookContentBean)
                 }
 
@@ -187,4 +196,36 @@ class BookReadActivity : AppCompatActivity() {
                     }
                 })
     }
+
+    /////////////////////RxBus////////////////////////
+    @Subscribe(thread = EventThread.MAIN_THREAD, tags = [Tag(ReadAloudService.RxBusTag.MEDIA_BUTTON)])
+    fun onMediaButton(command: String?) {
+//        if (bookShelf != null) {
+//            mView.onMediaButton(command)
+//        }
+    }
+
+    @Subscribe(thread = EventThread.MAIN_THREAD, tags = [Tag(ReadAloudService.RxBusTag.ALOUD_STATE)])
+    fun upAloudState(state: ReadAloudService.Status?) {
+//        mView.upAloudState(state)
+    }
+
+    @Subscribe(thread = EventThread.MAIN_THREAD, tags = [Tag(ReadAloudService.RxBusTag.ALOUD_TIMER)])
+    fun upAloudTimer(timer: String?) {
+//        mView.upAloudTimer(timer)
+    }
+
+
+    @Subscribe(thread = EventThread.MAIN_THREAD, tags = [Tag(ReadAloudService.RxBusTag.READ_ALOUD_START)])
+    fun readAloudStart(start: Int?) {
+        if (mPageLoader != null) {
+            mPageLoader!!.readAloudStart(start!!)
+        }
+    }
+
+    @Subscribe(thread = EventThread.MAIN_THREAD, tags = [Tag(ReadAloudService.RxBusTag.READ_ALOUD_NUMBER)])
+    fun readAloudLength(start: Int?) {
+        mPageLoader!!.readAloudLength(start!!)
+    }
+
 }

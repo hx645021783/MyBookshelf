@@ -22,13 +22,11 @@
         android:label="@string/app_name"
         android:persistent="true"
         android:supportsRtl="true"
-        tools:ignore="AllowBackup,GoogleAppIndexingWarning,UnusedAttribute"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+        tools:ignore="AllowBackup,GoogleAppIndexingWarning,UnusedAttribute"
         tools:replace="android:theme">
 
-        <activity
-            android:name="com.jiaredhuang.readviewac.BookReadActivity"
-       >
+        <activity android:name="com.jiaredhuang.readviewac.BookReadActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
