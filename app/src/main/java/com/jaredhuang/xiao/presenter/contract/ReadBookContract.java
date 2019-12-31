@@ -11,7 +11,7 @@ import com.jaredhuang.xiao.bean.BookSourceBean;
 import com.jaredhuang.xiao.bean.BookmarkBean;
 import com.jaredhuang.xiao.bean.SearchBookBean;
 import com.jaredhuang.xiao.presenter.ReadBookPresenter;
-import com.jaredhuang.xiao.service.ReadAloudService;
+import com.jiaredhuang.readaloudlib.ReadAloudService;
 
 import java.util.List;
 

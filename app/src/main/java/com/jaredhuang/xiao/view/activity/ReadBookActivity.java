@@ -43,6 +43,7 @@ import com.jaredhuang.basemvplib.BitIntentDataManager;
 import com.jaredhuang.xiao.DbHelper;
 import com.jaredhuang.xiao.MApplication;
 import com.jaredhuang.xiao.bean.BookCollectBean;
+import com.jiaredhuang.readaloudlib.ReadAloudService;
 import com.kunfei.bookshelf.R;
 import com.jaredhuang.xiao.base.MBaseActivity;
 import com.jaredhuang.xiao.base.observer.MySingleObserver;
@@ -63,7 +64,6 @@ import com.jaredhuang.xiao.model.TxtChapterRuleManager;
 import com.jaredhuang.xiao.model.WebBookModel;
 import com.jaredhuang.xiao.presenter.ReadBookPresenter;
 import com.jaredhuang.xiao.presenter.contract.ReadBookContract;
-import com.jaredhuang.xiao.service.ReadAloudService;
 import com.jaredhuang.xiao.utils.BatteryUtil;
 import com.jaredhuang.xiao.utils.NetworkUtils;
 import com.jaredhuang.xiao.utils.ScreenUtils;
@@ -1545,6 +1545,7 @@ public class ReadBookActivity extends MBaseActivity<ReadBookContract.Presenter> 
      */
     @Override
     public void upAloudState(ReadAloudService.Status status) {
+        mPageLoader.setReadAloudRunning(false);
         aloudStatus = status;
         autoPageStop();
         switch (status) {

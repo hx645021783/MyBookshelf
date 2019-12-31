@@ -53,7 +53,6 @@ import io.reactivex.disposables.Disposable;
 
 public abstract class PageLoader {
     private static final String TAG = "PageLoader";
-    protected int prePageSize=2;
     // 默认的显示参数配置
     private static final int DEFAULT_MARGIN_HEIGHT = 20;
     public static final int DEFAULT_MARGIN_WIDTH = 15;
@@ -150,6 +149,7 @@ public abstract class PageLoader {
     private long skipPageTime = 0;
 
     protected List<BookChapterBean> bookChapterBeanList = new ArrayList<>();
+    private boolean isReadAloudRunning=false;
 
     /*****************************init params*******************************/
     public PageLoader(PageView pageView, BookCollectBean mBookCollectBean, OnPageLoaderCallback onPageLoaderCallback) {
@@ -168,6 +168,10 @@ public abstract class PageLoader {
         initData();
         // 初始化画笔
         initPaint();
+    }
+
+    public void setReadAloudRunning(boolean readAloudRunning) {
+        isReadAloudRunning = readAloudRunning;
     }
 
     public BookCollectBean getBookCollectBean() {
@@ -647,6 +651,7 @@ public abstract class PageLoader {
      * @param start 开始朗读字数
      */
     public void readAloudStart(int start) {
+        isReadAloudRunning=true;
         start = readTextLength + start;
         int x = curChapter().txtChapter.getParagraphIndex(start);
         if (readAloudParagraph != x) {
@@ -1065,7 +1070,7 @@ public abstract class PageLoader {
             for (int i = 0; i < txtPage.getTitleLines(); ++i) {
                 str = txtPage.getLine(i);
                 strLength = strLength + str.length();
-                isLight = ReadViewExt.getInstance().isReadAloudRunning() && readAloudParagraph == 0;
+                isLight = isReadAloudRunning && readAloudParagraph == 0;
                 mTitlePaint.setColor(isLight ? ThemeStore.accentColor(mContext) : readBookControl.getTextColor());
 
                 //进行绘制
@@ -1123,7 +1128,7 @@ public abstract class PageLoader {
                 str = txtPage.getLine(i);
                 strLength = strLength + str.length();
                 int paragraphLength = txtPage.getPosition() == 0 ? strLength : txtChapter.getPageLength(txtPage.getPosition() - 1) + strLength;
-                isLight = ReadViewExt.getInstance().isReadAloudRunning() && readAloudParagraph == txtChapter.getParagraphIndex(paragraphLength);
+                isLight = isReadAloudRunning && readAloudParagraph == txtChapter.getParagraphIndex(paragraphLength);
                 mTextPaint.setColor(isLight ? ThemeStore.accentColor(mContext) : readBookControl.getTextColor());
                 Layout tempLayout = new StaticLayout(str, mTextPaint, mVisibleWidth, Layout.Alignment.ALIGN_NORMAL, 0, 0, false);
                 float width = StaticLayout.getDesiredWidth(str, tempLayout.getLineStart(0), tempLayout.getLineEnd(0), mTextPaint);
@@ -1287,7 +1292,7 @@ public abstract class PageLoader {
             if (top > totalHeight) break;
             float topi = top;
             int strLength = 0;
-            isLight = ReadViewExt.getInstance().isReadAloudRunning() && readAloudParagraph == 0;
+            isLight = isReadAloudRunning && readAloudParagraph == 0;
             mTitlePaint.setColor(isLight ? ThemeStore.accentColor(mContext) : readBookControl.getTextColor());
             for (int i = 0; i < page.getTitleLines(); i++) {
                 if (top > totalHeight) {
@@ -1826,7 +1831,7 @@ public abstract class PageLoader {
         DbHelper.getDaoSession().getBookCollectBeanDao().insertOrReplace(mBookCollectBean);
         compositeDisposable.dispose();
         compositeDisposable = null;
-
+        isReadAloudRunning=false;
         isChapterListPrepare = false;
         isClose = true;
 

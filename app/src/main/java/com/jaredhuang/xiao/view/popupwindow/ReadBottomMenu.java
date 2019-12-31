@@ -10,8 +10,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.jiaredhuang.readaloudlib.ReadAloudService;
 import com.kunfei.bookshelf.R;
-import com.jaredhuang.xiao.service.ReadAloudService;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

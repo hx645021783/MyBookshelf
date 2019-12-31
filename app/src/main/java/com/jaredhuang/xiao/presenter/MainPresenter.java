@@ -13,6 +13,7 @@ import com.jaredhuang.basemvplib.BasePresenterImpl;
 import com.jaredhuang.basemvplib.impl.IView;
 import com.jaredhuang.xiao.DbHelper;
 import com.jaredhuang.xiao.bean.BookCollectBean;
+import com.jiaredhuang.readaloudlib.ReadAloudService;
 import com.kunfei.bookshelf.R;
 import com.jaredhuang.xiao.base.observer.MyObserver;
 import com.jaredhuang.xiao.bean.BookChapterBean;
