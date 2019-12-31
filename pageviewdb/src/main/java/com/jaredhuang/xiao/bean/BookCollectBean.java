@@ -40,7 +40,7 @@ public class BookCollectBean implements Cloneable, BaseBookBean {
     private String domain;
     private Integer serialNumber = 0; //手动排序
     private Long finalRefreshData = System.currentTimeMillis();  //章节最后更新时间
-    private Integer group = 0;
+    private Integer group = 0;//分组
     private String durChapterName;
     private String lastChapterName;
     private Integer chapterListSize = 0;

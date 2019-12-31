@@ -26,13 +26,13 @@ public class SearchBookBean implements BaseBookBean {
 
 
     @Id
-    private String noteUrl;
+    private String noteUrl;//目录url
     private String coverUrl;//封面URL
-    private String name;
-    private String author;
+    private String name;//小说名称
+    private String author;//作者
     private String domain;// 网站域名
     private String kind;//分类
-    private String origin;//来源
+    private String origin;//来源名称
     private String lastChapter;
     private String introduce; //简介
     private String chapterUrl;//目录URL

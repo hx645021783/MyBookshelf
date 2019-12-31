@@ -14,7 +14,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.jaredhuang.xiao.bean.BaseChapterBean;
 import com.jaredhuang.xiao.bean.BookChapterBean;
@@ -25,6 +24,7 @@ import com.jaredhuang.xiao.help.FileHelp;
 import com.jaredhuang.xiao.help.ReadBookControl;
 import com.jaredhuang.xiao.utils.RxUtils;
 import com.jaredhuang.xiao.utils.ScreenUtils;
+import com.jaredhuang.xiao.utils.ToastHelper;
 import com.jaredhuang.xiao.utils.bar.ImmersionBar;
 import com.jaredhuang.xiao.widget.page.animation.CoverPageAnim;
 import com.jaredhuang.xiao.widget.page.animation.HorizonPageAnim;
@@ -613,7 +613,7 @@ public class PageView extends View implements PageAnimation.OnPageChangeListener
         if (mPageLoader.hasPrev()) {
             return true;
         } else {
-            Toast.makeText(getContext(), "没有上一页", Toast.LENGTH_SHORT).show();
+//            ToastHelper.getInstance().show("没有上一页");
             return false;
         }
     }
@@ -625,7 +625,7 @@ public class PageView extends View implements PageAnimation.OnPageChangeListener
         if (mPageLoader.hasNext(pageOnCur)) {
             return true;
         } else {
-            Toast.makeText(getContext(), "没有下一页", Toast.LENGTH_SHORT).show();
+            ToastHelper.getInstance().show("本书已阅读完毕");
             return false;
         }
     }

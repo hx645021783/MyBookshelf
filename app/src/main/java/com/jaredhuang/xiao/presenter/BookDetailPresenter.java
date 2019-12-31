@@ -238,11 +238,11 @@ public class BookDetailPresenter extends BasePresenterImpl<BookDetailContract.Vi
                         bookShelf = value.getData1();
                         chapterBeanList = value.getData2();
                         mView.updateView();
-                        String tag = bookShelf.getDomain();
+                        String domain = bookShelf.getDomain();
                         try {
                             long currentTime = System.currentTimeMillis();
                             String bookName = bookShelf.getBookInfoBean().getName();
-                            BookSourceBean bookSourceBean = BookSourceManager.getBookSourceByUrl(tag);
+                            BookSourceBean bookSourceBean = BookSourceManager.getBookSourceByUrl(domain);
                             if (SavedSource.Instance.getBookSource() != null && currentTime - SavedSource.Instance.getSaveTime() < 60000 && SavedSource.Instance.getBookName().equals(bookName))
                                 SavedSource.Instance.getBookSource().increaseWeight(-450);
                             BookSourceManager.saveBookSource(SavedSource.Instance.getBookSource());

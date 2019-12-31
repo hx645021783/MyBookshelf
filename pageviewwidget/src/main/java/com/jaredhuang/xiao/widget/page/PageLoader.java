@@ -53,7 +53,7 @@ import io.reactivex.disposables.Disposable;
 
 public abstract class PageLoader {
     private static final String TAG = "PageLoader";
-
+    protected int prePageSize=2;
     // 默认的显示参数配置
     private static final int DEFAULT_MARGIN_HEIGHT = 20;
     public static final int DEFAULT_MARGIN_WIDTH = 15;
@@ -805,7 +805,6 @@ public abstract class PageLoader {
         mBookCollectBean.setDurChapterPage(getCurPagePos());
         mBookCollectBean.setFinalDate(System.currentTimeMillis());
         mBookCollectBean.setHasUpdate(false);
-        AsyncTask.execute(() ->  DbHelper.getDaoSession().getBookCollectBeanDao().insertOrReplace(mBookCollectBean));
         resetReadAloud = true;
     }
 
@@ -1826,6 +1825,7 @@ public abstract class PageLoader {
      * 关闭书本
      */
     public void closeBook() {
+        DbHelper.getDaoSession().getBookCollectBeanDao().insertOrReplace(mBookCollectBean);
         compositeDisposable.dispose();
         compositeDisposable = null;
 

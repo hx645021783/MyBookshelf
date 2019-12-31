@@ -14,22 +14,17 @@ import com.jaredhuang.xiao.utils.NetworkUtils;
 import com.jaredhuang.xiao.utils.RxUtils;
 import com.jaredhuang.xiao.widget.page.PageLoader;
 import com.jaredhuang.xiao.widget.page.PageView;
-import com.socks.library.KLog;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
@@ -40,13 +35,10 @@ import io.reactivex.schedulers.Schedulers;
 public abstract class PageLoaderNet extends PageLoader {
     private static final String TAG = "PageLoaderNet";
     private List<String> downloadingChapterList = new ArrayList<>();
-    private ExecutorService executorService;
-    private Scheduler scheduler;
+    private int prePageSize=2;
 
     public PageLoaderNet(PageView pageView, BookCollectBean bookCollectBean, OnPageLoaderCallback onPageLoaderCallback) {
         super(pageView, bookCollectBean, onPageLoaderCallback);
-        executorService = Executors.newFixedThreadPool(20);
-        scheduler = Schedulers.from(executorService);
     }
 
     @Override
@@ -56,13 +48,19 @@ public abstract class PageLoaderNet extends PageLoader {
             // 打开章节
             skipToChapter(mBookCollectBean.getDurChapter(), mBookCollectBean.getDurChapterPage());
         } else {
-            loadNetChapterList();
+            List<BookChapterBean> chapterList = BookCollectHelp.getChapterList(mBookCollectBean.getNoteUrl());
+            if(chapterList==null||chapterList.isEmpty()){
+                loadNetChapterList();
+            }else{
+                chapterListLoadSuc(chapterList);
+            }
+
         }
     }
 
 
     private void loadNetChapterList() {
-        getChapterList(mBookCollectBean)
+        onNetLoaderCallback.getChapterList(mBookCollectBean)
                 .compose(RxUtils::toSimpleSingle)
                 .subscribe(new Observer<List<BookChapterBean>>() {
                     @Override
@@ -72,16 +70,7 @@ public abstract class PageLoaderNet extends PageLoader {
 
                     @Override
                     public void onNext(List<BookChapterBean> chapterBeanList) {
-                        isChapterListPrepare = true;
-                        addBookChapterBeanList(chapterBeanList);
-                        // 目录加载完成
-                        if (!chapterBeanList.isEmpty()) {
-                            BookCollectHelp.delChapterList(mBookCollectBean.getNoteUrl());
-                            BookCollectHelp.saveChapterList(mBookCollectBean, chapterBeanList);
-                            onPageLoaderCallback.onCategoryFinish(chapterBeanList);
-                        }
-                        // 加载并显示当前章节
-                        skipToChapter(mBookCollectBean.getDurChapter(), mBookCollectBean.getDurChapterPage());
+                        chapterListLoadSuc(chapterBeanList);
                     }
 
                     @Override
@@ -100,6 +89,19 @@ public abstract class PageLoaderNet extends PageLoader {
                 });
     }
 
+    private void chapterListLoadSuc(List<BookChapterBean> chapterBeanList) {
+        isChapterListPrepare = true;
+        addBookChapterBeanList(chapterBeanList);
+        // 目录加载完成
+        if (!chapterBeanList.isEmpty()) {
+            BookCollectHelp.delChapterList(mBookCollectBean.getNoteUrl());
+            BookCollectHelp.saveChapterList(mBookCollectBean, chapterBeanList);
+            onPageLoaderCallback.onCategoryFinish(chapterBeanList);
+        }
+        // 加载并显示当前章节
+        skipToChapter(mBookCollectBean.getDurChapter(), mBookCollectBean.getDurChapterPage());
+    }
+
 
     public void changeSourceFinish(BookCollectBean bookCollectBean) {
         if (bookCollectBean == null) {
@@ -112,7 +114,6 @@ public abstract class PageLoaderNet extends PageLoader {
 
     @SuppressLint("DefaultLocale")
     private synchronized void loadContent(final int chapterIndex) {
-        KLog.trace();
         if (downloadingChapterList.size() >= 20) return;
         if (chapterIndex >= bookChapterBeanList.size()
                 || downloadingList(listHandle.CHECK, bookChapterBeanList.get(chapterIndex).getDurChapterUrl()))
@@ -160,7 +161,7 @@ public abstract class PageLoaderNet extends PageLoader {
                 }).flatMap(index -> onNetLoaderCallback.getBookContent(mBookCollectBean, bookChapterBeanList.get(chapterIndex), null))
                       .flatMap((Function<BookContentBean, ObservableSource<?>>) bookContentBean -> BookCollectHelp.saveContent(mBookCollectBean.getBookInfoBean(), bookChapterBeanList.get(chapterIndex), bookContentBean))
                         .timeout(30, TimeUnit.SECONDS)
-                        .subscribeOn(scheduler)
+                        .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(observer);
             }
@@ -249,7 +250,7 @@ public abstract class PageLoaderNet extends PageLoader {
     // 装载当前章内容。
     @Override
     protected void parseCurChapter() {
-        for (int i = mCurChapterPos; i < Math.min(mCurChapterPos + 5, mBookCollectBean.getChapterListSize()); i++) {
+        for (int i = mCurChapterPos; i < Math.min(mCurChapterPos + prePageSize, mBookCollectBean.getChapterListSize()); i++) {
             loadContent(i);
         }
         super.parseCurChapter();
@@ -258,7 +259,7 @@ public abstract class PageLoaderNet extends PageLoader {
     // 装载下一章节的内容
     @Override
     protected void parseNextChapter() {
-        for (int i = mCurChapterPos; i < Math.min(mCurChapterPos + 5, mBookCollectBean.getChapterListSize()); i++) {
+        for (int i = mCurChapterPos; i < Math.min(mCurChapterPos + prePageSize, mBookCollectBean.getChapterListSize()); i++) {
             loadContent(i);
         }
         super.parseNextChapter();
@@ -283,6 +284,7 @@ public abstract class PageLoaderNet extends PageLoader {
                             if (chapterBeanList.size() > bookChapterBeanList.size()) {
                                 Toast.makeText(mPageView.getContext(), "更新完成,有新章节", Toast.LENGTH_SHORT).show();
                                 addBookChapterBeanList(chapterBeanList);
+                                BookCollectHelp.delChapterList(mBookCollectBean.getNoteUrl());
                                 BookCollectHelp.saveChapterList(mBookCollectBean, chapterBeanList);
                                 onPageLoaderCallback.onCategoryFinish(chapterBeanList);
                             } else {
@@ -310,12 +312,6 @@ public abstract class PageLoaderNet extends PageLoader {
     public abstract ObservableSource<BookContentBean> getBookContent(BookCollectBean book, BookChapterBean bookChapterBean, BaseChapterBean nextChapterBean);
 
     public abstract Observable<List<BookChapterBean>> getChapterList(BookCollectBean book);
-
-    @Override
-    public void closeBook() {
-        super.closeBook();
-        executorService.shutdown();
-    }
 
     public enum listHandle {
         ADD, REMOVE, CHECK

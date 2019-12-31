@@ -19,6 +19,7 @@ import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
 import io.reactivex.annotations.NonNull
 import kotlinx.android.synthetic.main.activity_book_read.*
+import java.lang.StringBuilder
 
 
 class BookReadActivity : AppCompatActivity() {
@@ -92,7 +93,7 @@ class BookReadActivity : AppCompatActivity() {
                         val mBookChapterBean = BookChapterBean()
                         mBookChapterBean.noteUrl = curBook?.url
                         mBookChapterBean.durChapterUrl = mCatalog.url
-                        mBookChapterBean.domain = mCatalog.url
+                        mBookChapterBean.domain =curBook?.url
                         mBookChapterBean.durChapterIndex = tList.indexOf(mCatalog)
                         mBookChapterBean.durChapterName = mCatalog.chapterName
                         booklist.add(mBookChapterBean)
@@ -124,10 +125,11 @@ class BookReadActivity : AppCompatActivity() {
                     });
                 }).flatMap { tList ->
                     val mBookContentBean = BookContentBean()
-                    mBookContentBean.durChapterContent = tList[0]
+
+                    mBookContentBean.durChapterContent =createBookContent(tList)
                     mBookContentBean.noteUrl = bookChapterBean?.noteUrl
                     mBookContentBean.durChapterUrl = bookChapterBean?.durChapterUrl
-                    mBookContentBean.domain = bookChapterBean?.noteUrl
+                    mBookContentBean.domain = bookChapterBean?.domain
                     mBookContentBean.setDurChapterIndex(bookChapterBean?.durChapterIndex)
                     mBookContentBean.timeMillis = System.currentTimeMillis()
                     Log.d("loadPageBook3", mBookContentBean.toString())
@@ -139,13 +141,21 @@ class BookReadActivity : AppCompatActivity() {
         mPageLoader?.loadChapterList()
     }
 
+    private fun createBookContent(tList: List<String>): String? {
+        val sb=StringBuilder()
+        for (str in tList){
+            sb.append(str+"\n\n")
+        }
+        return sb.toString()
+    }
+
 
     private fun searchBook() {
-        EasyBook.search("天行")
+        EasyBook.search("反套路系统")
                 .subscribe(object : StepSubscriber<List<Book?>> {
                     override fun onFinish(@NonNull books: List<Book?>) { //所有站点小说爬取完后调用这个方法，传入所有站点解析的有序结果
                         for (mbook in books) {
-                            if (mbook?.url?.contains("www.biquge.biz/20_20938")!!) {
+                            if (mbook?.url?.contains("www.biquge.biz")!!) {
                                 curBook = mbook;
                             }
                         }

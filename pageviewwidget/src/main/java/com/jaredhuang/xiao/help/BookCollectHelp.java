@@ -3,7 +3,6 @@ package com.jaredhuang.xiao.help;
 import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.jaredhuang.basemvplib.BitIntentDataManager;
 import com.jaredhuang.xiao.DbHelper;
@@ -76,7 +75,6 @@ public class BookCollectHelp {
                 + formatFolderName(BookCollectHelp.getCachePathName(bookCollectBean.getBookInfoBean().getName(), bookCollectBean.getDomain()))
                 + File.separator + getCacheFileName(chapter.getDurChapterIndex(), chapter.getDurChapterName()) + FileHelp.SUFFIX_NB);
         if (!file.exists()) return null;
-
         byte[] contentByte = DocumentHelper.getBytes(file);
         return new String(contentByte, StandardCharsets.UTF_8);
     }
@@ -104,7 +102,6 @@ public class BookCollectHelp {
             return false;
         }
         File file = getBookFile(folderName, index, fileName);
-        Log.d("saveChapterInfo",file.getAbsolutePath());
         //获取流并存储
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             writer.write(fileName + "\n\n");
@@ -128,7 +125,6 @@ public class BookCollectHelp {
             return !TextUtils.isEmpty(contentBean.getDurChapterContent());
         }
         File file = new File(ReadViewExt.getInstance().getBookCachePath() + getCachePathName(bookName, tag) + File.separator + getCacheFileName(chapter.getDurChapterIndex(), chapter.getDurChapterName()) + FileHelp.SUFFIX_NB);
-        Log.d("saveChapterInfo",file.getAbsolutePath()+"  "+file.exists());
         return file.exists();
     }
     /**
@@ -391,7 +387,7 @@ public class BookCollectHelp {
                 bookContentBean.setTimeMillis(System.currentTimeMillis() + TimeUnit.HOURS.toMillis(1));
                 DbHelper.getDaoSession().getBookContentBeanDao().insertOrReplace(bookContentBean);
                 e.onNext(bookContentBean);
-            } else if (BookCollectHelp.saveChapterInfo(infoBean.getName() + "-" + chapterBean.getDomain(), chapterBean.getDurChapterIndex(),
+            } else if (BookCollectHelp.saveChapterInfo(infoBean.getName() + "-" + infoBean.getDomain(), chapterBean.getDurChapterIndex(),
                     chapterBean.getDurChapterName(), bookContentBean.getDurChapterContent())) {
                 e.onNext(bookContentBean);
             } else {

@@ -2,6 +2,8 @@ package com.jaredhuang.xiao;
 
 import android.content.Context;
 
+import com.jaredhuang.xiao.utils.ToastHelper;
+
 /**
  * Copyright (C), 2019, JIGUANG极光
  *
@@ -23,6 +25,7 @@ public class UtilsExt {
 
     public void init(Context mContext){
         this.mContext=mContext;
+        ToastHelper.getInstance().init(mContext);
     }
 
     public Context getContext() {
