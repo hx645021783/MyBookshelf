@@ -800,11 +800,9 @@ public abstract class PageLoader {
         mPageView.setContentDescription(getContent());
         mBookCollectBean.setDurChapter(mCurChapterPos);
         mBookCollectBean.setDurChapterPage(mCurPagePos);
-        onPageLoaderCallback.onPageChange(mCurChapterPos, getCurPagePos(), resetReadAloud);
-        mBookCollectBean.setDurChapter(mCurChapterPos);
-        mBookCollectBean.setDurChapterPage(getCurPagePos());
         mBookCollectBean.setFinalDate(System.currentTimeMillis());
         mBookCollectBean.setHasUpdate(false);
+        onPageLoaderCallback.onPageChange(mCurChapterPos, mCurPagePos, resetReadAloud);
         resetReadAloud = true;
     }
 

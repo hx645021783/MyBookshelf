@@ -88,12 +88,12 @@ public class BookCollectBean implements Cloneable, BaseBookBean {
 
     @Override
     public Object clone() {
-        try {
-            Gson gson = new Gson();
-            String json = gson.toJson(this);
-            return gson.fromJson(json, BookCollectBean.class);
-        } catch (Exception ignored) {
-        }
+//        try {
+//            Gson gson = new Gson();
+//            String json = gson.toJson(this);
+//            return gson.fromJson(json, BookCollectBean.class);
+//        } catch (Exception ignored) {
+//        }
         return this;
     }
 
